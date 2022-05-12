@@ -1,0 +1,129 @@
+ext {
+    // Android
+    buildToolsVersion = '30.0.2'
+    compileSdkVersion = 30
+    minSdkVersion = 21
+    targetSdkVersion = 30
+
+    // Libraries
+    androidxCoreVersion = '1.3.2'
+    appcompatVersion = '1.2.0'
+    balloonVersion = '1.2.7'
+    constraintlayoutVersion = '2.0.4'
+    firebaseCrashlyticsGradleVersion = '2.5.0'
+    firebaseBoMVersion = '26.5.0'
+    firebasePerfGradleVersion = '1.3.4'
+    flurryAnalyticsVersion = '12.9.0'
+    glideVersion = '4.12.0'
+    googleServicesVersion = '4.3.5'
+    gsonVersion = '2.8.6'
+    kotlinVersion = '1.4.30'
+    kotlinxCoroutinesVersion = '1.4.2'
+    kotlinxFragmentVersion = '1.2.5'
+    kotprefVersion = '2.13.1'
+    lifecycleVersion = '2.2.0'
+    locationApiVersion = '17.1.0'
+    mapApiVersion = '17.0.0'
+    materialVersion = '1.3.0'
+    multidexVersion = '2.0.1'
+    patternlockviewVersion = '1.0.0'
+    placesApiVersion = '2.4.0'
+    playServicesAnalyticsVersion = '17.0.0'
+    playServicesBaseVersion = '17.3.0'
+    recyclerviewVersion = '1.1.0'
+    reprintCoreVersion = '3.3.2@aar'
+    resourceplaceholdersVersion = '0.3'
+    roomVersion = '2.2.6'
+    rtlViewpagerVersion = '2.0.0'
+
+    swiperefreshlayoutVersion = '1.1.0'
+    timberVersion = '4.7.1'
+    time4aVersion = '4.7-2020c'
+    versionsPluginVersion = '0.36.0'
+
+    //hilt
+    hiltVersion = '2.32-alpha'
+    hiltCommonVersion = '1.0.0-alpha03'
+
+    // Testing
+    androidJunit5Version = '1.7.0.0'
+    junit5Version = '5.7.1'
+    junit5AndroidTestVersion = '1.2.0'
+    kotestVersion = '4.4.1'
+    mockkVersion = '1.10.6'
+    testRunnerVersion = '1.3.0'
+
+    applicationDependencies = [
+            androidxCore            : "androidx.core:core-ktx:$androidxCoreVersion",
+            appcompat               : "androidx.appcompat:appcompat:$appcompatVersion",
+            balloon                 : "com.github.skydoves:balloon:$balloonVersion",
+            constraintlayout        : "androidx.constraintlayout:constraintlayout:$constraintlayoutVersion",
+            // When using the BoM, don't specify versions in Firebase dependencies
+            firebaseAnalytics       : "com.google.firebase:firebase-analytics-ktx",
+            firebaseBoM             : "com.google.firebase:firebase-bom:$firebaseBoMVersion",
+            firebaseConfig          : "com.google.firebase:firebase-config-ktx",
+            firebaseCrashlytics     : "com.google.firebase:firebase-crashlytics-ktx",
+            firebasePerf            : "com.google.firebase:firebase-perf-ktx",
+            flurryAnalytics         : "com.flurry.android:analytics:$flurryAnalyticsVersion",
+            glide                   : "com.github.bumptech.glide:glide:$glideVersion",
+            glideCompiler           : "com.github.bumptech.glide:compiler:$glideVersion",
+            gson                    : "com.google.code.gson:gson:$gsonVersion",
+            hilt                    : "com.google.dagger:hilt-android:$hiltVersion",
+            hiltCommon              : "androidx.hilt:hilt-common:$hiltCommonVersion",
+            hiltViewModel           : "androidx.hilt:hilt-lifecycle-viewmodel:$hiltCommonVersion",
+            hiltDaggerCompiler      : "com.google.dagger:hilt-android-compiler:$hiltVersion",
+            hiltCompiler            : "androidx.hilt:hilt-compiler:$hiltCommonVersion",
+            hiltTest                : "com.google.dagger:hilt-android-testing:$hiltVersion", 
+            calendarAndroidLib      : "com.iamcalendar.android:android-lib:0.2.17.3",
+            kotlin                  : "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlinVersion",
+            kotlinxCoroutinesCore   : "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion",
+            kotlinxCoroutinesAndroid: "org.jetbrains.kotlinx:kotlinx-coroutines-android:$kotlinxCoroutinesVersion",
+            kotlinxFragment         : "androidx.fragment:fragment-ktx:$kotlinxFragmentVersion",
+            kotprefCore             : "com.chibatching.kotpref:kotpref:$kotprefVersion",
+            kotprefEnumSupport      : "com.chibatching.kotpref:enum-support:$kotprefVersion",
+            kotprefGsonSupport      : "com.chibatching.kotpref:gson-support:$kotprefVersion",
+            kotprefLiveDataSupport  : "com.chibatching.kotpref:livedata-support:$kotprefVersion",
+            lifecycleCommon         : "androidx.lifecycle:lifecycle-common:$lifecycleVersion",
+            lifecycleExtensions     : "androidx.lifecycle:lifecycle-extensions:$lifecycleVersion",
+            lifecycleLivedata       : "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycleVersion",
+            lifecycleRuntime        : "androidx.lifecycle:lifecycle-runtime-ktx:$lifecycleVersion",
+            lifecycleViewmodel      : "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycleVersion",
+            lifecycleSavedState     : "androidx.lifecycle:lifecycle-viewmodel-savedstate:$lifecycleVersion",
+            locationApi             : "com.google.android.gms:play-services-location:$locationApiVersion",
+            mapApi                  : "com.google.android.gms:play-services-maps:$mapApiVersion",
+            material                : "com.google.android.material:material:$materialVersion",
+            multidex                : "androidx.multidex:multidex:$multidexVersion",
+            patternlockview         : "com.andrognito.patternlockview:patternlockview:$patternlockviewVersion",
+            placesApi               : "com.google.android.libraries.places:places:$placesApiVersion",
+            playServicesAnalytics   : "com.google.android.gms:play-services-analytics:$playServicesAnalyticsVersion",
+            playServicesBase        : "com.google.android.gms:play-services-base:$playServicesBaseVersion",
+            recyclerview            : "androidx.recyclerview:recyclerview:$recyclerviewVersion",
+            reprintCore             : "com.github.ajalt.reprint:core:$reprintCoreVersion",
+            roomCompiler            : "androidx.room:room-compiler:$roomVersion",
+            roomRuntime             : "androidx.room:room-runtime:$roomVersion",
+            rtlViewpager            : "com.duolingo.open:rtl-viewpager:$rtlViewpagerVersion",
+            swiperefreshlayout      : "androidx.swiperefreshlayout:swiperefreshlayout:$swiperefreshlayoutVersion",
+            timber                  : "com.jakewharton.timber:timber:$timberVersion",
+            time4a                  : "net.time4j:time4j-android:$time4aVersion",
+    ]
+
+    moduleDependencies = [
+            SimpleItemTouchHelper: ':simpleitemtouchhelper',
+    ]
+
+    testingDependencies = [
+            junitJupiterApi        : "org.junit.jupiter:junit-jupiter-api:$junit5Version",
+            junitJupiterEngine     : "org.junit.jupiter:junit-jupiter-engine:$junit5Version",
+            junitJupiterParams     : "org.junit.jupiter:junit-jupiter-params:$junit5Version",
+
+            junit5AndroidTestCore  : "de.mannodermaus.junit5:android-test-core:$junit5AndroidTestVersion",
+            junit5AndroidTestRunner: "de.mannodermaus.junit5:android-test-runner:$junit5AndroidTestVersion",
+            testRunner             : "androidx.test:runner:$testRunnerVersion",
+
+            kotestAssertions       : "io.kotest:kotest-assertions-core-jvm:$kotestVersion",
+            kotestFramework        : "io.kotest:kotest-runner-junit5-jvm:$kotestVersion",
+            kotestProperty         : "io.kotest:kotest-property-jvm:$kotestVersion",
+            mockk                  : "io.mockk:mockk:$mockkVersion",
+            mockkAndroid           : "io.mockk:mockk-android:$mockkVersion",
+    ]
+}

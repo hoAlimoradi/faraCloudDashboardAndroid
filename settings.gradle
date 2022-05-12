@@ -3,10 +3,11 @@ pluginManagement {
         gradlePluginPortal()
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
     plugins {
-        id 'com.android.application' version '7.1.0-alpha03'
-        id 'com.android.library' version '7.1.0-alpha03'
+        id 'com.android.application' version '7.1.1'
+        id 'com.android.library' version '7.1.1'
         id 'org.jetbrains.kotlin.android' version '1.5.10'
     }
 }
@@ -15,6 +16,7 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url 'https://jitpack.io' }
     }
 }
 rootProject.name = "Dashboard"

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navGraph"
+    app:startDestination="@id/mapFragment">
+
+
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="net.faracloud.dashboard.features.splash.presentation.SplashFragment"
+        android:label="SplashFragment">
+        <action
+            android:id="@+id/navigateFromSplashFragmentToMapFragment"
+            app:destination="@id/mapFragment" />
+
+        <action
+            android:id="@+id/navigateFromSplashFragmentToLoginFragment"
+            app:destination="@id/loginFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="net.faracloud.dashboard.features.auth.LoginFragment"
+        android:label="LoginFragment">
+        <action
+            android:id="@+id/navigateToMapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="net.faracloud.dashboard.features.map.MapFragment"
+        android:label="MapFragment">
+        <action
+            android:id="@+id/navigateFromMapToProvidersListFragment"
+            app:destination="@id/providersListFragment" />
+
+        <action
+            android:id="@+id/navigateFromMapToProviderDetailsFragment"
+            app:destination="@id/providerDetailsFragment" />
+
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/providersListFragment"
+        android:name="net.faracloud.dashboard.features.providersList.ProvidersListFragment"
+        android:label="ProvidersListFragment"
+        >
+
+        <action
+            android:id="@+id/navigateToProviderDetailsFragment"
+            app:destination="@id/providerDetailsFragment"
+             />
+
+        <action
+            android:id="@+id/providersListFragmentActionPopBack"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@+id/mapFragment"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/providerDetailsFragment"
+        android:name="net.faracloud.dashboard.features.providerDetails.ProviderDetailsFragment"
+        android:label="ProviderDetailsFragment">
+
+    </fragment>
+</navigation>

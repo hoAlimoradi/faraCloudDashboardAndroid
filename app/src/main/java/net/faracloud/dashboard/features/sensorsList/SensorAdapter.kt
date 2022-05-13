@@ -1,27 +1,28 @@
-package net.faracloud.dashboard.features.providersList
+package net.faracloud.dashboard.features.sensorsList
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.android.synthetic.main.row_provider.view.*
+import kotlinx.android.synthetic.main.row_sensor.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BaseAdapter
+import net.faracloud.dashboard.features.providersList.ProviderRecycleViewViewRowEntity
 
-class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<ProviderAdapter.MarketViewHolder, ProviderRecycleViewViewRowEntity>() {
+class SensorAdapter(val callback: SensorItemClickCallback) : BaseAdapter<SensorAdapter.MarketViewHolder, ProviderRecycleViewViewRowEntity>() {
 
     override fun onCreateHolder(parent: ViewGroup,viewType: Int): MarketViewHolder {
         val inflate = LayoutInflater.from(parent.context)
-        val view = inflate.inflate(R.layout.row_provider,parent,false)
+        val view = inflate.inflate(R.layout.row_sensor,parent,false)
         return MarketViewHolder(view)
     }
 
-    override fun onBindHolder(holder: MarketViewHolder,model: ProviderRecycleViewViewRowEntity, position: Int) {
+    override fun onBindHolder(holder: MarketViewHolder, model: ProviderRecycleViewViewRowEntity, position: Int) {
         val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
         with(holder.itemView) {
-            providerCheckBox.text = model.title
-            providerImageView.setOnClickListener {
+            sensorCheckBox.text = model.title
+            sensorImageView.setOnClickListener {
                 callback.onClicked(model)
             }
         }
@@ -31,9 +32,7 @@ class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<Pro
 
     }
 
-    interface ProviderItemClickCallback {
+    interface SensorItemClickCallback {
         fun onClicked(item: ProviderRecycleViewViewRowEntity)
     }
 }
-
-

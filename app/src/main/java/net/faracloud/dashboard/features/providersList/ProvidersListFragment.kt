@@ -1,29 +1,21 @@
 package net.faracloud.dashboard.features.providersList
 
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
-import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
-import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_providers_list.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
-import net.faracloud.dashboard.features.map.MapState
-import net.faracloud.dashboard.features.map.MapViewModel
 import androidx.navigation.fragment.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
@@ -32,7 +24,8 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
-class ProvidersListFragment : BuilderFragment<ProvidersListState, ProvidersListViewModel>() {
+class ProvidersListFragment : BuilderFragment<ProvidersListState, ProvidersListViewModel>(),
+    ProviderAdapter.ProviderItemClickCallback {
 
     private var adapter: ProviderAdapter? = null
     private val viewModel: ProvidersListViewModel by viewModels()
@@ -61,17 +54,13 @@ class ProvidersListFragment : BuilderFragment<ProvidersListState, ProvidersListV
 
         backButton.setOnClickListener {
             findNavController().navigate(R.id.providersListFragmentActionPopBack)
-//            findNavController().popBackStack()
-//            getFindViewController()?.navigateUp()
-            //getFindViewController()?.popBackStack()
-
         }
 
         observeProvidersStateFlow()
 
         val manager = LinearLayoutManager(context)
 
-        adapter = ProviderAdapter()
+        adapter = ProviderAdapter(this)
         adapter?.let {
             providerRecycleView.adapter = it
             providerRecycleView.layoutManager = manager
@@ -137,13 +126,23 @@ class ProvidersListFragment : BuilderFragment<ProvidersListState, ProvidersListV
                 loge("IDLE")
             }
             ProvidersListState.LOADING -> {
-                loge("START_DETAIL")
+                loge("LOADING")
 
             }
             ProvidersListState.RETRY -> {
-                loge("FORCE_UPDATE")
+                loge("RETRY")
+            }
+
+            ProvidersListState.START_SENSOR_LIST -> {
+                loge(" START_SENSOR_LIST")
+                getFindViewController()?.navigate(R.id.navigateToSensorsListFragment)
             }
 
         }
+    }
+
+    override fun onClicked(item: ProviderRecycleViewViewRowEntity) {
+        loge("item " + item.title)
+        viewModel.navigateToSensorsOfProvider()
     }
 }

@@ -1,15 +1,11 @@
 package net.faracloud.dashboard.features.providersList
 
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
-import net.faracloud.dashboard.features.sensorsList.SensorsListState
-import net.faracloud.dashboard.features.splash.presentation.SplashState
 import javax.inject.Inject
 
 @HiltViewModel
@@ -18,6 +14,13 @@ class ProvidersListViewModel @Inject constructor(
 ) : BuilderViewModel<ProvidersListState>(ProvidersListState.IDLE) {
 
     val providerRecycleViewViewRowEntityListMutableLiveData = MutableStateFlow<List<ProviderRecycleViewViewRowEntity>?>(null)
+
+    fun navigateToSensorsOfProvider() {
+        viewModelScope.launch {
+            //delay(1000)
+            state.value = ProvidersListState.START_SENSOR_LIST
+        }
+    }
 
     fun getProviders() {
         viewModelScope.launch {

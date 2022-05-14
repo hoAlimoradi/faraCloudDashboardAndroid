@@ -1,9 +1,9 @@
-/*
+
 package net.faracloud.dashboard.features.splash.domain.usecase
 
 import kotlinx.coroutines.flow.Flow
 import net.faracloud.dashboard.core.useCase.BaseObserveUseCase
-import net.faracloud.dashboard.splash.domain.repository.SplashRepository
+import net.faracloud.dashboard.features.splash.domain.SplashRepository
 import javax.inject.Inject
 
 class CheckVersionUseCase @Inject constructor(
@@ -12,4 +12,4 @@ class CheckVersionUseCase @Inject constructor(
     override suspend fun observe(): Flow<String> {
         return splashRepository.getVersionCode()
     }
-}*/
+}

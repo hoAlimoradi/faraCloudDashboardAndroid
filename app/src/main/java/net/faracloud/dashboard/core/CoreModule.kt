@@ -7,11 +7,12 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 import net.faracloud.dashboard.core.api.ApiServiceFactoryModule
 import net.faracloud.dashboard.core.scheduler.SchedulersModule
 import net.faracloud.dashboard.core.sharedpreferences.SharedPreferenceModule
+import net.faracloud.dashboard.features.splash.di.SplashModule
 
 @Module(
     includes = [
         SharedPreferenceModule::class,
-        //SplashModule::class,
+        SplashModule::class,
         //LoginModule::class,
         ApiServiceFactoryModule::class,
         SchedulersModule::class

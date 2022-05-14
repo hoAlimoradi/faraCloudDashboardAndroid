@@ -4,15 +4,14 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
-import net.faracloud.dashboard.features.splash.data.network.SplashApi
 
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class ApiServiceFactoryModule{
-    @Provides
+/*    @Provides
     @Reusable
     fun splashApiService(apiService: ApiServiceFactory) =
-        apiService.create(SplashApi::class.java)
+        apiService.create(SplashApi::class.java)*/
 
     @Provides
     @Reusable

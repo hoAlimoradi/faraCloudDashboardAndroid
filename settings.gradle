@@ -4,6 +4,8 @@ pluginManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        //Add Neshan maven repo here
+        maven { url "https://maven.neshan.org/artifactory/public-maven" }
     }
     plugins {
         id 'com.android.application' version '7.1.1'
@@ -17,6 +19,8 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
         maven { url 'https://jitpack.io' }
+        //Add Neshan maven repo here
+        maven { url "https://maven.neshan.org/artifactory/public-maven" }
     }
 }
 rootProject.name = "Dashboard"

@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
 import net.faracloud.dashboard.R
@@ -17,8 +18,10 @@ import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 
+
 @AndroidEntryPoint
 class MapFragment : BuilderFragment<MapState, MapViewModel>() {
+
 
     private val viewModel: MapViewModel by viewModels()
 
@@ -47,6 +50,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
         }
 
     }
+
 
 
     private fun setVersionText(text: String) {

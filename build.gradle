@@ -63,7 +63,8 @@ buildscript {
         maven{ url 'https://maven.google.com' }
         gradlePluginPortal()
         maven{url 'https://maven.fabric.io/public'}
-
+        //Add Neshan maven repo here
+        maven { url "https://maven.neshan.org/artifactory/public-maven" }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.1.1'

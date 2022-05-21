@@ -1,4 +1,4 @@
-package net.faracloud.dashboard.features.map
+package net.faracloud.dashboard.features.map.presentation
 
 import net.faracloud.dashboard.core.BuilderViewState
 

@@ -1,40 +1,5 @@
 package net.faracloud.dashboard.features.sensorDetails
 
-
-/*
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import net.faracloud.dashboard.R
-
-class SensorDetailsFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SensorDetailsFragment()
-    }
-
-    private lateinit var viewModel: SensorDetailsViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sensor_details, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SensorDetailsViewModel::class.java)
-        // TODO: Use the ViewModel
-    }
-
-}
- */
-
-
 import android.os.Build
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -45,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
@@ -80,6 +46,9 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        backButton.setOnClickListener {
+            findNavController().navigate(R.id.tenantFragmentActionPopBack)
+        }
 
         //.supportFragmentManager
         val adapter = SensorDetailsViewPagerAdapter(requireFragmentManager(), lifecycle)

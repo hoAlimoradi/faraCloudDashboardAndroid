@@ -1,4 +1,4 @@
-package net.faracloud.dashboard.features.providersList
+package net.faracloud.dashboard.features.tenant.providersList
 
 import android.view.LayoutInflater
 import android.view.View
@@ -17,7 +17,7 @@ class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<Pro
         return MarketViewHolder(view)
     }
 
-    override fun onBindHolder(holder: MarketViewHolder,model: ProviderRecycleViewViewRowEntity, position: Int) {
+    override fun onBindHolder(holder: MarketViewHolder, model: ProviderRecycleViewViewRowEntity, position: Int) {
         val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
         with(holder.itemView) {
             providerCheckBox.text = model.title

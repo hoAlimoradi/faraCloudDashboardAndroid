@@ -30,11 +30,13 @@
 
     <fragment
         android:id="@+id/mapFragment"
-        android:name="net.faracloud.dashboard.features.map.MapFragment"
+        android:name="net.faracloud.dashboard.features.map.presentation.MapFragment"
         android:label="MapFragment">
+
         <action
-            android:id="@+id/navigateFromMapToProvidersListFragment"
-            app:destination="@id/providersListFragment" />
+            android:id="@+id/navigateFromMapToTenantFragment"
+            app:destination="@id/tenantFragment" />
+
 
         <action
             android:id="@+id/navigateFromMapToProviderDetailsFragment"
@@ -44,20 +46,27 @@
     </fragment>
 
     <fragment
-        android:id="@+id/providersListFragment"
-        android:name="net.faracloud.dashboard.features.providersList.ProvidersListFragment"
-        android:label="ProvidersListFragment"
+        android:id="@+id/tenantFragment"
+        android:name="net.faracloud.dashboard.features.tenant.TenantFragment"
+        android:label="TenantFragment"
         >
+        <action
+            android:id="@+id/tenantFragmentActionPopBack"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@+id/mapFragment"/>
 
         <action
             android:id="@+id/navigateToSensorsListFragment"
             app:destination="@id/sensorsListFragment"
-             />
+            />
 
-        <action
-            android:id="@+id/providersListFragmentActionPopBack"
-            app:destination="@id/mapFragment"
-            app:popUpTo="@+id/mapFragment"/>
+    </fragment>
+
+    <fragment
+        android:id="@+id/providersListFragment"
+        android:name="net.faracloud.dashboard.features.tenant.providersList.ProvidersListFragment"
+        android:label="ProvidersListFragment"
+        >
 
     </fragment>
 

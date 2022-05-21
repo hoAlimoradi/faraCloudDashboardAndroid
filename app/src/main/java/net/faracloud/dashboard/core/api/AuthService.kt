@@ -19,3 +19,4 @@ interface AuthService {
         @Field("token") token: String
     ): Call<BaseModel<AccessTokenRemoteModel>>
 }
+

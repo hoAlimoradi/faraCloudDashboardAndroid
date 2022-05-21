@@ -10,23 +10,18 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_providers_list.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_providers_list.backButton
 import kotlinx.android.synthetic.main.fragment_sensors_list.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import net.faracloud.dashboard.features.providersList.ProviderAdapter
-import net.faracloud.dashboard.features.providersList.ProviderRecycleViewViewRowEntity
-import net.faracloud.dashboard.features.providersList.ProvidersListState
-import net.faracloud.dashboard.features.providersList.ProvidersListViewModel
+import net.faracloud.dashboard.features.tenant.providersList.ProviderRecycleViewViewRowEntity
 
 @AndroidEntryPoint
 class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewModel>(),

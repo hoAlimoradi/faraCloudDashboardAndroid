@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView.ViewHolder
 import kotlinx.android.synthetic.main.row_sensor.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BaseAdapter
-import net.faracloud.dashboard.features.providersList.ProviderRecycleViewViewRowEntity
+import net.faracloud.dashboard.features.tenant.providersList.ProviderRecycleViewViewRowEntity
 
 class SensorAdapter(val callback: SensorItemClickCallback) : BaseAdapter<SensorAdapter.MarketViewHolder, ProviderRecycleViewViewRowEntity>() {
 

@@ -1,19 +1,19 @@
-package net.faracloud.dashboard.features.map
+package net.faracloud.dashboard.features.map.presentation
 
 
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
+import net.faracloud.dashboard.features.map.domain.MapRepository
+import net.faracloud.dashboard.features.map.presentation.MapState
 import javax.inject.Inject
 
 @HiltViewModel
 class MapViewModel @Inject constructor(
-    var schedulers: SchedulersImpl
+    var schedulers: SchedulersImpl,
+    private val repository: MapRepository
 ) : BuilderViewModel<MapState>(MapState.IDLE) {
 
     fun navigateToSetting() {

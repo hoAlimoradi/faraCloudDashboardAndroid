@@ -16,6 +16,6 @@ data class ComponentEntity(
     var providerId: String?,
     var publicAccess: Boolean,
     var type: String?,
-    var updatedAt: Long?,
-    var lastUpdateDevice: Long?
+    var updatedAt: String?,
+    var lastUpdateDevice: String?
 )

@@ -1,16 +1,12 @@
-package net.faracloud.dashboard.features.map
+package net.faracloud.dashboard.features.map.presentation
 
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
-import com.google.android.gms.location.FusedLocationProviderClient
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
 import net.faracloud.dashboard.R
@@ -70,12 +66,12 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             MapState.START_DETAIL -> {
                 loge("START_DETAIL")
                 getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToProvidersListFragment)
+                getFindViewController()?.navigate(R.id.navigateFromMapToProviderDetailsFragment)
             }
             MapState.START_SETTING -> {
                 loge("FORCE_UPDATE")
                 getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToProviderDetailsFragment)
+                getFindViewController()?.navigate(R.id.navigateFromMapToTenantFragment)
             }
 
         }

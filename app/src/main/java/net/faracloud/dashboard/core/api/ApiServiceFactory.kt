@@ -15,8 +15,8 @@ import javax.inject.Inject
 const val TIME_OUT: Long = 60
 
 
-const val BaseUrl: String = "https://api.ftf.com/api/v1/"
-const val BaseUrlDev: String = "https://dev.ftf.com/api/v1/"
+const val BaseUrl: String = "https://iot.faracloud.ir/"
+const val BaseUrlDev: String = "https://iot.faracloud.ir/"
 
 class ApiServiceFactory @Inject constructor(
     private val chuckIntercept: ChuckIntercept,

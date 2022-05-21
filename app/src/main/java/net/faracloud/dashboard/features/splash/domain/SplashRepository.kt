@@ -7,3 +7,4 @@ interface SplashRepository {
     suspend fun getIsFirstTimeAppIsLaunchedValue(): Flow<Boolean>
     suspend fun getVersionCode(): Flow<String>
 }
+

@@ -8,10 +8,10 @@ import dagger.hilt.android.components.ActivityRetainedComponent
 @Module
 @InstallIn(ActivityRetainedComponent::class)
 class ApiServiceFactoryModule{
-/*    @Provides
+    @Provides
     @Reusable
-    fun splashApiService(apiService: ApiServiceFactory) =
-        apiService.create(SplashApi::class.java)*/
+    fun providerApiService(apiService: ApiServiceFactory) =
+        apiService.create(ProviderService::class.java)
 
     @Provides
     @Reusable

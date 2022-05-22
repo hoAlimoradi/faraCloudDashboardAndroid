@@ -18,6 +18,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="10"
-        tools:listitem="@layout/row_chart" />
+        tools:listitem="@layout/row_circular_progress" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -55,12 +55,14 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
 
         val manager = LinearLayoutManager(context)
 
-        adapter = ChartsAdapter()
+        adapter = ChartsAdapter(mutableListOf(1,3,4,5))
         adapter?.let {
             chartsRecycleView.adapter = it
             chartsRecycleView.layoutManager = manager
         }
+
     }
+
     override fun onResume() {
         super.onResume()
         viewModel.getObservations()
@@ -76,15 +78,14 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
                 .collect {
                     it?.let { data ->
                         data?.let { list ->
-                           // val observationsRecycleViewViewRowEntityArrayList  = ArrayList<ObservationRecycleViewRowEntity>()
-                            val observationsRecycleViewViewRowEntityArrayList  = ArrayList<String>()
+                             val observationsRecycleViewViewRowEntityArrayList  = ArrayList<String>()
                             list.forEach {
                                 observationsRecycleViewViewRowEntityArrayList.add(it.value)
                             }
                             adapter?.let {
-                                it.clear()
+                                /*it.clear()
                                 Log.e("", list.toString())
-                                it.addAllData(observationsRecycleViewViewRowEntityArrayList)
+                                it.addAllData(observationsRecycleViewViewRowEntityArrayList)*/
                             }
                         }
                     }

@@ -40,7 +40,7 @@
 
         <action
             android:id="@+id/navigateFromMapToProviderDetailsFragment"
-            app:destination="@id/providerDetailsFragment" />
+            app:destination="@id/sensorDetailsFragment" />
 
 
     </fragment>
@@ -77,20 +77,24 @@
 
         <action
             android:id="@+id/navigateToSensorDetailsFragment"
-            app:destination="@id/providerDetailsFragment"
+            app:destination="@id/sensorDetailsFragment"
             />
 
         <action
             android:id="@+id/sensorsListFragmentActionPopBack"
-            app:destination="@id/providersListFragment"
-            app:popUpTo="@+id/providersListFragment"/>
+            app:destination="@id/tenantFragment"
+            app:popUpTo="@+id/tenantFragment"/>
 
     </fragment>
 
     <fragment
-        android:id="@+id/providerDetailsFragment"
+        android:id="@+id/sensorDetailsFragment"
         android:name="net.faracloud.dashboard.features.sensorDetails.SensorDetailsFragment"
         android:label="ProviderDetailsFragment">
 
+        <action
+            android:id="@+id/sensorDetailsFragmentActionPopBack"
+            app:destination="@id/sensorsListFragment"
+            app:popUpTo="@+id/sensorsListFragment"/>
     </fragment>
 </navigation>

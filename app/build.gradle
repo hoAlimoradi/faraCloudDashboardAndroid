@@ -147,7 +147,7 @@ dependencies {
     testImplementation testingDependencies.mockk
     androidTestImplementation testingDependencies.mockkAndroid
 
-    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:3.1.0'
 
     //Neshan sdk library
     implementation 'neshan-android-sdk:mobile-sdk:1.0.1'

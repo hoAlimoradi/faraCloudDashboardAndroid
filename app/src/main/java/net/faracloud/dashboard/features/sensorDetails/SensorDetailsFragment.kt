@@ -47,7 +47,7 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
         super.onViewCreated(view, savedInstanceState)
 
         backButton.setOnClickListener {
-            findNavController().navigate(R.id.tenantFragmentActionPopBack)
+            findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
         }
 
         //.supportFragmentManager

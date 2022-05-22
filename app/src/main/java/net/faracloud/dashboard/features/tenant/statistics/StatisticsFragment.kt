@@ -70,7 +70,7 @@ class StatisticsFragment : BuilderFragment<TenantState, TenantViewModel>()  {
     private fun observeStatisticsStateFlow() {
         // getStatisticsFromApi(name: String)
 
-        viewModel.getProviders().observe(viewLifecycleOwner) {
+      /*  viewModel.getProviders().observe(viewLifecycleOwner) {
             it?.let { data ->
                 data.let { list ->
                     list.first().run {
@@ -78,7 +78,7 @@ class StatisticsFragment : BuilderFragment<TenantState, TenantViewModel>()  {
                     }
                 }
             }
-        }
+        }*/
 
         viewModel.viewModelScope.launch {
              viewModel.getStatisticsFromApi("mobile-app")
@@ -98,8 +98,6 @@ class StatisticsFragment : BuilderFragment<TenantState, TenantViewModel>()  {
                             it.addAllData(arrayList)
                         }
                     }
-
-
                 }
             }
         }

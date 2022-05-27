@@ -21,7 +21,8 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
-import net.faracloud.dashboard.features.tenant.providersList.ProviderRecycleViewViewRowEntity
+import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
+import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
 
 @AndroidEntryPoint
 class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewModel>(),
@@ -29,6 +30,9 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
     private var adapter: SensorAdapter? = null
     private val viewModel: SensorsListViewModel by viewModels()
+    val providerId = "mobile-app@p102"
+
+    val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
 
     override val baseViewModel: BuilderViewModel<SensorsListState>
         get() = viewModel
@@ -70,11 +74,33 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     }
     override fun onResume() {
         super.onResume()
-        viewModel.getSensors()
+        //viewModel.getSensors()
     }
 
     private fun observeSensorsStateFlow() {
         viewModel.viewModelScope.launch {
+            viewModel.getSensors(authorizationToken)
+        }
+        viewModel.viewModelScope.launch {
+            viewModel.sensorRecycleViewViewRowEntityListMutableLiveData.observe(viewLifecycleOwner) {
+                it?.let { data ->
+                    data.let { list ->
+                        val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                        list.forEach {
+                            Log.e(" it.title ", it.title)
+                            arrayList.add(it)
+                        }
+                        adapter?.let {
+                            it.clear()
+                            Log.e("", list.toString())
+                            it.addAllData(arrayList)
+                        }
+                    }
+                }
+            }
+        }
+
+        /*viewModel.viewModelScope.launch {
             viewModel.sensorRecycleViewViewRowEntityListMutableLiveData
                 .catch { e ->
 
@@ -96,7 +122,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
                         }
                     }
                 }
-        }
+        }*/
     }
     private fun onDataReady(data: List<ProviderRecycleViewViewRowEntity>){
         data?.let { list ->
@@ -123,18 +149,27 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     override fun onStateChange(state: SensorsListState) {
         when (state) {
             SensorsListState.IDLE -> {
-                loge("IDLE")
+                sensorsRecycleView.visibility = View.VISIBLE
+                sensorLoading.visibility = View.GONE
+                sensorRecycleEmptyView.visibility = View.GONE
             }
             SensorsListState.LOADING -> {
-                loge("LOADING")
+                sensorsRecycleView.visibility = View.GONE
+                sensorLoading.visibility = View.VISIBLE
+                sensorRecycleEmptyView.visibility = View.GONE
 
             }
             SensorsListState.RETRY -> {
-                loge("RETRY")
+                sensorsRecycleView.visibility = View.GONE
+                sensorLoading.visibility = View.GONE
+                sensorRecycleEmptyView.visibility = View.VISIBLE
             }
 
             SensorsListState.START_SENSOR_DETAILS -> {
                 loge(" START_SENSOR_LIST")
+                sensorsRecycleView.visibility = View.VISIBLE
+                sensorLoading.visibility = View.GONE
+                sensorRecycleEmptyView.visibility = View.GONE
                 getFindViewController()?.navigate(R.id.navigateToSensorDetailsFragment)
             }
 

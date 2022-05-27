@@ -2,15 +2,15 @@ package net.faracloud.dashboard.core.api
 
 import net.faracloud.dashboard.core.api.apiresponse.ApiResponse
 import net.faracloud.dashboard.core.model.ObservationRemoteModel
+import net.faracloud.dashboard.core.model.RemoteModelProvider
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ProviderService {
 
-
     // //url = "https://iotapi.faracloud.ir/data/test@pp2/ps2?limit=10"
-    @GET("investment/portfolio")
+    @GET(" / ")
     suspend fun getObservations(
     ): ApiResponse<List<ObservationRemoteModel>>
 
@@ -23,10 +23,8 @@ interface ProviderService {
     ): Response<RemoteModelStats>
 
 
-
-    @FormUrlEncoded
-    @POST("auth/refresh_token/")
-    fun refreshToken(
-        @Field("token") token: String
-    ): Call<BaseModel<AccessTokenRemoteModel>>
+    @GET("catalog")
+    suspend fun getCatalog(
+        @Header("IDENTITY_KEY") providerId: String
+    ): Response<RemoteModelProvider>
 }

@@ -65,7 +65,36 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
-        tools:itemCount="5"
+        tools:itemCount="1"
         tools:listitem="@layout/row_sensor" />
+
+
+
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/sensorLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        >
+
+    </androidx.core.widget.ContentLoadingProgressBar>
+
+    <include
+        layout="@layout/empty_view"
+        android:id="@+id/sensorRecycleEmptyView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/sensorsRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </include>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

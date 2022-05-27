@@ -1,21 +1,35 @@
 package net.faracloud.dashboard.features.sensorsList
 
 
+import android.content.Context
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
+import net.faracloud.dashboard.core.api.NetworkUtil
+import net.faracloud.dashboard.core.api.RemoteModelStats
+import net.faracloud.dashboard.core.api.Resource
+import net.faracloud.dashboard.core.model.RemoteModelProvider
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
-import net.faracloud.dashboard.features.tenant.providersList.ProviderRecycleViewViewRowEntity
+import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
+import net.faracloud.dashboard.features.sensorsList.data.SensorRepository
+import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
+import net.faracloud.dashboard.features.statistics.StatisticsState
+import net.faracloud.dashboard.features.statistics.data.StatisticsRepository
 import javax.inject.Inject
 
 @HiltViewModel
 class SensorsListViewModel @Inject constructor(
-    var schedulers: SchedulersImpl
+    var schedulers: SchedulersImpl,
+    private val repository: SensorRepository,
+    @ApplicationContext private val context: Context
 ) : BuilderViewModel<SensorsListState>(SensorsListState.IDLE) {
 
-    val sensorRecycleViewViewRowEntityListMutableLiveData = MutableStateFlow<List<ProviderRecycleViewViewRowEntity>?>(null)
+    val sensorRecycleViewViewRowEntityListMutableLiveData = MutableLiveData<List<ProviderRecycleViewViewRowEntity>?>(null)
 
     fun navigateToSensorsOfProvider() {
         viewModelScope.launch {
@@ -24,13 +38,61 @@ class SensorsListViewModel @Inject constructor(
         }
     }
 
-    fun getSensors() {
+   /* fun getSensors() {
         viewModelScope.launch {
             sensorRecycleViewViewRowEntityListMutableLiveData.value = createMockProviders()
         }
 
+    }*/
+
+
+    suspend fun getSensors(providerId: String){
+        state.value = SensorsListState.LOADING
+        //statistics.postValue(Resource.Loading())
+        try{
+
+            if(NetworkUtil.hasInternetConnection(context)){
+                val response = repository.getSensorsFromApi(providerId = providerId)
+                if (response.isSuccessful) {
+                    response.body()?.let { resultResponse ->
+                        // TODO saveto database
+                        loge(resultResponse.toString())
+                        sensorRecycleViewViewRowEntityListMutableLiveData.value = mapperRemoteModelProviderToProviderRecycleViewViewRowEntityLsit(resultResponse)
+
+                    }
+                }
+                state.value = SensorsListState.IDLE
+                //statistics.postValue(handleBreakingNewsResponse(response))
+            }
+            else{
+                state.value = SensorsListState.RETRY
+                //statistics.postValue(Resource.Error("No Internet Connection"))
+            }
+        }
+        catch (ex : Exception){
+            loge(ex.message)
+            loge(ex.localizedMessage)
+            state.value = SensorsListState.RETRY
+            /*when(ex){
+                is IOException -> statistics.postValue(Resource.Error("Network Failure"))
+                else -> statistics.postValue(Resource.Error("Conversion Error"))
+            }*/
+        }
     }
-    private fun createMockProviders(): List<ProviderRecycleViewViewRowEntity> {
+
+    fun mapperRemoteModelProviderToProviderRecycleViewViewRowEntityLsit(remoteModelProvider: RemoteModelProvider) : List<ProviderRecycleViewViewRowEntity> {
+        var sensors: MutableList<ProviderRecycleViewViewRowEntity> = mutableListOf()
+        remoteModelProvider.sensors?.forEach {
+            sensors.add(ProviderRecycleViewViewRowEntity(title =  it.sensor!!,
+                  authorizationToken =  "",
+                  enable = false))
+
+        }
+
+        return sensors
+    }
+
+        private fun createMockProviders(): List<ProviderRecycleViewViewRowEntity> {
 
         var mockProviders: MutableList<ProviderRecycleViewViewRowEntity> = mutableListOf()
 
@@ -68,18 +130,5 @@ class SensorsListViewModel @Inject constructor(
 }
 
 /*
-import androidx.lifecycle.ViewModel
-import dagger.hilt.android.lifecycle.HiltViewModel
-import net.faracloud.dashboard.core.BuilderViewModel
-import net.faracloud.dashboard.core.scheduler.SchedulersImpl
-import net.faracloud.dashboard.features.splash.presentation.SplashState
-import javax.inject.Inject
-
-@HiltViewModel
-class SensorsListViewModel @Inject constructor(
-    var schedulers: SchedulersImpl
-) : BuilderViewModel<SensorsListState>(SensorsListState.IDLE) {
-
-}
 
  */

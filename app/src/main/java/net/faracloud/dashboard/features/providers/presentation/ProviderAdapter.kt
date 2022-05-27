@@ -1,28 +1,27 @@
-package net.faracloud.dashboard.features.sensorsList
+package net.faracloud.dashboard.features.providers.presentation
 
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import kotlinx.android.synthetic.main.row_sensor.view.*
+import kotlinx.android.synthetic.main.row_provider.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BaseAdapter
-import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 
-class SensorAdapter(val callback: SensorItemClickCallback) : BaseAdapter<SensorAdapter.MarketViewHolder, ProviderRecycleViewViewRowEntity>() {
+class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<ProviderAdapter.MarketViewHolder, ProviderRecycleViewViewRowEntity>() {
 
     override fun onCreateHolder(parent: ViewGroup,viewType: Int): MarketViewHolder {
         val inflate = LayoutInflater.from(parent.context)
-        val view = inflate.inflate(R.layout.row_sensor,parent,false)
+        val view = inflate.inflate(R.layout.row_provider,parent,false)
         return MarketViewHolder(view)
     }
 
     override fun onBindHolder(holder: MarketViewHolder, model: ProviderRecycleViewViewRowEntity, position: Int) {
         val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
         with(holder.itemView) {
-            sensorCheckBox.text = model.title
-            sensorImageView.setOnClickListener {
+            providerCheckBox.text = model.title
+            providerImageView.setOnClickListener {
                 callback.onClicked(model)
             }
         }
@@ -32,7 +31,9 @@ class SensorAdapter(val callback: SensorItemClickCallback) : BaseAdapter<SensorA
 
     }
 
-    interface SensorItemClickCallback {
+    interface ProviderItemClickCallback {
         fun onClicked(item: ProviderRecycleViewViewRowEntity)
     }
 }
+
+

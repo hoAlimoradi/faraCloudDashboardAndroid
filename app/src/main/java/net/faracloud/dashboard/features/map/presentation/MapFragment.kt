@@ -71,7 +71,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             MapState.START_SETTING -> {
                 loge("FORCE_UPDATE")
                 getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToTenantFragment)
+                getFindViewController()?.navigate(R.id.navigateFromMapToProviderListFragment)
             }
 
         }

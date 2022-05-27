@@ -11,8 +11,9 @@ abstract class BuilderViewModel<S: BuilderViewState>(
     private val defaultState: S
 ) : ViewModel() {
 
-    @ExperimentalCoroutinesApi
-    val state = MutableStateFlow<S>(defaultState).apply { value = defaultState }
+    //@ExperimentalCoroutinesApi
+    //val state = MutableStateFlow<S>(defaultState).apply { value = defaultState }
+    val state = MutableLiveData<S>(defaultState).apply { value = defaultState }
 
     open fun onStateUpdated() = Unit
     override fun onCleared() {

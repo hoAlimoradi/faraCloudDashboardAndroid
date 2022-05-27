@@ -2,6 +2,7 @@ package net.faracloud.dashboard.core
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelProviders
@@ -36,12 +37,17 @@ abstract class BuilderFragment<S: BuilderViewState, VM : BuilderViewModel<S>> : 
     }
 
     private fun initObserveViewModelState() {
-        baseViewModel.viewModelScope.launch {
+       /* baseViewModel.viewModelScope.launch {
             baseViewModel.state.collect {
                 onStateChange(it)
                 baseViewModel.onStateUpdated()
-            }
-        }
+        }*/
+        baseViewModel.state.observe(this, Observer {
+            onStateChange(it)
+            baseViewModel.onStateUpdated()
+        })
+
+
     }
     abstract fun onStateChange(state: S)
 

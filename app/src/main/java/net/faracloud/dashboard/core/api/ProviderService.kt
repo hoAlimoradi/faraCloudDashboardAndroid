@@ -2,17 +2,14 @@ package net.faracloud.dashboard.core.api
 
 import net.faracloud.dashboard.core.api.apiresponse.ApiResponse
 import net.faracloud.dashboard.core.model.ObservationRemoteModel
+import net.faracloud.dashboard.core.model.ObservationRemoteModels
 import net.faracloud.dashboard.core.model.RemoteModelProvider
+import net.faracloud.dashboard.core.model.RemoteModelProviders
 import retrofit2.Call
 import retrofit2.Response
 import retrofit2.http.*
 
 interface ProviderService {
-
-    // //url = "https://iotapi.faracloud.ir/data/test@pp2/ps2?limit=10"
-    @GET(" / ")
-    suspend fun getObservations(
-    ): ApiResponse<List<ObservationRemoteModel>>
 
 /*   @Header("IDENTITY_KEY") providerId: String,  providerId: String,
     sensorId: String*/
@@ -23,8 +20,9 @@ interface ProviderService {
     ): Response<RemoteModelStats>
 
 
-    @GET("catalog")
+    @GET("catalog/{providerId}")
     suspend fun getCatalog(
-        @Header("IDENTITY_KEY") providerId: String
-    ): Response<RemoteModelProvider>
+        @Path("providerId") providerId: String,
+        @Header("IDENTITY_KEY") token: String
+    ): Response<RemoteModelProviders>
 }

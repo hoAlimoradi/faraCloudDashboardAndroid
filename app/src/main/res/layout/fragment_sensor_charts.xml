@@ -20,4 +20,31 @@
         tools:itemCount="10"
         tools:listitem="@layout/row_circular_progress" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/chartsLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </androidx.core.widget.ContentLoadingProgressBar>
+
+    <include
+        android:id="@+id/chartsRecycleEmptyView"
+        layout="@layout/empty_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+    </include>
 </androidx.constraintlayout.widget.ConstraintLayout>

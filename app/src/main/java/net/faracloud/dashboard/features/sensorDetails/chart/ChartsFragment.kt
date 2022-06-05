@@ -18,11 +18,13 @@ import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 import androidx.navigation.fragment.findNavController
 import kotlinx.android.synthetic.main.fragment_sensor_charts.*
+import kotlinx.android.synthetic.main.fragment_sensor_observations.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsState
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsViewModel
 import net.faracloud.dashboard.features.sensorDetails.observation.ObservationAdapter
@@ -51,7 +53,7 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeObservationsStateFlow()
+        observeObservations()
 
         val manager = LinearLayoutManager(context)
 
@@ -65,38 +67,41 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
 
     override fun onResume() {
         super.onResume()
-        viewModel.getObservations()
+        //viewModel.getObservations()
     }
 
-    private fun observeObservationsStateFlow() {
-        viewModel.viewModelScope.launch {
-            viewModel.observationRecycleViewRowEntityListMutableLiveData
-                .catch { e ->
 
-                }
-                .flowOn(Dispatchers.Default)
-                .collect {
-                    it?.let { data ->
-                        data?.let { list ->
-                             val observationsRecycleViewViewRowEntityArrayList  = ArrayList<String>()
-                            list.forEach {
-                                observationsRecycleViewViewRowEntityArrayList.add(it.value)
-                            }
-                            adapter?.let {
-                                /*it.clear()
-                                Log.e("", list.toString())
-                                it.addAllData(observationsRecycleViewViewRowEntityArrayList)*/
-                            }
-                        }
+    private fun observeObservations() {
+        viewModel.getObservationsFromDataBase().observe(viewLifecycleOwner) {
+            it?.let { data ->
+                data?.let { list ->
+                    val observationsRecycleViewViewRowEntityArrayList  = ArrayList<Long>()
+                    list.forEach {
+                        observationsRecycleViewViewRowEntityArrayList.add(it.value)
+                    }
+                    adapter?.let {
                     }
                 }
+            }
         }
     }
-
     override fun onStateChange(state: SensorDetailsState) {
         when (state) {
             SensorDetailsState.IDLE -> {
-                loge("IDLE")
+                chartsRecycleView.visibility = View.VISIBLE
+                chartsLoading.visibility = View.GONE
+                chartsRecycleEmptyView.visibility = View.GONE
+            }
+            SensorDetailsState.LOADING -> {
+                chartsRecycleView.visibility = View.GONE
+                chartsLoading.visibility = View.VISIBLE
+                chartsRecycleEmptyView.visibility = View.GONE
+
+            }
+            SensorDetailsState.RETRY -> {
+                chartsRecycleView.visibility = View.GONE
+                chartsLoading.visibility = View.GONE
+                chartsRecycleEmptyView.visibility = View.VISIBLE
             }
         }
     }

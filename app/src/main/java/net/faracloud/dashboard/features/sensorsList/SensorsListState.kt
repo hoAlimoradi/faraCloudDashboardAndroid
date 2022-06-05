@@ -8,3 +8,4 @@ enum class SensorsListState: BuilderViewState {
     RETRY,
     START_SENSOR_DETAILS
 }
+

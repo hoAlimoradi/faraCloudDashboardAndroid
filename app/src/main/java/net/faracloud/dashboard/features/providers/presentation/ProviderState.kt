@@ -6,5 +6,5 @@ enum class ProviderState: BuilderViewState {
     IDLE,
     LOADING,
     RETRY,
-    START_SENSOR_LIST
+    START_COMPONENT_LIST
 }

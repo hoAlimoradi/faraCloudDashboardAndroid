@@ -1,4 +1,5 @@
 package net.faracloud.dashboard.features.sensorsList
+
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
@@ -60,7 +61,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
             findNavController().navigate(R.id.sensorsListFragmentActionPopBack)
         }
 
-        observeSensorsStateFlow()
+        getSensorsFromDataBase()
 
         val manager = LinearLayoutManager(context)
 
@@ -77,72 +78,34 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
         //viewModel.getSensors()
     }
 
-    private fun observeSensorsStateFlow() {
-        viewModel.viewModelScope.launch {
-            viewModel.getSensors(authorizationToken)
-        }
-        viewModel.viewModelScope.launch {
-            viewModel.sensorRecycleViewViewRowEntityListMutableLiveData.observe(viewLifecycleOwner) {
-                it?.let { data ->
-                    data.let { list ->
-                        val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                        list.forEach {
-                            Log.e(" it.title ", it.title)
-                            arrayList.add(it)
-                        }
-                        adapter?.let {
-                            it.clear()
-                            Log.e("", list.toString())
-                            it.addAllData(arrayList)
-                        }
+
+    private fun getSensorsFromDataBase() {
+        viewModel.getSensorsFromDataBase().observe(viewLifecycleOwner) {
+            it?.let { data ->
+                data.let { list ->
+                    val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+
+                    it.forEach{ sensorEntity ->
+                        arrayList.add(
+                            ProviderRecycleViewViewRowEntity(
+                                title = sensorEntity.sensor!!,
+                                authorizationToken = "",
+                                enable = sensorEntity.enable
+                            )
+                        )
+                    }
+                    adapter?.let {
+                        it.clear()
+                        Log.e("", list.toString())
+                        it.addAllData(arrayList)
                     }
                 }
             }
         }
-
-        /*viewModel.viewModelScope.launch {
-            viewModel.sensorRecycleViewViewRowEntityListMutableLiveData
-                .catch { e ->
-
-                }
-                .flowOn(Dispatchers.Default)
-                .collect {
-                    it?.let { data ->
-                        data?.let { list ->
-                            val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                            list.forEach {
-                                Log.e(" it.title ", it.title)
-                                providerRecycleViewViewRowEntityArrayList.add(it)
-                            }
-                            adapter?.let {
-                                it.clear()
-                                Log.e("", list.toString())
-                                it.addAllData(providerRecycleViewViewRowEntityArrayList)
-                            }
-                        }
-                    }
-                }
-        }*/
-    }
-    private fun onDataReady(data: List<ProviderRecycleViewViewRowEntity>){
-        data?.let { list ->
-            val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-            list.forEach {
-                Log.e(" it.title ", it.title)
-                providerRecycleViewViewRowEntityArrayList.add(it)
-            }
-            adapter?.let {
-                it.clear()
-                Log.e("", list.toString())
-                it.addAllData(providerRecycleViewViewRowEntityArrayList)
-            }
-        }
     }
 
 
-    private fun setVersionText(text: String) {
-        //versionCodeTextView.text = text
-    }
+
 
 
 
@@ -181,39 +144,3 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
         viewModel.navigateToSensorsOfProvider()
     }
 }
-
-/*
-import androidx.lifecycle.ViewModelProvider
-import android.os.Bundle
-import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import dagger.hilt.android.AndroidEntryPoint
-import net.faracloud.dashboard.R
-
-@AndroidEntryPoint
-class SensorsListFragment : Fragment() {
-
-    companion object {
-        fun newInstance() = SensorsListFragment()
-    }
-
-    private lateinit var viewModel: SensorsListViewModel
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_sensors_list, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(SensorsListViewModel::class.java)
-
-    }
-
-}
-
- */

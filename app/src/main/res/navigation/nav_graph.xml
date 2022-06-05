@@ -21,7 +21,7 @@
 
     <fragment
         android:id="@+id/loginFragment"
-        android:name="net.faracloud.dashboard.features.auth.LoginFragment"
+        android:name="net.faracloud.dashboard.features.componentList.ComponentFragment"
         android:label="LoginFragment">
         <action
             android:id="@+id/navigateToMapFragment"
@@ -36,6 +36,12 @@
         <action
             android:id="@+id/navigateFromMapToProviderListFragment"
             app:destination="@id/providersListFragment" />
+
+
+        <action
+            android:id="@+id/navigateFromMapToSensorListFragment"
+            app:destination="@id/sensorsListFragment"
+            />
 
 
         <action
@@ -57,8 +63,8 @@
             app:popUpTo="@+id/mapFragment"/>
 
         <action
-            android:id="@+id/navigateToSensorsListFragment"
-            app:destination="@id/sensorsListFragment"
+            android:id="@+id/navigateToComponentFragment"
+            app:destination="@id/componentFragment"
             />
 
         <action
@@ -74,6 +80,23 @@
 
         <action
             android:id="@+id/statisticsFragmentActionPopBack"
+            app:destination="@id/providersListFragment"
+            />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/componentFragment"
+        android:name="net.faracloud.dashboard.features.componentList.ComponentFragment"
+        android:label="ComponentFragment">
+
+        <action
+            android:id="@+id/navigateToSensorListFragment"
+            app:destination="@id/sensorsListFragment"
+            />
+
+        <action
+            android:id="@+id/componentFragmentActionPopBack"
             app:destination="@id/providersListFragment"
             />
 

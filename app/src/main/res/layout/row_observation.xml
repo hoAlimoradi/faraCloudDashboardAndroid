@@ -29,16 +29,16 @@
 
         <TextView
             android:id="@+id/valueTitleCounter"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="34"
+            android:gravity="right"
 
             android:paddingEnd="8dp"
-            android:gravity="right"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"  />
+            app:layout_constraintStart_toEndOf="@+id/valueTitle"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/timestampTitle"
@@ -53,14 +53,14 @@
 
         <TextView
             android:id="@+id/timestampTitleCounter"
-            android:layout_width="100dp"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="34"
-            android:paddingEnd="8dp"
             android:gravity="right"
+            android:paddingEnd="8dp"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/timestampTitle"
             app:layout_constraintTop_toBottomOf="@+id/valueTitle" />
 
         <TextView
@@ -81,7 +81,6 @@
             android:layout_marginTop="8dp"
             android:gravity="right"
             android:paddingEnd="8dp"
-            android:text="34"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/latitudeTitle"
@@ -105,7 +104,6 @@
             android:layout_marginTop="8dp"
             android:gravity="right"
             android:paddingEnd="8dp"
-            android:text="34"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/longitudeTitle"
@@ -130,7 +128,6 @@
             android:layout_marginTop="8dp"
             android:gravity="right"
             android:paddingEnd="8dp"
-            android:text="34"
             android:textSize="16dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/timeTitle"

@@ -29,4 +29,6 @@ class MapViewModel @Inject constructor(
             state.value = MapState.START_DETAIL
         }
     }
+
+    fun getComponentsFromDataBase() = repository.getAllComponents()
 }

@@ -41,7 +41,7 @@ class ProviderViewModel @Inject constructor(
     fun navigateToSensorsOfProvider() {
         viewModelScope.launch {
             //delay(1000)
-            state.value = ProviderState.START_SENSOR_LIST
+            state.value = ProviderState.START_COMPONENT_LIST
         }
     }
     fun getProviders() = repository.getAllProviders()

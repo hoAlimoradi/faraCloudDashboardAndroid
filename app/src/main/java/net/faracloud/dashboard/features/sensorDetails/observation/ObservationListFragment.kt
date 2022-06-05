@@ -18,6 +18,7 @@ import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 import androidx.navigation.fragment.findNavController
+import kotlinx.android.synthetic.main.fragment_component.*
 import kotlinx.android.synthetic.main.fragment_sensor_observations.*
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import kotlinx.coroutines.Dispatchers
@@ -25,11 +26,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.componentList.ComponentState
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsState
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsViewModel
 
 //@AndroidEntryPoint
-class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewModel>()  {
+class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewModel>() {
 
     private var adapter: ObservationAdapter? = null
 
@@ -51,7 +53,7 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeObservationsStateFlow()
+        observeObservations()
 
         val manager = LinearLayoutManager(context)
 
@@ -60,13 +62,24 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
             observationsRecycleView.adapter = it
             observationsRecycleView.layoutManager = manager
         }
-    }
-    override fun onResume() {
-        super.onResume()
-        viewModel.getObservations()
+        viewModel.viewModelScope.launch {
+            viewModel.getObservationsFromApi(
+                providerId = "",
+                sensor = "s101",
+                categoryNumber = 10,
+                startDate = null,
+                endDate = null
+            )
+        }
+
     }
 
-    private fun observeObservationsStateFlow() {
+    override fun onResume() {
+        super.onResume()
+
+    }
+
+    private fun observeObservations() {
         viewModel.viewModelScope.launch {
             viewModel.observationRecycleViewRowEntityListMutableLiveData
                 .catch { e ->
@@ -76,7 +89,8 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
                 .collect {
                     it?.let { data ->
                         data?.let { list ->
-                            val observationsRecycleViewViewRowEntityArrayList  = ArrayList<ObservationRecycleViewRowEntity>()
+                            val observationsRecycleViewViewRowEntityArrayList =
+                                ArrayList<ObservationRecycleViewRowEntity>()
                             list.forEach {
                                 observationsRecycleViewViewRowEntityArrayList.add(it)
                             }
@@ -93,8 +107,22 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
 
     override fun onStateChange(state: SensorDetailsState) {
         when (state) {
+
             SensorDetailsState.IDLE -> {
-                loge("IDLE")
+                observationsRecycleView.visibility = View.VISIBLE
+                observationsLoading.visibility = View.GONE
+                observationsRecycleEmptyView.visibility = View.GONE
+            }
+            SensorDetailsState.LOADING -> {
+                observationsRecycleView.visibility = View.GONE
+                observationsLoading.visibility = View.VISIBLE
+                observationsRecycleEmptyView.visibility = View.GONE
+
+            }
+            SensorDetailsState.RETRY -> {
+                observationsRecycleView.visibility = View.GONE
+                observationsLoading.visibility = View.GONE
+                observationsRecycleEmptyView.visibility = View.VISIBLE
             }
         }
     }

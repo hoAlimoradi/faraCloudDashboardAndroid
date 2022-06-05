@@ -13,6 +13,7 @@ import net.faracloud.dashboard.core.api.NetworkUtil
 import net.faracloud.dashboard.core.api.RemoteModelStats
 import net.faracloud.dashboard.core.api.Resource
 import net.faracloud.dashboard.core.model.RemoteModelProvider
+import net.faracloud.dashboard.core.model.RemoteModelProviders
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
@@ -38,6 +39,7 @@ class SensorsListViewModel @Inject constructor(
         }
     }
 
+    fun getSensorsFromDataBase() = repository.getAllSensors()
    /* fun getSensors() {
         viewModelScope.launch {
             sensorRecycleViewViewRowEntityListMutableLiveData.value = createMockProviders()
@@ -47,12 +49,18 @@ class SensorsListViewModel @Inject constructor(
 
 
     suspend fun getSensors(providerId: String){
+        val providerId1 = "mobile-app@p101"
+        val authorizationToken1= "1036124625b0f33d8057b7092a27e2ba3f9925e57e7a412f6e62253f9e63b8df"
+        val providerId = "mobile-app@p102"
+        val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
+
         state.value = SensorsListState.LOADING
         //statistics.postValue(Resource.Loading())
         try{
 
             if(NetworkUtil.hasInternetConnection(context)){
-                val response = repository.getSensorsFromApi(providerId = providerId)
+                val response = repository.getSensorsFromApi(providerId = providerId,
+                token = authorizationToken)
                 if (response.isSuccessful) {
                     response.body()?.let { resultResponse ->
                         // TODO saveto database
@@ -80,13 +88,14 @@ class SensorsListViewModel @Inject constructor(
         }
     }
 
-    fun mapperRemoteModelProviderToProviderRecycleViewViewRowEntityLsit(remoteModelProvider: RemoteModelProvider) : List<ProviderRecycleViewViewRowEntity> {
+    fun mapperRemoteModelProviderToProviderRecycleViewViewRowEntityLsit(remoteModelProviders: RemoteModelProviders) : List<ProviderRecycleViewViewRowEntity> {
         var sensors: MutableList<ProviderRecycleViewViewRowEntity> = mutableListOf()
-        remoteModelProvider.sensors?.forEach {
-            sensors.add(ProviderRecycleViewViewRowEntity(title =  it.sensor!!,
-                  authorizationToken =  "",
-                  enable = false))
-
+        remoteModelProviders.providers.forEach { remoteModelProvider ->
+            remoteModelProvider.sensors?.forEach {
+                sensors.add(ProviderRecycleViewViewRowEntity(title =  it.sensor!!,
+                    authorizationToken =  "",
+                    enable = false))
+            }
         }
 
         return sensors

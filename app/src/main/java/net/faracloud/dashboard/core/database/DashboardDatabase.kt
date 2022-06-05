@@ -13,7 +13,7 @@ import javax.inject.Provider
     ProviderEntity::class,
     SensorEntity::class,
     SensorObservationEntity::class],
-    version = 6)
+    version = 7)
 abstract class DashboardDatabase : RoomDatabase() {
 
     abstract fun componentDao(): ComponentDao

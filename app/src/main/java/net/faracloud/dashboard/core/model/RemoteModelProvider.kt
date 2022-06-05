@@ -7,3 +7,10 @@ data class RemoteModelProvider(
     @SerializedName("permission") var permission: String? = null,
     @SerializedName("sensors") var sensors: List<RemoteModelSensor>? = null)
 
+data class RemoteModelProviders (
+    @SerializedName("providers") var providers : List<RemoteModelProvider>
+)
+
+data class ObservationRemoteModels (
+    @SerializedName("observations") var observations : List<ObservationRemoteModel>
+)

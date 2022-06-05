@@ -19,9 +19,9 @@ public class SensorDetailsViewPagerAdapter(fragmentManager: FragmentManager, lif
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return ChartsFragment()
+            0 -> return ObservationListFragment()
             1 -> return InformationsFragment()
-            2 -> return ObservationListFragment()
+            2 -> return ChartsFragment()
         }
         return Fragment()
     }

@@ -1,14 +1,15 @@
 package net.faracloud.dashboard.features.map.domain
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
+import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.features.map.data.ComponentRepoModel
 import net.faracloud.dashboard.features.map.data.ObservationRepoModel
 
 interface MapRepository {
 
-    suspend fun getComponentsByProviderIdFromDateBase(): Flow<List<ComponentRepoModel>?>
-
+    fun getAllComponents(): LiveData<List<ComponentEntity>>
 /*    suspend fun getAllProviders(): Flow<List<ProviderEntity>>
 
     suspend fun insertProvider(provider: ProviderEntity)

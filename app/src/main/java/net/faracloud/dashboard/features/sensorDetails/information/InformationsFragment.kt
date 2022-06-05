@@ -59,7 +59,7 @@ class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsVi
     }
     override fun onResume() {
         super.onResume()
-        viewModel.getObservations()
+       // viewModel.getObservations()
     }
 
     private fun observeObservationsStateFlow() {

@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import net.faracloud.dashboard.core.api.ObservationService
 import net.faracloud.dashboard.core.api.ProviderService
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -19,7 +20,7 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-const val BaseUrl: String = "https://iot.faracloud.ir/"
+const val BaseUrl: String = "https://iotapi.faracloud.ir/"
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
@@ -33,9 +34,10 @@ object ApiModule {
     @Provides
     @Singleton
     fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient{
-        //  OkHttpClient.Builder()
-        return getOkHttpBuilder()
+        //  OkHttpClient.Builder() getOkHttpBuilder()
+        return OkHttpClient.Builder()
             .addInterceptor(logging)
+            //.addNetworkInterceptor(StethoInterceptor())
             .build()
     }
 
@@ -53,6 +55,12 @@ object ApiModule {
     @Singleton
     fun provideProviderService(retrofit: Retrofit): ProviderService {
         return retrofit.create(ProviderService::class.java)
+    }
+
+    @Provides
+    @Singleton
+    fun provideObservationService(retrofit: Retrofit): ObservationService {
+        return retrofit.create(ObservationService::class.java)
     }
 
     private fun getOkHttpBuilder(): OkHttpClient.Builder =

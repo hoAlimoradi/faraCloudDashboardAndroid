@@ -1,38 +1,35 @@
 package net.faracloud.dashboard.features.sensorDetails
 
 import android.os.Build
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_map.*
 import kotlinx.android.synthetic.main.fragment_sensor_details.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.sensorDetails.observation.ObservationFilterBottomSheet
+
 
 @AndroidEntryPoint
 class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsViewModel>() {
 
     val titlesArray = arrayOf(
-        "Chart",
+        "Observations",
         "Informations",
-        "Observations"
+        "Chart"
     )
     private val viewModel: SensorDetailsViewModel by viewModels()
 
     override val baseViewModel: BuilderViewModel<SensorDetailsState>
         get() = viewModel
-
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -50,6 +47,9 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
             findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
         }
 
+        filterImageButton.setOnClickListener {
+            showBottomSheetDialog()
+        }
         //.supportFragmentManager
         val adapter = SensorDetailsViewPagerAdapter(requireFragmentManager(), lifecycle)
         viewPagerSensorDetails.adapter = adapter
@@ -59,7 +59,14 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
         }.attach()
     }
 
+    // creating a variable for our button
+    private fun showBottomSheetDialog() {
+        this.activity?.let {
+            val fragment = ObservationFilterBottomSheet.newInstance()
+            fragment.show(it.supportFragmentManager, "ObservationFilterBottomSheet")
+        }
 
+    }
     private fun setVersionText(text: String) {
         //versionCodeTextView.text = text
     }

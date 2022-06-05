@@ -7,13 +7,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.RequiresApi
-import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_providers_list.*
-import kotlinx.android.synthetic.main.fragment_providers_list.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
@@ -52,7 +50,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             getFindViewController()?.navigate(R.id.navigateToStatisticsFragment )
         }
 
-        observeProvidersStateFlow()
+        observeProviders()
 
         val manager = LinearLayoutManager(context)
 
@@ -73,7 +71,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         viewModel.getProviders()
     }
 
-    private fun observeProvidersStateFlow() {
+    private fun observeProviders() {
         viewModel.getProviders().observe(viewLifecycleOwner) {
             it?.let { data ->
                 data?.let { list ->
@@ -97,34 +95,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 }
             }
         }
-
-
-        /*
-        viewModel.viewModelScope.launch {
-            viewModel.providerRecycleViewViewRowEntityListMutableLiveData
-                .catch { e ->
-
-                }
-                .flowOn(Dispatchers.Default)
-                .collect {
-                    it?.let { data ->
-                        data?.let { list ->
-                            val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                            list.forEach {
-                                Log.e(" it.title ", it.title)
-                                providerRecycleViewViewRowEntityArrayList.add(it)
-                            }
-                            adapter?.let {
-                                it.clear()
-                                Log.e("", list.toString())
-                                it.addAllData(providerRecycleViewViewRowEntityArrayList)
-                            }
-                        }
-                    }
-                }
-        }
-         */
-
     }
 
 
@@ -147,10 +117,10 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 loge("RETRY")
             }
 
-            ProviderState.START_SENSOR_LIST -> {
-                loge(" START_SENSOR_LIST")
+            ProviderState.START_COMPONENT_LIST -> {
+                loge(" START_COMPONENT_LIST")
                 //getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateToSensorsListFragment)
+                getFindViewController()?.navigate(R.id.navigateToComponentFragment)
             }
 
         }
@@ -194,6 +164,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 }
             }
         }*/
-        observeProvidersStateFlow()
+        observeProviders()
     }
 }

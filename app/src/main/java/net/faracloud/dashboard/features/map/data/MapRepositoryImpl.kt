@@ -1,10 +1,12 @@
 package net.faracloud.dashboard.features.map.data
 
+import androidx.lifecycle.LiveData
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import net.faracloud.dashboard.core.api.ProviderService
 import net.faracloud.dashboard.core.database.ComponentDao
+import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.ProviderDao
 import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.features.map.domain.MapRepository
@@ -18,11 +20,7 @@ class MapRepositoryImpl @Inject constructor(
     var authorizationToken = "1036124625b0f33d8057b7092a27e2ba3f9925e57e7a412f6e62253f9e63b8df"
 
 
-    override suspend fun getComponentsByProviderIdFromDateBase(): Flow<List<ComponentRepoModel>?>  = flow {
-
-        emit(null)
-
-    }
+    override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()
 
 /*    override suspend fun getAllProviders(): Flow<List<ProviderEntity>> = flow {
         providerDao.getProviders()

@@ -16,14 +16,12 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
-import net.faracloud.dashboard.features.providers.providersList.AddNewProviderListener
-import net.faracloud.dashboard.features.providers.providersList.AddProviderDialog
 
 @AndroidEntryPoint
 class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(),
     ProviderAdapter.ProviderItemClickCallback,
-    AddNewProviderListener {
-    private var addProviderDialog: AddProviderDialog? = null
+    DeleteProviderListener {
+    private var deleteProviderDialog: DeleteProviderDialog? = null
     private var adapter: ProviderAdapter? = null
     private val viewModel: ProviderViewModel by viewModels()
 
@@ -61,7 +59,9 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
 
         addProvider.setOnClickListener {
-            showAddProvider()
+            getFindViewController()?.navigate(R.id.navigateToAddProviderFragment )
+
+            //showAddProvider()
             Log.e("","ttttttttttttttttttttttttttt")
         }
 
@@ -72,9 +72,15 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
     }
 
     private fun observeProviders() {
+        viewModel.state.value = ProviderState.LOADING
         viewModel.getProviders().observe(viewLifecycleOwner) {
             it?.let { data ->
-                data?.let { list ->
+                data.let { list ->
+                    if (list.isEmpty()) {
+                        viewModel.state.value = ProviderState.EMPTY
+                    }else {
+                        viewModel.state.value = ProviderState.IDLE
+                    }
                     val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
                     list.forEach {
                         Log.e(" it.title ", it.providerId)
@@ -97,26 +103,30 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
     }
 
-
-    private fun setVersionText(text: String) {
-        //versionCodeTextView.text = text
-    }
-
-
-
     override fun onStateChange(state: ProviderState) {
         when (state) {
             ProviderState.IDLE -> {
-                loge("IDLE")
+                providerRecycleView.visibility = View.VISIBLE
+                providerRecycleEmptyView.visibility = View.GONE
+                providerLoading.visibility = View.GONE
+
             }
             ProviderState.LOADING -> {
                 loge("LOADING")
-
+                providerRecycleView.visibility = View.GONE
+                providerRecycleEmptyView.visibility = View.GONE
+                providerLoading.visibility = View.VISIBLE
             }
-            ProviderState.RETRY -> {
-                loge("RETRY")
+            ProviderState.EMPTY -> {
+                loge("LOADING")
+                providerRecycleView.visibility = View.GONE
+                providerRecycleEmptyView.visibility = View.VISIBLE
+                providerLoading.visibility = View.GONE
             }
-
+            ProviderState.EDIT_COMPONENT -> {
+                loge("EDIT_COMPONENT")
+                getFindViewController()?.navigate(R.id.navigateToEditProviderFragment)
+            }
             ProviderState.START_COMPONENT_LIST -> {
                 loge(" START_COMPONENT_LIST")
                 //getFindViewController()?.navigateUp()
@@ -126,44 +136,50 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
     }
 
-    override fun onClicked(item: ProviderRecycleViewViewRowEntity) {
+    override fun onClicked(item: ProviderRecycleViewViewRowEntity, type: ProviderAdapter.ProviderItemClickCallbackType) {
         loge("item " + item.title)
-        viewModel.navigateToSensorsOfProvider()
+        //viewModel.navigateToSensorsOfProvider()
+        when(type) {
 
+            ProviderAdapter.ProviderItemClickCallbackType.MORE -> {
+                viewModel.navigateToSensorsOfProvider()
+            }
+
+            ProviderAdapter.ProviderItemClickCallbackType.EDIT -> {
+                viewModel.navigateToEditProvider()
+            }
+
+            ProviderAdapter.ProviderItemClickCallbackType.DELETE -> {
+                showDeleteProviderConfirmDialog()
+                //todo delete
+            }
+        }
+        /*this.activity?.let {
+            val fragment = ProviderItemBottomSheet.newInstance()
+            fragment.show(it.supportFragmentManager, "ProviderItemBottomSheet")
+        }*/
     }
 
-    fun showAddProvider() {
-        if (addProviderDialog == null)
-            addProviderDialog = AddProviderDialog()
-        addProviderDialog?.apply {
+    fun showDeleteProviderConfirmDialog() {
+        if (deleteProviderDialog == null)
+            deleteProviderDialog = DeleteProviderDialog()
+        deleteProviderDialog?.apply {
             if (!isShowing()) {
                 //setMessage(error)
-                setAddNewProviderListener(this@ProvidersListFragment)
+                setDeleteProviderListener(this@ProvidersListFragment)
                 show(this@ProvidersListFragment.requireFragmentManager(), "errorTag")
             }
             onDismiss = {
                 if (!isShowing())
-                    addProviderDialog = null
+                    deleteProviderDialog = null
             }
         }
     }
 
-    override fun onSave(name: String, token: String) {
+    override fun onDelete(name: String, token: String) {
         loge("name " + name)
         loge("token " + token)
-        viewModel.insertProvider(name, token)
-        /*viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.savedProviderEvent.collect { event ->
-                when (event) {
-                    is SavedNewsViewModel.SavedArticleEvent.ShowUndoDeleteArticleMessage -> {
-                        Snackbar.make(requireView(), "Article Deleted!", Snackbar.LENGTH_LONG)
-                            .setAction("UNDO"){
-                                viewModel.onUndoDeleteClick(event.article)
-                            }.show()
-                    }
-                }
-            }
-        }*/
+        viewModel.deleteProvider(name, token)
         observeProviders()
     }
 }

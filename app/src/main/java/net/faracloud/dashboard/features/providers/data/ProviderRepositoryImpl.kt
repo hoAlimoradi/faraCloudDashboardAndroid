@@ -10,7 +10,8 @@ import javax.inject.Singleton
 @Singleton
 class ProviderRepositoryImpl @Inject constructor(
     private val providerService: ProviderService,
-    private val providerDao: ProviderDao): ProviderRepository {
+    private val providerDao: ProviderDao)
+    : ProviderRepository {
 
     override fun getAllProviders(): LiveData<List<ProviderEntity>> =  providerDao.getProviders()
 

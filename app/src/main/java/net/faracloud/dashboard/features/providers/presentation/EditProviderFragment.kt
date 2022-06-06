@@ -1,7 +1,9 @@
 package net.faracloud.dashboard.features.providers.presentation
 
+
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,8 +11,9 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_add_provider.*
+import kotlinx.android.synthetic.main.fragment_edit_provider.*
 import kotlinx.android.synthetic.main.fragment_providers_list.backButton
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
@@ -18,7 +21,7 @@ import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 
 @AndroidEntryPoint
-class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() {
+class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() {
 
     private val viewModel: ProviderViewModel by viewModels()
 
@@ -30,14 +33,14 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_add_provider, container, false)
+        return inflater.inflate(R.layout.fragment_edit_provider, container, false)
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         backButton.setOnClickListener {
-            findNavController().navigate(R.id.addProviderFragmentActionPopBack)
+            findNavController().navigate(R.id.editProviderFragmentActionPopBack )
         }
 
         saveConstraintLayout.setOnClickListener {
@@ -66,20 +69,6 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
         viewModel.getProviders()
     }
 
-    private fun observeProviders() {
-        viewModel.getProviders().observe(viewLifecycleOwner) {
-            it?.let { data ->
-                data?.let { list ->
-                    val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                    list.forEach {
-
-
-                    }
-
-                }
-            }
-        }
-    }
 
     override fun onStateChange(state: ProviderState) {
         when (state) {
@@ -89,6 +78,9 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
             ProviderState.LOADING -> {
                 loge("LOADING")
 
+            }
+            ProviderState.RETRY -> {
+                loge("RETRY")
             }
 
             ProviderState.START_COMPONENT_LIST -> {
@@ -102,4 +94,3 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
 
 
 }
-

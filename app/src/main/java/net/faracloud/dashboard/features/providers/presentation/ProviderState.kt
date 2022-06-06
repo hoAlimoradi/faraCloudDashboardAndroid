@@ -5,6 +5,8 @@ import net.faracloud.dashboard.core.BuilderViewState
 enum class ProviderState: BuilderViewState {
     IDLE,
     LOADING,
-    RETRY,
+    EMPTY,
+    EDIT_COMPONENT,
+
     START_COMPONENT_LIST
 }

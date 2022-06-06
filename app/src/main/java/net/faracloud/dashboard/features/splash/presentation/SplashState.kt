@@ -7,7 +7,7 @@ enum class SplashState: BuilderViewState {
     LOADING,
     RETRY,
     START_ON_BOARDING,
-    START_LOGIN,
+    START_ADD_PROVIDER,
     START_HOME,
     FORCE_UPDATE,
     NEW_VERSION_READY

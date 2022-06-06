@@ -67,6 +67,32 @@
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
         tools:itemCount="1"
         tools:listitem="@layout/row_provider" />
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/providerLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        >
+
+    </androidx.core.widget.ContentLoadingProgressBar>
+
+    <include
+        layout="@layout/empty_view"
+        android:id="@+id/providerRecycleEmptyView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </include>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/addProvider"

@@ -5,11 +5,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
+import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.providers.data.ProviderRepository
 import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
 import java.util.*
@@ -38,11 +40,28 @@ class ProviderViewModel @Inject constructor(
 
 
 */
-    fun navigateToSensorsOfProvider() {
+    fun deleteProvider() {
         viewModelScope.launch {
             //delay(1000)
             state.value = ProviderState.START_COMPONENT_LIST
         }
+    }
+
+    fun navigateToEditProvider() {
+        state.value = ProviderState.EDIT_COMPONENT
+        viewModelScope.launch {
+            //delay(1000)
+
+        }
+    }
+
+    fun navigateToSensorsOfProvider() {
+        loge("navigateToSensorsOfProvider in view model")
+        state.value = ProviderState.START_COMPONENT_LIST
+        /*viewModelScope.launch {
+            //delay(1000)
+            state.value = ProviderState.START_COMPONENT_LIST
+        }*/
     }
     fun getProviders() = repository.getAllProviders()
 
@@ -64,7 +83,20 @@ class ProviderViewModel @Inject constructor(
         }
     }
 
-    fun deleteProvider(provider: ProviderEntity) {}
+    // provider: ProviderEntity
+    fun deleteProvider(name: String, token: String) {
+        viewModelScope.launch {
+            repository.deleteProvider(
+                ProviderEntity(
+                    providerId = name,
+                    authorizationToken = token,
+                    enable = false,
+                    createDate = Date().toString(),
+                    lastUpdateDevice = Date().toString()
+                )
+            )
+        }
+    }
 
     fun deleteAllProviders() {
 

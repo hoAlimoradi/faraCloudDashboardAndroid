@@ -25,8 +25,9 @@ import net.faracloud.dashboard.features.sensorDetails.SensorDetailsViewModel
 import java.util.*
 
 @AndroidEntryPoint
-class ObservationFilterBottomSheet :
+class ObservationFilterBottomSheet:
     BuilderBottomSheetDialogFragment<SensorDetailsState, SensorDetailsViewModel>() {
+
 
     private val viewModel: SensorDetailsViewModel by activityViewModels()
 

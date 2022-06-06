@@ -21,8 +21,16 @@ class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<Pro
         val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
         with(holder.itemView) {
             providerCheckBox.text = model.title
-            providerImageView.setOnClickListener {
-                callback.onClicked(model)
+            moreTextView.setOnClickListener {
+                callback.onClicked(model, ProviderItemClickCallbackType.MORE)
+            }
+
+            deleteImageView.setOnClickListener {
+                callback.onClicked(model, ProviderItemClickCallbackType.DELETE)
+            }
+
+            editImageView.setOnClickListener {
+                callback.onClicked(model, ProviderItemClickCallbackType.EDIT)
             }
         }
     }
@@ -32,7 +40,13 @@ class ProviderAdapter(val callback: ProviderItemClickCallback) : BaseAdapter<Pro
     }
 
     interface ProviderItemClickCallback {
-        fun onClicked(item: ProviderRecycleViewViewRowEntity)
+        fun onClicked(item: ProviderRecycleViewViewRowEntity, type: ProviderItemClickCallbackType)
+    }
+
+    enum class ProviderItemClickCallbackType {
+        MORE,
+        EDIT,
+        DELETE
     }
 }
 

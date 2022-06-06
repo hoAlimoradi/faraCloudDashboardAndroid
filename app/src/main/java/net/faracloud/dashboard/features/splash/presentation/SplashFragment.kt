@@ -2,6 +2,7 @@ package net.faracloud.dashboard.features.splash.presentation
 
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +10,13 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 
 
 @AndroidEntryPoint
@@ -36,12 +39,29 @@ class SplashFragment : BuilderFragment<SplashState, SplashViewModel>() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.viewModelScope.launch {
+            viewModel.state.value = SplashState.LOADING
+            delay(2000)
+            checkForTheFirstTimeAppIsLaunched()
+        }
 
-        viewModel.checkForTheFirstTimeAppIsLaunched()
+
 
     }
 
-
+    private fun checkForTheFirstTimeAppIsLaunched() {
+        viewModel.getProviders().observe(viewLifecycleOwner) {
+            it?.let { data ->
+                data?.let { list ->
+                    if (list.isEmpty()) {
+                        viewModel.state.value = SplashState.START_ADD_PROVIDER
+                    } else {
+                        viewModel.state.value = SplashState.START_HOME
+                    }
+                }
+            }
+        }
+    }
 
     private fun setVersionCode() {
         viewModel.viewModelScope.launch {
@@ -90,10 +110,10 @@ class SplashFragment : BuilderFragment<SplashState, SplashViewModel>() {
                 /*getFindViewController()?.navigateUp()
                 getFindViewController()?.navigate(R.id.navigateFromSplashToOnBoardingFragment)*/
             }
-            SplashState.START_LOGIN -> {
+            SplashState.START_ADD_PROVIDER -> {
                 loge("START_LOGIN")
                 getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromSplashFragmentToLoginFragment)
+                getFindViewController()?.navigate(R.id.navigateFromSplashToProviderListFragment)
             }
             SplashState.START_HOME -> {
                 loge("START_MAIN_ACTIVITY")

@@ -1,4 +1,4 @@
-package net.faracloud.dashboard.features.providers.providersList
+package net.faracloud.dashboard.features.providers.presentation
 
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
@@ -12,10 +12,10 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.extentions.setWidthPercent
 
 const val TAG = "errorDialog"
-class AddProviderDialog : DialogFragment() {
+class DeleteProviderDialog : DialogFragment() {
 
     private lateinit var rootView: View
-    private lateinit var listener: AddNewProviderListener
+    private lateinit var listener: DeleteProviderListener
 
     var onDismiss: () -> Unit = {}
 
@@ -39,9 +39,9 @@ class AddProviderDialog : DialogFragment() {
     ): View? {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         rootView = inflater.inflate(R.layout.dialog_add_provider, container, false)
-        rootView.submitNewProvider.setOnClickListener {
-            listener.onSave(name = rootView.name.text.toString() ,
-            token = rootView.token.text.toString())
+        rootView.okConstraintLayout.setOnClickListener {
+            listener.onDelete(name = "" ,
+            token = "")
             dismiss()
         }
         return rootView
@@ -59,12 +59,12 @@ class AddProviderDialog : DialogFragment() {
             tryAgainTextView.text = tryAgainMessageDefualtValue*/
     }
 
-    fun setMessage(error: ErrorDialogModel): AddProviderDialog {
+    fun setMessage(error: ErrorDialogModel): DeleteProviderDialog {
 
         return this
     }
 
-    fun setAddNewProviderListener(listener: AddNewProviderListener): AddProviderDialog {
+    fun setDeleteProviderListener(listener: DeleteProviderListener): DeleteProviderDialog {
         this.listener =  listener
         return this
     }
@@ -89,6 +89,6 @@ data class ErrorDialogModel (
     val tryAgain: String?
 )
 
-interface AddNewProviderListener {
-    fun onSave(name: String, token: String)
+interface DeleteProviderListener {
+    fun onDelete(name: String, token: String)
 }

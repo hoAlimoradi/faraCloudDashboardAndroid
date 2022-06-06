@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/navGraph"
-    app:startDestination="@id/sensorDetailsFragment">
+    app:startDestination="@id/mapFragment">
 
 
     <fragment
@@ -15,18 +15,11 @@
             app:destination="@id/mapFragment" />
 
         <action
-            android:id="@+id/navigateFromSplashFragmentToLoginFragment"
-            app:destination="@id/loginFragment" />
+            android:id="@+id/navigateFromSplashToProviderListFragment"
+            app:destination="@id/providersListFragment" />
     </fragment>
 
-    <fragment
-        android:id="@+id/loginFragment"
-        android:name="net.faracloud.dashboard.features.componentList.ComponentFragment"
-        android:label="LoginFragment">
-        <action
-            android:id="@+id/navigateToMapFragment"
-            app:destination="@id/mapFragment" />
-    </fragment>
+
 
     <fragment
         android:id="@+id/mapFragment"
@@ -70,6 +63,37 @@
         <action
             android:id="@+id/navigateToStatisticsFragment"
             app:destination="@id/statisticsFragment"
+            />
+        <action
+            android:id="@+id/navigateToAddProviderFragment"
+            app:destination="@id/addProviderFragment"
+            />
+
+        <action
+            android:id="@+id/navigateToEditProviderFragment"
+            app:destination="@id/editProviderFragment"
+            />
+    </fragment>
+
+    <fragment
+        android:id="@+id/addProviderFragment"
+        android:name="net.faracloud.dashboard.features.providers.presentation.AddProviderFragment"
+        android:label="AddProviderFragment"
+        >
+        <action
+            android:id="@+id/addProviderFragmentActionPopBack"
+            app:destination="@id/providersListFragment"
+             />
+    </fragment>
+
+    <fragment
+        android:id="@+id/editProviderFragment"
+        android:name="net.faracloud.dashboard.features.providers.presentation.EditProviderFragment"
+        android:label="EditProviderFragment"
+        >
+        <action
+            android:id="@+id/editProviderFragmentActionPopBack"
+            app:destination="@id/providersListFragment"
             />
     </fragment>
 

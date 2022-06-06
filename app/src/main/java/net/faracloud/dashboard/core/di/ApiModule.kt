@@ -35,7 +35,7 @@ object ApiModule {
     @Singleton
     fun provideOkHttpClient(logging: HttpLoggingInterceptor): OkHttpClient{
         //  OkHttpClient.Builder() getOkHttpBuilder()
-        return OkHttpClient.Builder()
+        return getOkHttpBuilder()
             .addInterceptor(logging)
             //.addNetworkInterceptor(StethoInterceptor())
             .build()

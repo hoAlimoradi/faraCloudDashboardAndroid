@@ -1,7 +1,7 @@
 package net.faracloud.dashboard.features.sensorDetails.di
 
-import net.faracloud.dashboard.features.sensorDetails.data.ObservationRepository
-import net.faracloud.dashboard.features.sensorDetails.data.ObservationRepositoryImpl
+import net.faracloud.dashboard.features.sensorDetails.data.SensorDetailsRepository
+import net.faracloud.dashboard.features.sensorDetails.data.SensorDetailsRepositoryImpl
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +14,5 @@ abstract class ObservationModule {
      * Bind  ObservationRepository
      */
     @Binds
-    abstract fun registerRepo(repository: ObservationRepositoryImpl): ObservationRepository
+    abstract fun registerRepo(repository: SensorDetailsRepositoryImpl): SensorDetailsRepository
 }

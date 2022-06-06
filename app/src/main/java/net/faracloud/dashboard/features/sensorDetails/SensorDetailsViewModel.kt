@@ -9,26 +9,23 @@ import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.api.NetworkUtil
 import net.faracloud.dashboard.core.database.SensorObservationEntity
-import net.faracloud.dashboard.core.model.ObservationRemoteModel
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
-import net.faracloud.dashboard.features.componentList.ComponentState
-import net.faracloud.dashboard.features.componentList.data.ComponentRepository
-import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
-import net.faracloud.dashboard.features.sensorDetails.data.ObservationRepository
+import net.faracloud.dashboard.features.sensorDetails.data.SensorDetailsRepository
 import net.faracloud.dashboard.features.sensorDetails.observation.ObservationRecycleViewRowEntity
 import javax.inject.Inject
 
 @HiltViewModel
 class SensorDetailsViewModel @Inject constructor(
     var schedulers: SchedulersImpl,
-    private val repository: ObservationRepository,
+    private val repository: SensorDetailsRepository,
     @ApplicationContext private val context: Context
 ) : BuilderViewModel<SensorDetailsState>(SensorDetailsState.IDLE) {
 
     val observationRecycleViewRowEntityListMutableLiveData =
         MutableStateFlow<List<ObservationRecycleViewRowEntity>?>(null)
 
+    fun getSensorsFromDataBase() = repository.getAllSensors()
     suspend fun getObservationsFromApi(
         providerId: String,
         sensor: String,
@@ -37,6 +34,7 @@ class SensorDetailsViewModel @Inject constructor(
         endDate: String?
     ) {
 
+        loge("  getObservationsFromApi")
         /* val providerId = "mobile-app@p102"
 
  */
@@ -49,8 +47,8 @@ class SensorDetailsViewModel @Inject constructor(
                     providerId = "mobile-app@p102",
                     sensor = "s101",
                     categoryNumber = 10,
-                    startDate = "",
-                    endDate = ""
+                    startDate = startDate,
+                    endDate = endDate
                 )
                 if (response.isSuccessful) {
                     response.body()?.let { resultResponse ->

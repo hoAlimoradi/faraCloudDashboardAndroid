@@ -62,11 +62,11 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        buttonSetting.setOnClickListener {
+        providersButton.setOnClickListener {
           viewModel.navigateToSetting()
         }
 
-        buttonDetail.setOnClickListener {
+        settingsImageButton.setOnClickListener {
             viewModel.navigateToDetail()
         }
 

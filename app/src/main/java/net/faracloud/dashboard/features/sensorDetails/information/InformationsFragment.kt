@@ -22,11 +22,12 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsState
 import net.faracloud.dashboard.features.sensorDetails.SensorDetailsViewModel
 
 class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewModel>()  {
-
+    //InformationRecycleViewRowEntity
     private var adapter: InformationAdapter? = null
 
     private val viewModel: SensorDetailsViewModel by activityViewModels()
@@ -48,14 +49,14 @@ class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsVi
         super.onViewCreated(view, savedInstanceState)
 
         observeObservationsStateFlow()
-
-        val manager = LinearLayoutManager(context)
+        getSensorInformation()
+        /*val manager = LinearLayoutManager(context)
 
         adapter = InformationAdapter()
         adapter?.let {
             informationRecycleView.adapter = it
             informationRecycleView.layoutManager = manager
-        }
+        }*/
     }
     override fun onResume() {
         super.onResume()
@@ -73,18 +74,49 @@ class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsVi
                     it?.let { data ->
                         data?.let { list ->
                             // val observationsRecycleViewViewRowEntityArrayList  = ArrayList<ObservationRecycleViewRowEntity>()
-                            val observationsRecycleViewViewRowEntityArrayList  = ArrayList<String>()
-                            list.forEach {
-                                observationsRecycleViewViewRowEntityArrayList.add(it.value)
-                            }
-                            adapter?.let {
-                                it.clear()
-                                Log.e("", list.toString())
-                                it.addAllData(observationsRecycleViewViewRowEntityArrayList)
-                            }
+
                         }
                     }
                 }
+        }
+    }
+
+    private fun getSensorInformation() {
+        viewModel.getSensorsFromDataBase().observe(viewLifecycleOwner) {
+            it?.let { data ->
+                data.let { list ->
+                    val item = list.first()
+                    val observationsRecycleViewViewRowEntityArrayList  = ArrayList<String>()
+                    observationsRecycleViewViewRowEntityArrayList.add(item.sensor.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.dataType.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.latitude.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.longitude.toString())
+                    val location = item.latitude.toString() + " " + item.longitude.toString()
+                    observationsRecycleViewViewRowEntityArrayList.add(location)
+                    observationsRecycleViewViewRowEntityArrayList.add(item.state.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.type.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.unit.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.timeZone.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.publicAccess.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.state.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.createdAt.toString())
+                    observationsRecycleViewViewRowEntityArrayList.add(item.updatedAt.toString())
+
+                    val manager = LinearLayoutManager(context)
+
+                    adapter = InformationAdapter(observationsRecycleViewViewRowEntityArrayList)
+                    adapter?.let {
+                        informationRecycleView.adapter = it
+                        informationRecycleView.layoutManager = manager
+                    }
+
+                    /*adapter?.let {
+                        it.clear()
+                        Log.e("", list.toString())
+                        it.addAllData(observationsRecycleViewViewRowEntityArrayList)
+                    }*/
+                }
+            }
         }
     }
 

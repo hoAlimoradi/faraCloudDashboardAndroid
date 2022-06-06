@@ -16,7 +16,9 @@ interface ObservationService {
         @Header("IDENTITY_KEY") token: String,
         @Path("providerId") providerId: String,
         @Path("sensor") sensor: String,
-        @Query("limit") categoryNumber: Int = 10
+        @Query("limit") categoryNumber: Int = 10,
+        @Query("startDate") startDate: String?,
+        @Query("to={endDate}") endDate: String?
     ): Response<ObservationRemoteModels>
 
   /*

@@ -28,7 +28,7 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.features.sensorDetails.custom.DayAxisValueFormatter
 
 //private val rows: List<IRow>
-class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class ChartsAdapter(private val obsevations: List<Float>) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
 
 
@@ -72,13 +72,6 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             3 -> TYPE_CircularProgress
             else -> throw IllegalArgumentException()
         }
-        /*when (rows[position]) {
-            is BarChartRow  -> TYPE_BAR
-            is CircularProgressRow -> TYPE_CircularProgress
-            is CubicLinesRow -> TYPE_CubicLines
-            is PieRow -> TYPE_Pie
-            else -> throw IllegalArgumentException()
-        }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = when (viewType) {
         TYPE_BAR -> BarChartViewHolder(LayoutInflater.from(parent.context)
@@ -103,11 +96,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             TYPE_CubicLines -> onBindCubicLines(holder)
             TYPE_Pie -> onBindPie(holder)
             else -> throw IllegalArgumentException()
-/*            TYPE_BAR -> onBindBarChart(holder, rows[position] as ChartsAdapter.BarChartRow)
-            TYPE_CircularProgress -> onBindCircularProgress(holder, rows[position] as ChartsAdapter.CircularProgressRow)
-            TYPE_CubicLines -> onBindCubicLines(holder, rows[position] as ChartsAdapter.CubicLinesRow)
-            TYPE_Pie -> onBindPie(holder, rows[position] as ChartsAdapter.PieRow)
-            else -> throw IllegalArgumentException()*/
+
         }
 
     private fun onBindBarChart(holder: RecyclerView.ViewHolder) {
@@ -118,7 +107,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             barChart.setDrawBarShadow(false)
             barChart.setDrawValueAboveBar(true)
 
-            barChart.getDescription().setEnabled(false)
+            barChart.description.isEnabled = false
 
             // if more than 60 entries are displayed in the chart, no values will be
             // drawn
@@ -138,7 +127,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             // chart.setDrawYLabels(false);
             val xAxisFormatter: IAxisValueFormatter = DayAxisValueFormatter(barChart)
 
-            val xAxis: XAxis = barChart.getXAxis()
+            val xAxis: XAxis = barChart.xAxis
             xAxis.position = XAxisPosition.BOTTOM
             //xAxis.typeface = tfLight
             xAxis.setDrawGridLines(false)
@@ -149,7 +138,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
 
             //val custom: IAxisValueFormatter = MyAxisValueFormatter()
 
-            val leftAxis: YAxis = barChart.getAxisLeft()
+            val leftAxis: YAxis = barChart.axisLeft
            // leftAxis.typeface = tfLight
             leftAxis.setLabelCount(8, false)
           //  leftAxis.setValueFormatter(custom as ValueFormatter?)
@@ -158,7 +147,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             leftAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
 
-            val rightAxis: YAxis = barChart.getAxisRight()
+            val rightAxis: YAxis = barChart.axisRight
             rightAxis.setDrawGridLines(false)
             //rightAxis.typeface = tfLight
             rightAxis.setLabelCount(8, false)
@@ -167,7 +156,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             rightAxis.axisMinimum = 0f // this replaces setStartAtZero(true)
 
 
-            val l: Legend = barChart.getLegend()
+            val l: Legend = barChart.legend
             l.verticalAlignment = Legend.LegendVerticalAlignment.BOTTOM
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.LEFT
             l.orientation = Legend.LegendOrientation.HORIZONTAL
@@ -183,31 +172,42 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             //barChart.setMarker(mv) // Set the marker to the chart
 
 
-            // setting data
-
-            // setting data
-
-            var count: Int = 5
+            /*
+             var count: Int = 5
             var range: Float = 45F
             val start = 1f
             val values = java.util.ArrayList<BarEntry>()
             var i = start.toInt()
+
             while (i < start + count) {
                 val value = (Math.random() * (range + 1)).toFloat()
                 if (Math.random() * 100 < 25) {
-                    values.add(BarEntry(i.toFloat(), value, this.itemView.context.getResources().getDrawable(R.drawable.star)))
+                    values.add(BarEntry(i.toFloat(), value, this.itemView.context.resources.getDrawable(R.drawable.star)))
                 } else {
                     values.add(BarEntry(i.toFloat(), value))
                 }
                 i++
             }
+             */
+            // setting data
+            var count: Int = obsevations.size
+            var range: Float = 45F
+            val start = 0f
+            val values = java.util.ArrayList<BarEntry>()
+            var i = start.toInt()
+
+            while (i <  count) {
+                val value = obsevations[i]
+                values.add(BarEntry(i.toFloat(), value))
+                i++
+            }
             val set1: BarDataSet
-            if (barChart.getData() != null &&
-                barChart.getData().getDataSetCount() > 0
+            if (barChart.data != null &&
+                barChart.data.dataSetCount > 0
             ) {
-                set1 = barChart.getData().getDataSetByIndex(0) as BarDataSet
+                set1 = barChart.data.getDataSetByIndex(0) as BarDataSet
                 set1.values = values
-                barChart.getData().notifyDataChanged()
+                barChart.data.notifyDataChanged()
                 barChart.notifyDataSetChanged()
             } else {
                 set1 = BarDataSet(values, "The year 2017")
@@ -228,14 +228,14 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
                 gradientFills.add(GradientColor(startColor3, endColor3))
                 gradientFills.add(GradientColor(startColor4, endColor4))
                 gradientFills.add(GradientColor(startColor5, endColor5))
-                set1.setGradientColors(gradientFills) //  setFills(gradientFills)
+                set1.gradientColors = gradientFills //  setFills(gradientFills)
                 val dataSets = java.util.ArrayList<IBarDataSet>()
                 dataSets.add(set1)
                 val data = BarData(dataSets)
                 data.setValueTextSize(10f)
                 //data.setValueTypeface(tfLight)
                 data.barWidth = 0.9f
-                barChart.setData(data)
+                barChart.data = data
             }
 
             // chart.setDrawLegend(false);
@@ -260,7 +260,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             // no description text
 
             // no description text
-            lineChart.getDescription().setEnabled(false)
+            lineChart.description.isEnabled = false
 
             // enable touch gestures
 
@@ -270,7 +270,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             // enable scaling and dragging
 
             // enable scaling and dragging
-            lineChart.setDragEnabled(true)
+            lineChart.isDragEnabled = true
             lineChart.setScaleEnabled(true)
 
             // if disabled, scaling can be done on x- and y-axis separately
@@ -279,12 +279,12 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             lineChart.setPinchZoom(false)
 
             lineChart.setDrawGridBackground(false)
-            lineChart.setMaxHighlightDistance(300f)
+            lineChart.maxHighlightDistance = 300f
 
-            val x: XAxis = lineChart.getXAxis()
+            val x: XAxis = lineChart.xAxis
             x.isEnabled = false
 
-            val y: YAxis = lineChart.getAxisLeft()
+            val y: YAxis = lineChart.axisLeft
             //y.typeface = tfLight
             y.setLabelCount(6, false)
             y.textColor = Color.WHITE
@@ -292,7 +292,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             y.setDrawGridLines(false)
             y.axisLineColor = Color.WHITE
 
-            lineChart.getAxisRight().setEnabled(false)
+            lineChart.axisRight.isEnabled = false
 
             // add data
 
@@ -303,7 +303,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             // lower max, as cubic runs significantly slower than linear
 
 
-            lineChart.getLegend().setEnabled(false)
+            lineChart.legend.isEnabled = false
 
             lineChart.animateXY(2000, 2000)
 
@@ -313,20 +313,30 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             lineChart.invalidate()
 
             //set data
-            var count: Int = 5
+            /*var count: Int = 5
             var range: Float = 45F
             val values = ArrayList<Entry>()
             for (i in 0 until count) {
                 val `val` = (Math.random() * (range + 1)).toFloat() + 20
                 values.add(Entry(i.toFloat(), `val`))
+            }*/
+            var count: Int = obsevations.size
+            val start = 0f
+            val values = java.util.ArrayList<Entry>()
+            var i = start.toInt()
+
+            while (i <  count) {
+                val value = obsevations[i]
+                values.add(BarEntry(i.toFloat(), value))
+                i++
             }
             val set1: LineDataSet
-            if (lineChart.getData() != null &&
-                lineChart.getData().getDataSetCount() > 0
+            if (lineChart.data != null &&
+                lineChart.data.dataSetCount > 0
             ) {
-                set1 = lineChart.getData().getDataSetByIndex(0) as LineDataSet
+                set1 = lineChart.data.getDataSetByIndex(0) as LineDataSet
                 set1.values = values
-                lineChart.getData().notifyDataChanged()
+                lineChart.data.notifyDataChanged()
                 lineChart.notifyDataSetChanged()
             } else {
                 // create a dataset and give it a type
@@ -352,7 +362,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
                 data.setDrawValues(false)
 
                 // set data
-                lineChart.setData(data)
+                lineChart.data = data
             }
         }
 
@@ -363,30 +373,30 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
        // pieViewHolder.pieTitle.text = "pieViewHolder"
         pieViewHolder.run {
             pieChart.setUsePercentValues(true)
-            pieChart.getDescription().setEnabled(false)
+            pieChart.description.isEnabled = false
             pieChart.setExtraOffsets(5f, 10f, 5f, 5f)
 
-            pieChart.setDragDecelerationFrictionCoef(0.95f)
+            pieChart.dragDecelerationFrictionCoef = 0.95f
 
 //            pieChart.setCenterTextTypeface(tfLight)
 //            pieChart.setCenterText(generateCenterSpannableText())
 
-            pieChart.setDrawHoleEnabled(true)
+            pieChart.isDrawHoleEnabled = true
             pieChart.setHoleColor(Color.WHITE)
 
             pieChart.setTransparentCircleColor(Color.WHITE)
             pieChart.setTransparentCircleAlpha(110)
 
-            pieChart.setHoleRadius(58f)
-            pieChart.setTransparentCircleRadius(61f)
+            pieChart.holeRadius = 58f
+            pieChart.transparentCircleRadius = 61f
 
             pieChart.setDrawCenterText(true)
 
-            pieChart.setRotationAngle(0f)
+            pieChart.rotationAngle = 0f
             // enable rotation of the chart by touch
             // enable rotation of the chart by touch
-            pieChart.setRotationEnabled(true)
-            pieChart.setHighlightPerTapEnabled(true)
+            pieChart.isRotationEnabled = true
+            pieChart.isHighlightPerTapEnabled = true
 
             // chart.setUnit(" €");
             // chart.setDrawUnitsInChart(true);
@@ -403,7 +413,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             // chart.spin(2000, 0, 360);
 
             // chart.spin(2000, 0, 360);
-            val l: Legend = pieChart.getLegend()
+            val l: Legend = pieChart.legend
             l.verticalAlignment = Legend.LegendVerticalAlignment.TOP
             l.horizontalAlignment = Legend.LegendHorizontalAlignment.RIGHT
             l.orientation = Legend.LegendOrientation.VERTICAL
@@ -439,7 +449,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
                     PieEntry(
                         (Math.random() * range + range / 5).toFloat(),
                         parties.get(i % parties.size),
-                        this.itemView.context.getResources().getDrawable(R.drawable.star)
+                        this.itemView.context.resources.getDrawable(R.drawable.star)
                     )
                 )
             }
@@ -464,7 +474,7 @@ class ChartsAdapter(private val obsevations: List<Int>) : RecyclerView.Adapter<R
             data.setValueTextSize(11f)
             data.setValueTextColor(Color.WHITE)
             //data.setValueTypeface(tfLight)
-            pieChart.setData(data)
+            pieChart.data = data
 
             // undo all highlights
             pieChart.highlightValues(null)

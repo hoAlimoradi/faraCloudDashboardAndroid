@@ -263,7 +263,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             MapState.START_DETAIL -> {
                 loge("START_DETAIL")
                 getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToProviderDetailsFragment)
+                getFindViewController()?.navigate(R.id.navigateFromMapToSettingFragment)
             }
             MapState.START_SETTING -> {
                 loge("FORCE_UPDATE")

@@ -79,9 +79,7 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
                 loge("LOADING")
 
             }
-            ProviderState.RETRY -> {
-                loge("RETRY")
-            }
+
 
             ProviderState.START_COMPONENT_LIST -> {
                 loge(" START_COMPONENT_LIST")

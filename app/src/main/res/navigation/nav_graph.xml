@@ -38,12 +38,21 @@
 
 
         <action
-            android:id="@+id/navigateFromMapToProviderDetailsFragment"
-            app:destination="@id/sensorDetailsFragment" />
-
+            android:id="@+id/navigateFromMapToSettingFragment"
+            app:destination="@id/settingFragment" />
 
     </fragment>
 
+    <fragment
+        android:id="@+id/settingFragment"
+        android:name="net.faracloud.dashboard.features.setting.SettingFragment"
+        android:label="SettingFragment"
+        >
+        <action
+            android:id="@+id/settingFragmentActionPopBack"
+            app:destination="@id/mapFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/providersListFragment"
         android:name="net.faracloud.dashboard.features.providers.presentation.ProvidersListFragment"

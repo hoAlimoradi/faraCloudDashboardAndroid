@@ -26,3 +26,4 @@ public class SensorDetailsViewPagerAdapter(fragmentManager: FragmentManager, lif
         return Fragment()
     }
 }
+

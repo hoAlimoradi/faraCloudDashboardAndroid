@@ -14,7 +14,6 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_providers_list.backButton
 import kotlinx.android.synthetic.main.fragment_setting.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
@@ -41,7 +40,7 @@ class SettingFragment : BuilderFragment<SettingState, SettingViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         backButton.setOnClickListener {
-            //findNavController().navigate(R.id.addProviderFragmentActionPopBack)
+            findNavController().navigate(R.id.settingFragmentActionPopBack)
         }
 
         applyConstraintLayout.setOnClickListener {

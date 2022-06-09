@@ -32,8 +32,8 @@
 
 
         <action
-            android:id="@+id/navigateFromMapToSensorListFragment"
-            app:destination="@id/sensorsListFragment"
+            android:id="@+id/navigateFromMapToSearchFragment"
+            app:destination="@id/searchFragment"
             />
 
 
@@ -42,7 +42,16 @@
             app:destination="@id/settingFragment" />
 
     </fragment>
-
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="net.faracloud.dashboard.features.search.SearchFragment"
+        android:label="SearchFragment"
+        >
+        <action
+            android:id="@+id/settingFragmentActionPopBack"
+            app:destination="@id/mapFragment"
+            />
+    </fragment>
     <fragment
         android:id="@+id/settingFragment"
         android:name="net.faracloud.dashboard.features.setting.SettingFragment"

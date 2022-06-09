@@ -30,5 +30,9 @@ class MapViewModel @Inject constructor(
         }
     }
 
+    fun navigateToSearch() {
+        state.value = MapState.START_SEARCH
+    }
+
     fun getComponentsFromDataBase() = repository.getAllComponents()
 }

@@ -70,7 +70,9 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             viewModel.navigateToDetail()
         }
 
-
+        searchImageButton.setOnClickListener {
+            viewModel.navigateToSearch()
+        }
 
        // getLocationMarker()
       /*
@@ -243,8 +245,8 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             marker.infoWindow = CustomInfoWindow(map)
             marker.setOnMarkerClickListener { item, arg1 ->
                 //item.showInfoWindow()
-                getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToSensorListFragment)
+                /*getFindViewController()?.navigateUp()
+                getFindViewController()?.navigate(R.id.navigateFromMapToSensorListFragment)*/
                 true
             }
 
@@ -269,6 +271,10 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
                 loge("FORCE_UPDATE")
                 getFindViewController()?.navigateUp()
                 getFindViewController()?.navigate(R.id.navigateFromMapToProviderListFragment)
+            }
+            MapState.START_SEARCH -> {
+                getFindViewController()?.navigateUp()
+                getFindViewController()?.navigate(R.id.navigateFromMapToSearchFragment)
             }
 
         }

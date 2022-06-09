@@ -14,11 +14,12 @@ class SearchViewPagerAdapter(fragmentManager: FragmentManager, lifecycle: Lifecy
 
     override fun createFragment(position: Int): Fragment {
         when (position) {
-            0 -> return AllListFragment()
-            1 -> return ProvidersFragment()
-            2 -> return ComponentsFragment()
-            2 -> return SensorsFragment()
+            0 -> return SearchListFragment.newInstance(SearchListType.ALL)
+            1 -> return SearchListFragment.newInstance(SearchListType.PROVIDER)
+            2 -> return SearchListFragment.newInstance(SearchListType.COMPONENT)
+            3 -> return SearchListFragment.newInstance(SearchListType.SENSOR)
         }
         return Fragment()
     }
 }
+

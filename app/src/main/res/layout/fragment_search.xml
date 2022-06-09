@@ -40,17 +40,35 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <com.google.android.material.tabs.TabLayout
-        android:id="@+id/searchTabLayout"
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchBar"
+        android:layout_margin="8dp"
+        android:background="@drawable/bg_light_grey_color"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar"
+        android:textCursorDrawable="@null"
+        app:iconifiedByDefault="false"
+        app:queryBackground="@null" />
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/searchTabLayout"
+        android:layout_marginTop="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/searchBar"
         app:tabIndicatorColor="@color/purple_500"
         app:tabBackground="@color/lightGreyColor"
         app:tabSelectedTextColor="@color/purple_500"
-        app:tabTextColor="@color/white"/>
+        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
+        app:tabTextColor="@color/green6a807b" >
+
+
+
+    </com.google.android.material.tabs.TabLayout>
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/searchViewPager"

@@ -26,6 +26,13 @@ interface ProviderDao {
 
     @Query("SELECT * FROM provider_table ORDER BY id")
     fun getProviders(): LiveData<List<ProviderEntity>>
+
+    @Query("SELECT * FROM provider_table WHERE providerId = :providerId")
+    fun getProviderByProviderId(providerId: String): LiveData<ProviderEntity>
+
+
+    @Query("SELECT * FROM provider_table WHERE id = :id")
+    fun getProviderById(id: Int): LiveData<ProviderEntity>
 }
 
 

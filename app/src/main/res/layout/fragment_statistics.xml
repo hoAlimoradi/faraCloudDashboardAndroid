@@ -98,4 +98,15 @@
 
     </include>
 
+    <include
+        layout="@layout/error_view"
+        android:id="@+id/statisticsRecycleErrorView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/statisticsRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/toolbar">
+
+    </include>
 </androidx.constraintlayout.widget.ConstraintLayout>

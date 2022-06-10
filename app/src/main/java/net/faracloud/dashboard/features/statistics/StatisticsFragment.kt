@@ -15,6 +15,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_edit_provider.*
 import kotlinx.android.synthetic.main.fragment_providers_list.*
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
@@ -22,9 +23,13 @@ import net.faracloud.dashboard.extentions.loge
 import kotlinx.android.synthetic.main.fragment_statistics.*
 import kotlinx.android.synthetic.main.fragment_statistics.backButton
 import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.BundleKeys
 
 @AndroidEntryPoint
 class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>()  {
+
+    var tenant: String =""
+    var token: String =""
 
     private var adapter: StatisticsAdapter? = null
     private val viewModel: StatisticsViewModel by viewModels()
@@ -44,10 +49,23 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.getString(BundleKeys.providerId)?.let {
+            tenant = it
+        }
+        arguments?.getString(BundleKeys.providerId)?.let {
+            token = it
+        }
+
         backButton.setOnClickListener {
             findNavController().navigate(R.id.statisticsFragmentActionPopBack)
         }
 
+        refreshButton.setOnClickListener {
+            viewModel.viewModelScope.launch {
+                viewModel.getStatisticsFromApi(tenant,token)
+            }
+        }
         observeStatisticsStateFlow()
 
         val manager = LinearLayoutManager(context)
@@ -62,26 +80,14 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
     }
     override fun onResume() {
         super.onResume()
+        viewModel.viewModelScope.launch {
+            viewModel.getStatisticsFromApi(tenant,token)
+        }
         //viewModel.getStatistics()
     }
 
     private fun observeStatisticsStateFlow() {
-        // getStatisticsFromApi(name: String)
-
-      /*  viewModel.getProviders().observe(viewLifecycleOwner) {
-            it?.let { data ->
-                data.let { list ->
-                    list.first().run {
-
-                    }
-                }
-            }
-        }*/
-
-        viewModel.viewModelScope.launch {
-             viewModel.getStatisticsFromApi("mobile-app")
-        }
-        viewModel.viewModelScope.launch {
+           viewModel.viewModelScope.launch {
             viewModel.statisticsRecycleViewViewRowEntityListMutableLiveData.observe(viewLifecycleOwner) {
                 it?.let { data ->
                     data.let { list ->
@@ -111,17 +117,26 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
                 statisticsRecycleView.visibility = View.VISIBLE
                 statisticsLoading.visibility = View.GONE
                 statisticsRecycleEmptyView.visibility = View.GONE
+                statisticsRecycleErrorView.visibility = View.GONE
             }
             StatisticsState.LOADING -> {
                 statisticsRecycleView.visibility = View.GONE
                 statisticsLoading.visibility = View.VISIBLE
                 statisticsRecycleEmptyView.visibility = View.GONE
+                statisticsRecycleErrorView.visibility = View.GONE
 
+            }
+            StatisticsState.EMPTY -> {
+                statisticsRecycleView.visibility = View.GONE
+                statisticsLoading.visibility = View.GONE
+                statisticsRecycleEmptyView.visibility = View.VISIBLE
+                statisticsRecycleErrorView.visibility = View.GONE
             }
             StatisticsState.RETRY -> {
                 statisticsRecycleView.visibility = View.GONE
                 statisticsLoading.visibility = View.GONE
-                statisticsRecycleEmptyView.visibility = View.VISIBLE
+                statisticsRecycleEmptyView.visibility = View.GONE
+                statisticsRecycleErrorView.visibility = View.VISIBLE
             }
 
         }

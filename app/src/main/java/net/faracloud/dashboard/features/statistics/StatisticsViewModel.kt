@@ -27,23 +27,48 @@ class StatisticsViewModel @Inject constructor(
         MutableLiveData<List<StatisticsRecycleViewViewRowEntity>?>(null)
 
 
-    suspend fun getStatisticsFromApi(name: String){
+    suspend fun getStatisticsFromApi(
+        name: String,
+        token: String
+    ) {
         state.value = StatisticsState.LOADING
         //statistics.postValue(Resource.Loading())
-        try{
+        try {
 
-            if(hasInternetConnection(context)){
-                val response = repository.getStats(name = name)
-                handleBreakingNewsResponse(response)
-                state.value = StatisticsState.IDLE
+            if (hasInternetConnection(context)) {
+                val response = repository.getStats(
+                    name = name,
+                    token = token
+                )
+
+                if (response.isSuccessful) {
+                    response.body()?.let { resultResponse ->
+                        // TODO saveto database
+                        loge(resultResponse.dailyAverageRate)
+                        var list = mapperRemoteModelStatsToStatisticsRecycleViewViewRowEntity(
+                            resultResponse
+                        )
+                        if (list.isEmpty()) {
+                            state.value = StatisticsState.EMPTY
+                        } else {
+                            statisticsRecycleViewViewRowEntityListMutableLiveData.value = list
+                            state.value = StatisticsState.IDLE
+                        }
+
+                    }
+                } else {
+                    state.value = StatisticsState.RETRY
+                }
+                /* handleBreakingNewsResponse(response)
+                 */
+
+
                 //statistics.postValue(handleBreakingNewsResponse(response))
-            }
-            else{
+            } else {
                 state.value = StatisticsState.RETRY
                 //statistics.postValue(Resource.Error("No Internet Connection"))
             }
-        }
-        catch (ex : Exception){
+        } catch (ex: Exception) {
             state.value = StatisticsState.RETRY
             /*when(ex){
                 is IOException -> statistics.postValue(Resource.Error("Network Failure"))
@@ -57,14 +82,15 @@ class StatisticsViewModel @Inject constructor(
             response.body()?.let { resultResponse ->
                 // TODO saveto database
                 loge(resultResponse.dailyAverageRate)
-                statisticsRecycleViewViewRowEntityListMutableLiveData.value = mapperRemoteModelStatsToStatisticsRecycleViewViewRowEntity(resultResponse)
-                return Resource.Success( resultResponse)
+                statisticsRecycleViewViewRowEntityListMutableLiveData.value =
+                    mapperRemoteModelStatsToStatisticsRecycleViewViewRowEntity(resultResponse)
+                return Resource.Success(resultResponse)
             }
         }
         return Resource.Error(response.message())
     }
 
-    fun mapperRemoteModelStatsToStatisticsRecycleViewViewRowEntity(remoteModelStats: RemoteModelStats) : List<StatisticsRecycleViewViewRowEntity> {
+    fun mapperRemoteModelStatsToStatisticsRecycleViewViewRowEntity(remoteModelStats: RemoteModelStats): List<StatisticsRecycleViewViewRowEntity> {
         var statistics: MutableList<StatisticsRecycleViewViewRowEntity> = mutableListOf()
 
         val statisticModelDevices = StatisticsRecycleViewViewRowEntity(
@@ -84,7 +110,7 @@ class StatisticsViewModel @Inject constructor(
             description = "Orders",
             descriptionCounter = remoteModelStats.totalRouterDevices.toString(),
             secondDescription = "Alarms",
-            secondDescriptionCounter =  remoteModelStats.totalAlarmEvents.toString()
+            secondDescriptionCounter = remoteModelStats.totalAlarmEvents.toString()
         )
 
         val statisticModelPerformance = StatisticsRecycleViewViewRowEntity(
@@ -99,7 +125,7 @@ class StatisticsViewModel @Inject constructor(
 
         val statisticModelAccounts = StatisticsRecycleViewViewRowEntity(
             title = "Accounts",
-            titleCounter =remoteModelStats.dailyAverageRate.toString(),
+            titleCounter = remoteModelStats.dailyAverageRate.toString(),
             subTitle = "Active users",
             description = "Providers",
             descriptionCounter = remoteModelStats.totalProviderAccounts.toString(),

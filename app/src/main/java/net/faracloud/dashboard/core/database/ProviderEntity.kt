@@ -12,7 +12,7 @@ import java.util.*
 @Entity(tableName = "provider_table")
 data class ProviderEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    val authorizationToken: String,
+    var authorizationToken: String,
     var createDate: String,
     var enable: Boolean,
     var providerId: String,

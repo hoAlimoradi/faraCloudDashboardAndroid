@@ -5,5 +5,6 @@ import retrofit2.Response
 
 interface StatisticsRepository {
 
-    suspend fun getStats(name: String): Response<RemoteModelStats>
+    suspend fun getStats(name: String,
+                         token: String): Response<RemoteModelStats>
 }

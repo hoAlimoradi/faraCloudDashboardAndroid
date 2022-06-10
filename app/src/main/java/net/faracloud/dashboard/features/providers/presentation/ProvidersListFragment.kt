@@ -16,6 +16,7 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.BundleKeys
 
 @AndroidEntryPoint
 class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(),
@@ -28,6 +29,11 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
     override val baseViewModel: BuilderViewModel<ProviderState>
         get() = viewModel
 
+    var token: String? = null
+    var tenant: String? = null
+    var providerTableId = 0
+    var providerId: String? = null
+    var authorizationToken: String? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -45,30 +51,20 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
 
         statisticImageButton.setOnClickListener {
-            getFindViewController()?.navigate(R.id.navigateToStatisticsFragment )
-        }
-
-        observeProviders()
-
-        val manager = LinearLayoutManager(context)
-
-        adapter = ProviderAdapter(this)
-        adapter?.let {
-            providerRecycleView.adapter = it
-            providerRecycleView.layoutManager = manager
+            val bundle = Bundle()
+            bundle.putString(BundleKeys.tenant, tenant)
+            getFindViewController()?.navigate(R.id.navigateToStatisticsFragment, bundle)
         }
 
         addProvider.setOnClickListener {
-            getFindViewController()?.navigate(R.id.navigateToAddProviderFragment )
-
-            //showAddProvider()
-            Log.e("","ttttttttttttttttttttttttttt")
+            getFindViewController()?.navigate(R.id.navigateToAddProviderFragment)
         }
 
     }
+
     override fun onResume() {
         super.onResume()
-        viewModel.getProviders()
+        observeProviders()
     }
 
     private fun observeProviders() {
@@ -78,21 +74,32 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 data.let { list ->
                     if (list.isEmpty()) {
                         viewModel.state.value = ProviderState.EMPTY
-                    }else {
+                    } else {
                         viewModel.state.value = ProviderState.IDLE
+                        val strs = list.first().providerId.split("@").toTypedArray()
+                        tenant = strs[0]
+                        token = list.first().authorizationToken
                     }
-                    val providerRecycleViewViewRowEntityArrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                    val providerRecycleViewViewRowEntityArrayList =
+                        ArrayList<ProviderRecycleViewViewRowEntity>()
                     list.forEach {
                         Log.e(" it.title ", it.providerId)
                         providerRecycleViewViewRowEntityArrayList.add(
                             ProviderRecycleViewViewRowEntity(
-                            title = it.providerId,
-                            authorizationToken = it.authorizationToken,
+                                title = it.providerId,
+                                authorizationToken = it.authorizationToken,
 
-                            enable = it.enable
-                        )
+                                enable = it.enable
+                            )
                         )
                     }
+                    val manager = LinearLayoutManager(context)
+                    adapter = ProviderAdapter(this)
+                    adapter?.let {
+                        providerRecycleView.adapter = it
+                        providerRecycleView.layoutManager = manager
+                    }
+
                     adapter?.let {
                         it.clear()
                         Log.e("", list.toString())
@@ -125,39 +132,57 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             }
             ProviderState.EDIT_COMPONENT -> {
                 loge("EDIT_COMPONENT")
-                getFindViewController()?.navigate(R.id.navigateToEditProviderFragment)
+                val bundle = Bundle()
+                bundle.putInt(BundleKeys.id, providerTableId)
+                bundle.putString(BundleKeys.providerId, providerId)
+                bundle.putString(BundleKeys.authorizationToken, authorizationToken)
+                getFindViewController()?.navigate(R.id.navigateToEditProviderFragment, bundle)
             }
             ProviderState.START_COMPONENT_LIST -> {
                 loge(" START_COMPONENT_LIST")
                 //getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateToComponentFragment)
+                val bundle = Bundle()
+                bundle.putString(BundleKeys.providerId, providerId)
+                bundle.putString(BundleKeys.authorizationToken, authorizationToken)
+                getFindViewController()?.navigate(R.id.navigateToComponentFragment, bundle)
             }
 
         }
     }
 
-    override fun onClicked(item: ProviderRecycleViewViewRowEntity, type: ProviderAdapter.ProviderItemClickCallbackType) {
+    override fun onClicked(
+        item: ProviderRecycleViewViewRowEntity,
+        type: ProviderAdapter.ProviderItemClickCallbackType
+    ) {
         loge("item " + item.title)
         //viewModel.navigateToSensorsOfProvider()
-        when(type) {
+        providerId = item.title
+        authorizationToken = item.authorizationToken
 
-            ProviderAdapter.ProviderItemClickCallbackType.MORE -> {
-                viewModel.navigateToSensorsOfProvider()
+        viewModel.getProviderByProviderId(item.title).observe(viewLifecycleOwner) {
+
+            it?.let {
+                providerTableId = it.id
             }
 
-            ProviderAdapter.ProviderItemClickCallbackType.EDIT -> {
-                viewModel.navigateToEditProvider()
-            }
+            when (type) {
 
-            ProviderAdapter.ProviderItemClickCallbackType.DELETE -> {
-                showDeleteProviderConfirmDialog()
-                //todo delete
+                ProviderAdapter.ProviderItemClickCallbackType.MORE -> {
+                    viewModel.navigateToSensorsOfProvider()
+
+                }
+
+                ProviderAdapter.ProviderItemClickCallbackType.EDIT -> {
+                    viewModel.navigateToEditProvider()
+                }
+
+                ProviderAdapter.ProviderItemClickCallbackType.DELETE -> {
+                    showDeleteProviderConfirmDialog()
+
+                }
             }
         }
-        /*this.activity?.let {
-            val fragment = ProviderItemBottomSheet.newInstance()
-            fragment.show(it.supportFragmentManager, "ProviderItemBottomSheet")
-        }*/
+
     }
 
     fun showDeleteProviderConfirmDialog() {
@@ -165,7 +190,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             deleteProviderDialog = DeleteProviderDialog()
         deleteProviderDialog?.apply {
             if (!isShowing()) {
-                //setMessage(error)
+                setName(providerId!!)
                 setDeleteProviderListener(this@ProvidersListFragment)
                 show(this@ProvidersListFragment.requireFragmentManager(), "errorTag")
             }
@@ -176,10 +201,33 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
     }
 
-    override fun onDelete(name: String, token: String) {
-        loge("name " + name)
-        loge("token " + token)
-        viewModel.deleteProvider(name, token)
+    override fun onDelete(name: String) {
+        viewModel.getProviderByProviderId(name).observe(viewLifecycleOwner) {
+            it?.let {
+
+                /*viewModel.getAllSensors().observe(viewLifecycleOwner) {
+                    it?.let {
+
+                    }
+                }
+
+                viewModel.getAllComponents().observe(viewLifecycleOwner) {
+                    it?.let {
+
+                    }
+                }*/
+                loge("onDelete getProviderByProviderId " + it.providerId)
+                viewModel.deleteProvider(it)
+            }
+        }
         observeProviders()
     }
+
+   /* fun deleteAllSensorsByComponentId(componentId: String) {
+
+    }
+
+    fun deleteAllComponentsByProviderId(providerId: String) {
+
+    }*/
 }

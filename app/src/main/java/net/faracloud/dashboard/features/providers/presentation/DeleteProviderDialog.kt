@@ -11,26 +11,17 @@ import kotlinx.android.synthetic.main.dialog_add_provider.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.extentions.setWidthPercent
 
-const val TAG = "errorDialog"
 class DeleteProviderDialog : DialogFragment() {
 
     private lateinit var rootView: View
     private lateinit var listener: DeleteProviderListener
 
+    var name: String? = null
     var onDismiss: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
-
-   /* override fun onAttach(context: Context) {
-        super.onAttach(context)
-        try {
-            listener = parentFragment as AddNewProviderListener
-        } catch (e: ClassCastException) {
-            throw ClassCastException("$context must implement UpdateNameListener")
-        }
-    }*/
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -40,8 +31,7 @@ class DeleteProviderDialog : DialogFragment() {
         dialog?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
         rootView = inflater.inflate(R.layout.dialog_add_provider, container, false)
         rootView.okConstraintLayout.setOnClickListener {
-            listener.onDelete(name = "" ,
-            token = "")
+            listener.onDelete( name =  name!! )
             dismiss()
         }
         return rootView
@@ -60,12 +50,16 @@ class DeleteProviderDialog : DialogFragment() {
     }
 
     fun setMessage(error: ErrorDialogModel): DeleteProviderDialog {
+        return this
+    }
 
+    fun setName(name: String): DeleteProviderDialog {
+        this.name = name
         return this
     }
 
     fun setDeleteProviderListener(listener: DeleteProviderListener): DeleteProviderDialog {
-        this.listener =  listener
+        this.listener = listener
         return this
     }
 
@@ -84,11 +78,11 @@ class DeleteProviderDialog : DialogFragment() {
     }
 }
 
-data class ErrorDialogModel (
+data class ErrorDialogModel(
     val error: String,
     val tryAgain: String?
 )
 
 interface DeleteProviderListener {
-    fun onDelete(name: String, token: String)
+    fun onDelete(name: String)
 }

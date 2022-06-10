@@ -28,9 +28,10 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
     private var adapter: SensorAdapter? = null
     private val viewModel: SensorsListViewModel by viewModels()
-    val providerId = "mobile-app@p102"
 
-    val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
+    var providerId: String? = null
+    var authorizationToken: String? = null
+
 
     override val baseViewModel: BuilderViewModel<SensorsListState>
         get() = viewModel

@@ -16,7 +16,8 @@ interface ProviderService {
     //@FormUrlEncoded
     @GET("{name}/stats/json")
     suspend fun getStats(
-        @Path("name") name: String
+        @Path("name") name: String,
+        @Header("IDENTITY_KEY") token: String
     ): Response<RemoteModelStats>
 
 

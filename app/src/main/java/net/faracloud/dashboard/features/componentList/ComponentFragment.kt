@@ -26,9 +26,9 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
 
     private var adapter: ComponentAdapter? = null
     private val viewModel: ComponentViewModel by viewModels()
-    val providerId = "mobile-app@p102"
 
-    val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
+    var providerId: String? = null
+    var authorizationToken: String? = null
 
     override val baseViewModel: BuilderViewModel<ComponentState>
         get() = viewModel
@@ -46,6 +46,9 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        providerId = arguments?.getString(BundleKeys.providerId)
+        authorizationToken = arguments?.getString(BundleKeys.authorizationToken)
+
 //        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
 //            override fun handleOnBackPressed() {
 //                backPressed()
@@ -58,9 +61,17 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
 
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
-                viewModel.getComponentsFromApi("")
+                providerId?.let { providerId ->
+                    authorizationToken?.let { authorizationToken ->
+                        viewModel.getComponentsFromApi(
+                            providerId = providerId,
+                            authorizationToken = authorizationToken
+                        )
+                    }
+                }
             }
         }
+
         /*viewModel.viewModelScope.launch {
             viewModel.getComponentsFromDataBase()
         }*/

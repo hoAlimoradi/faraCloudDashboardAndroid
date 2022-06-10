@@ -19,10 +19,13 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.BundleKeys
+import java.util.*
 
 @AndroidEntryPoint
 class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() {
 
+    var providerTableId: Int = 0
     private val viewModel: ProviderViewModel by viewModels()
 
     override val baseViewModel: BuilderViewModel<ProviderState>
@@ -39,21 +42,46 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        arguments?.getInt(BundleKeys.id)?.let {
+            providerTableId = it
+        }
+        arguments?.getString(BundleKeys.providerId)?.let {
+            name.setText(it)
+        }
+
+        arguments?.getString(BundleKeys.authorizationToken)?.let {
+            token.setText(it)
+        }
+
         backButton.setOnClickListener {
             findNavController().navigate(R.id.editProviderFragmentActionPopBack )
         }
 
         saveConstraintLayout.setOnClickListener {
 
-            loge("name " + name)
-            loge("token " + token)
             val nameValue: String = name.text.toString()
             val tokenValue: String = token.text.toString()
 
             if(nameValue.trim().isNotEmpty()) {
                 if(tokenValue.trim().isNotEmpty()) {
-                    viewModel.insertProvider(nameValue, tokenValue)
+
+                    viewModel.getProviderById(providerTableId).observe(viewLifecycleOwner) {
+                        loge("nameValue : " + nameValue)
+                        loge("tokenValue : " + tokenValue)
+                        loge("it.providerId : " + it.providerId)
+                        loge("it.authorizationToken : " + it.authorizationToken)
+                        loge("it.createDate : " + it.createDate)
+                        loge("it.lastUpdateDevice : " + it.lastUpdateDevice)
+                        val provider = it
+                        provider.providerId = nameValue
+                        provider.authorizationToken = tokenValue
+                        provider.lastUpdateDevice = Date().toString()
+                        viewModel.updateProvider(provider)
+
+                    }
                     Toast.makeText(it.context, "successfully added ", Toast.LENGTH_SHORT).show()
+
                 }else{
                     Toast.makeText(it.context, "Please enter token  ! ", Toast.LENGTH_SHORT).show()
                 }

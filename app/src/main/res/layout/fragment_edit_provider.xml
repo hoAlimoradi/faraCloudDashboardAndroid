@@ -46,6 +46,7 @@
         android:layout_height="100dp"
         android:hint="name"
 
+
         android:padding="8dp"
         android:gravity="start"
         android:inputType="textMultiLine"

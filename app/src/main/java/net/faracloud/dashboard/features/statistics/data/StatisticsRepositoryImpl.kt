@@ -9,10 +9,17 @@ import javax.inject.Singleton
 
 @Singleton
 class StatisticsRepositoryImpl @Inject constructor(
-    private val providerService: ProviderService ): StatisticsRepository {
+    private val providerService: ProviderService
+) : StatisticsRepository {
 
-    override suspend fun getStats(name: String): Response<RemoteModelStats> {
-        return providerService.getStats(name)
+    override suspend fun getStats(
+        name: String,
+        token: String
+    ): Response<RemoteModelStats> {
+        return providerService.getStats(
+            name,
+            token
+        )
     }
 
 }

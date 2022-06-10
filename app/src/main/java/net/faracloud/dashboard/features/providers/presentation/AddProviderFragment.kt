@@ -25,6 +25,7 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
     override val baseViewModel: BuilderViewModel<ProviderState>
         get() = viewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

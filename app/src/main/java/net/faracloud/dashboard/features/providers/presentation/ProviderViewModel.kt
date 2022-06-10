@@ -1,6 +1,7 @@
 package net.faracloud.dashboard.features.providers.presentation
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -9,7 +10,9 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
+import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.ProviderEntity
+import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.providers.data.ProviderRepository
@@ -24,11 +27,7 @@ class ProviderViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BuilderViewModel<ProviderState>(ProviderState.IDLE) {
 
-    /*
-    ,
-    @ApplicationContext private val context: Context
-     */
-    sealed class SavedProviderEvent{
+    sealed class SavedProviderEvent {
         data class ShowUndoDeleteArticleMessage(val article: ProviderEntity): SavedProviderEvent()
     }
     private val savedProviderEventChannel = Channel<SavedProviderEvent>()
@@ -65,10 +64,6 @@ class ProviderViewModel @Inject constructor(
     }
     fun getProviders() = repository.getAllProviders()
 
-
-
-
-
     fun insertProvider(name: String, token: String) {
         viewModelScope.launch {
             repository.insertProvider(
@@ -83,33 +78,32 @@ class ProviderViewModel @Inject constructor(
         }
     }
 
+    fun getProviderByProviderId(name: String): LiveData<ProviderEntity> = repository.getProviderByProviderId(name)
+
+    fun getProviderById(id: Int): LiveData<ProviderEntity> = repository.getProviderById(id)
+
+    fun updateProvider(provider: ProviderEntity) {
+        viewModelScope.launch {
+            repository.updateProvider(provider)
+        }
+    }
+
     // provider: ProviderEntity
-    fun deleteProvider(name: String, token: String) {
+    fun deleteProvider(provider: ProviderEntity) {
         viewModelScope.launch {
-            repository.deleteProvider(
-                ProviderEntity(
-                    providerId = name,
-                    authorizationToken = token,
-                    enable = false,
-                    createDate = Date().toString(),
-                    lastUpdateDevice = Date().toString()
-                )
-            )
+            repository.deleteProvider(provider)
+
         }
     }
 
-    fun deleteAllProviders() {
+    fun getAllSensors() = repository.getAllSensors()
 
-    }
+    fun getAllComponents() = repository.getAllComponents()
 
-    /*fun getStatistics() {
-        viewModelScope.launch {
-            //val response  = callResource(this@WhySoodinowViewModel,getWhySoodinowsUseCase.action(Unit))
-            statisticsRecycleViewViewRowEntityListMutableLiveData.value = createMockStatistics()
-        }
 
-    }
-*/
+}
+
+/*
 
     private fun createMockStatistics(): List<StatisticsRecycleViewViewRowEntity> {
 
@@ -203,4 +197,4 @@ class ProviderViewModel @Inject constructor(
 
         return mockProviders
     }
-}
+ */

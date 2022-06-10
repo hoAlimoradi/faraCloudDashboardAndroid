@@ -41,6 +41,18 @@
             android:id="@+id/navigateFromMapToSettingFragment"
             app:destination="@id/settingFragment" />
 
+        <action
+            android:id="@+id/navigateFromMapToSensorListFragment"
+            app:destination="@id/sensorsListFragment"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="true"
+            >
+            <argument
+                android:name="startFromMap"
+                app:argType="boolean"
+                android:defaultValue="true" />
+        </action>
+
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
@@ -135,7 +147,12 @@
         <action
             android:id="@+id/navigateToSensorListFragment"
             app:destination="@id/sensorsListFragment"
-            />
+            >
+            <argument
+                android:name="startFromMap"
+                app:argType="boolean"
+                android:defaultValue="false" />
+        </action>
 
         <action
             android:id="@+id/componentFragmentActionPopBack"
@@ -147,7 +164,9 @@
     <fragment
         android:id="@+id/sensorsListFragment"
         android:name="net.faracloud.dashboard.features.sensorsList.SensorsListFragment"
-        android:label="SensorsListFragment">
+        android:label="SensorsListFragment"
+        >
+
 
         <action
             android:id="@+id/navigateToSensorDetailsFragment"
@@ -155,9 +174,19 @@
             />
 
         <action
-            android:id="@+id/sensorsListFragmentActionPopBack"
-            app:destination="@id/providersListFragment"
+            android:id="@+id/sensorsListFragmentActionPopBackToComponentFragment"
+            app:destination="@id/componentFragment"
+            app:popUpTo="@id/componentFragment"
+            app:popUpToInclusive="true"
             />
+
+        <action
+            android:id="@+id/sensorsListFragmentActionPopBackToMapFragment"
+            app:destination="@id/mapFragment"
+            app:popUpTo="@id/mapFragment"
+            app:popUpToInclusive="true"
+            />
+
 
     </fragment>
 
@@ -169,6 +198,7 @@
         <action
             android:id="@+id/sensorDetailsFragmentActionPopBack"
             app:destination="@id/sensorsListFragment"
-            app:popUpTo="@+id/sensorsListFragment"/>
+            app:popUpTo="@+id/sensorsListFragment"
+            app:popUpToInclusive="true"/>
     </fragment>
 </navigation>

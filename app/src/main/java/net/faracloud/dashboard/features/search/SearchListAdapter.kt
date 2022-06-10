@@ -13,11 +13,11 @@ import kotlinx.android.synthetic.main.row_search_list.view.*
 import net.faracloud.dashboard.R
 import java.util.*
 import kotlin.collections.ArrayList
-
-class SearchListAdapter(private var data: ArrayList<String>) :
+//SearchRecycleViewViewRowEntity  String
+class SearchListAdapter(private var data: ArrayList<SearchRecycleViewViewRowEntity>) :
     RecyclerView.Adapter<RecyclerView.ViewHolder>(), Filterable {
 
-    var filterList = ArrayList<String>()
+    var filterList = ArrayList<SearchRecycleViewViewRowEntity>()
 
     lateinit var mContext: Context
 
@@ -47,11 +47,10 @@ class SearchListAdapter(private var data: ArrayList<String>) :
 
         val params = holder.itemView.layoutParams as RecyclerView.LayoutParams
         with(holder.itemView) {
-            searchCheckBox.text = filterList[position]
+            searchCheckBox.text = filterList[position].title
         }
         holder.itemView.setOnClickListener {
-
-            Log.d("Selected:", filterList[position])
+            Log.d("Selected:", filterList[position].title)
         }
     }
 
@@ -63,9 +62,9 @@ class SearchListAdapter(private var data: ArrayList<String>) :
                 if (charSearch.isEmpty()) {
                     filterList = data
                 } else {
-                    val resultList = ArrayList<String>()
+                    val resultList = ArrayList<SearchRecycleViewViewRowEntity>()
                     for (row in data) {
-                        if (row.lowercase(Locale.ROOT)
+                        if (row.title.lowercase(Locale.ROOT)
                                 .contains(charSearch.lowercase(Locale.ROOT))
                         ) {
                             resultList.add(row)
@@ -80,7 +79,7 @@ class SearchListAdapter(private var data: ArrayList<String>) :
 
             @Suppress("UNCHECKED_CAST")
             override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                filterList = results?.values as ArrayList<String>
+                filterList = results?.values as ArrayList<SearchRecycleViewViewRowEntity>
                 notifyDataSetChanged()
             }
 

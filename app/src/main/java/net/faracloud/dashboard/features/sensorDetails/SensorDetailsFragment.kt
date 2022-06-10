@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -43,6 +44,12 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //backPressed()
+                findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
+            }
+        })
         backButton.setOnClickListener {
             findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
         }

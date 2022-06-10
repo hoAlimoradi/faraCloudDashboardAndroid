@@ -6,24 +6,21 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
+import androidx.core.app.Person.fromBundle
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_sensors_list.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
-import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_sensors_list.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.BundleKeys
 import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
-import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
 
 @AndroidEntryPoint
 class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewModel>(),
@@ -38,7 +35,6 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     override val baseViewModel: BuilderViewModel<SensorsListState>
         get() = viewModel
 
-
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -50,18 +46,32 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val originIsMap: Boolean = arguments?.getBoolean(BundleKeys.startFromMap) == true
+        loge("originIsMap" + originIsMap)
+        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
+            override fun handleOnBackPressed() {
+                //backPressed()
+                if(originIsMap) {
+                    //findNavController().popBackStack()
+                    getFindViewController()?.navigateUp()
+                    findNavController().navigate(R.id.sensorsListFragmentActionPopBackToMapFragment)
+                } else {
+                    findNavController().navigate(R.id.sensorsListFragmentActionPopBackToComponentFragment)
+                }
+            }
+        })
 
-//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                backPressed()
-//            }
-//        })
 
         backButton.setOnClickListener {
-            findNavController().navigate(R.id.sensorsListFragmentActionPopBack)
-        }
+            if(originIsMap) {
+                //findNavController().popBackStack()
+                getFindViewController()?.navigateUp()
+                findNavController().navigate(R.id.sensorsListFragmentActionPopBackToMapFragment)
+            } else {
+                findNavController().navigate(R.id.sensorsListFragmentActionPopBackToComponentFragment)
+            }
 
-        getSensorsFromDataBase()
+        }
 
         val manager = LinearLayoutManager(context)
 
@@ -75,6 +85,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     }
     override fun onResume() {
         super.onResume()
+        getSensorsFromDataBase()
         //viewModel.getSensors()
     }
 

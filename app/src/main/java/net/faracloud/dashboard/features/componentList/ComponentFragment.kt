@@ -8,21 +8,17 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.viewModelScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_component.*
+import kotlinx.coroutines.launch
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
-import androidx.navigation.fragment.findNavController
-import kotlinx.android.synthetic.main.fragment_component.*
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.launch
+import net.faracloud.dashboard.features.BundleKeys
 import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
-import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
 
 @AndroidEntryPoint
 class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
@@ -69,7 +65,7 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
             viewModel.getComponentsFromDataBase()
         }*/
         getComponentsFromDataBase()
-        observeComponents()
+        //observeComponents()
 
         val manager = LinearLayoutManager(context)
 
@@ -83,6 +79,7 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     }
     override fun onResume() {
         super.onResume()
+        observeComponents()
         //viewModel.getcomponents()
     }
 
@@ -157,7 +154,9 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                 componentRecycleView.visibility = View.VISIBLE
                 componentLoading.visibility = View.GONE
                 componentRecycleEmptyView.visibility = View.GONE
-                getFindViewController()?.navigate(R.id.navigateToSensorListFragment)
+                val bundle = Bundle()
+                bundle.putBoolean(BundleKeys.startFromMap,false)
+                getFindViewController()?.navigate(R.id.navigateToSensorListFragment, bundle)
             }
 
         }

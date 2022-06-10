@@ -20,6 +20,7 @@ import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.BundleKeys
 import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 import org.json.JSONException
 import org.json.JSONObject
@@ -165,18 +166,19 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
 
     public override fun onResume() {
         super.onResume()
-        Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
+       /* Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
         if (map != null) {
             map.onResume()
-        }
+        }*/
+        getComponentsFromDataBase()
     }
 
     public override fun onPause() {
         super.onPause()
-        Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
+        /*Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
         if (map != null) {
             map.onPause()
-        }
+        }*/
     }
     private fun getComponentsFromDataBase() {
         viewModel.getComponentsFromDataBase().observe(viewLifecycleOwner) {
@@ -218,7 +220,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
     }
 
     private fun showComponentOnMap(modelList: List<ComponentEntity>) {
-        //lateinit var fusedLocationClient: FusedLocationProviderClient
+
         for (i in modelList.indices) {
             overlayItem = ArrayList()
             overlayItem.add(
@@ -245,8 +247,10 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             marker.infoWindow = CustomInfoWindow(map)
             marker.setOnMarkerClickListener { item, arg1 ->
                 //item.showInfoWindow()
-                /*getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromMapToSensorListFragment)*/
+                //getFindViewController()?.navigateUp()
+                val bundle = Bundle()
+                bundle.putBoolean(BundleKeys.startFromMap,true)
+                getFindViewController()?.navigate(R.id.navigateFromMapToSensorListFragment, bundle)
                 true
             }
 
@@ -261,11 +265,14 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
         when (state) {
             MapState.IDLE -> {
                 loge("IDLE")
+                getComponentsFromDataBase()
             }
             MapState.START_DETAIL -> {
                 loge("START_DETAIL")
+                map.invalidate()
                 getFindViewController()?.navigateUp()
                 getFindViewController()?.navigate(R.id.navigateFromMapToSettingFragment)
+
             }
             MapState.START_SETTING -> {
                 loge("FORCE_UPDATE")

@@ -18,7 +18,6 @@ class SensorRepositoryImpl @Inject constructor(
     private val sensorDao: SensorDao
 ): SensorRepository {
 
-    //
     override suspend fun getSensorsFromApi(providerId: String,
                                            token: String): Response<RemoteModelProviders> {
         return providerService.getCatalog(providerId,token)

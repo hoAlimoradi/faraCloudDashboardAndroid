@@ -48,23 +48,6 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*
-        var list: ArrayList<String> = ArrayList()
-        list.add("test 1")
-        list.add("test 2")
-        list.add("test 12")
-        list.add("test 1x")
-        list.add("test 2x")
-
-        adapter = SearchListAdapter(list)
-        val manager = LinearLayoutManager(context)
-        adapter?.let {
-            searchListRecycleView.adapter = it
-            searchListRecycleView.layoutManager = manager
-        }
-
-        */
-
         when(type) {
             SearchListType.ALL -> {
                 observeAllList()
@@ -82,23 +65,14 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
                 observeProviders()
             }
         }
-
-
-
-
-
-
-        viewModel.queryTextChange.observe(viewLifecycleOwner){
+         viewModel.queryTextChange.observe(viewLifecycleOwner){
             loge(" adapter?.filter?.filter(it) newText: " + it)
             adapter?.filter?.filter(it)
         }
-
     }
-
     override fun onResume() {
         super.onResume()
     }
-
     private fun observeAllList() {
         viewModel.viewModelScope.launch {
             val arrayList  = ArrayList<SearchRecycleViewViewRowEntity>()
@@ -112,7 +86,6 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
                                 enable = it.enable))
                         }
                     }
-
                 }
             }
             delay(10)
@@ -157,14 +130,6 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
             viewModel.getSensors().observe(viewLifecycleOwner) {
                 it?.let { data ->
                     data.let { list ->
-                        /*
-                        val arrayList  = ArrayList<String>()
-                        list.forEach {
-                            arrayList.add(it.sensor!!)
-                        }
-
-                        adapter = SearchListAdapter(arrayList)
-                        */
                         val arrayList  = ArrayList<SearchRecycleViewViewRowEntity>()
                         list.forEach {
                             Log.e(" it.sensor ", it.sensor!!)
@@ -220,12 +185,7 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
             viewModel.getComponents().observe(viewLifecycleOwner) {
                 it?.let { data ->
                     data.let { list ->
-                        /*
-                        val arrayList  = ArrayList<String>()
-                        list.forEach {
-                            arrayList.add(it.name!!)
-                        }
-                        */
+
                         val arrayList  = ArrayList<SearchRecycleViewViewRowEntity>()
                         list.forEach {
                             Log.e(" it. Components ", it.name!!)

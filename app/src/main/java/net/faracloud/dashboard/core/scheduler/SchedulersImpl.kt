@@ -17,7 +17,5 @@ class SchedulersImpl @Inject constructor() : Schedulers {
 
     override val unconfined: CoroutineDispatcher
         get() = Dispatchers.Unconfined
-    /*override fun newThread(name: String): CoroutineDispatcher {
-        TODO("Not yet implemented")
-    }*/
+
 }

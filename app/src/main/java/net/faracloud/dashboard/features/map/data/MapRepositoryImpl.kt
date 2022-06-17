@@ -22,31 +22,4 @@ class MapRepositoryImpl @Inject constructor(
 
     override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()
 
-/*    override suspend fun getAllProviders(): Flow<List<ProviderEntity>> = flow {
-        providerDao.getProviders()
-    }
-
-    override suspend fun insertProvider(provider: ProviderEntity) = providerDao.insertProvider(provider)
-
-    override suspend fun deleteProvider(provider: ProviderEntity) = providerDao.delete(provider)
-
-    override suspend fun deleteAllProviders() = providerDao.deleteProviders()*/
-    /*
-     ,
-     private val providerService: ProviderService,
-     private val observationListRemoteRepoMapper: Mapper<@JvmSuppressWildcards List<ObservationRemoteModel>,
-             @JvmSuppressWildcards List<ObservationRepoModel>>,
-
-     override suspend fun getSensorObservationsFromApi(
-         providerId: String,
-         sensorId: String
-     ): Flow<List<ObservationRepoModel>> {
-         getResourceFromApiResponse(
-             providerService.getObservations()
-         ) {
-             observationListRemoteRepoMapper.map(it.data)
-         }
-
-
-     }*/
 }

@@ -1,7 +1,5 @@
 package net.faracloud.dashboard.features.search
 
-import net.faracloud.dashboard.features.setting.SettingState
-
 
 import android.content.Context
 import androidx.lifecycle.LiveData
@@ -17,7 +15,6 @@ import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.features.search.data.SearchRepository
-import java.util.*
 import javax.inject.Inject
 
 @HiltViewModel
@@ -27,10 +24,6 @@ class SearchViewModel @Inject constructor(
     @ApplicationContext private val context: Context
 ) : BuilderViewModel<SearchState>(SearchState.IDLE) {
     val queryTextChange = MutableLiveData<String>()
-
-
-
-    //private val sensorsLiveData: LiveData<List<SensorEntity>> = repository.getSensors()
 
     val sensorsMutableLiveData = MutableLiveData<List<SensorEntity>>()
     val componentsMutableLiveData = MutableLiveData<List<ComponentEntity>>()
@@ -64,14 +57,6 @@ class SearchViewModel @Inject constructor(
     fun getProviders(): LiveData<List<ProviderEntity>> {
         return repository.getProviders()
     }
-
-   /* val profile = MutableLiveData<ProfileData>()
-
-    val user = MutableLiveData<CurrentUser>()
-
-    val title = profile.combineWith(user) { profile, user ->
-        "${profile.job} ${user.name}"
-    }*/
 
     fun <T, K, R> LiveData<T>.combineWith(
         liveData: LiveData<K>,

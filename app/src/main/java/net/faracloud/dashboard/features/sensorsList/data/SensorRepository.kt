@@ -18,6 +18,5 @@ interface SensorRepository {
 
     suspend fun deleteAllSensors()
 
-
     suspend fun getSensorsFromApi(providerId: String,token: String): Response<RemoteModelProviders>
 }

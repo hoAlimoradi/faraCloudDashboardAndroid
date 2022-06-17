@@ -25,5 +25,32 @@ data class ProviderEntity(
         return ""
     }
 }
+/*
+@Parcelize
+@Entity(
+    tableName = "provider_table",
+    foreignKeys = [
+        ForeignKey(entity = ComponentEntity::class,
+            parentColumns = ["providerId"],
+            childColumns = ["providerId"],
+            onDelete = CASCADE)]
+)
+data class ProviderEntity(
+    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    var authorizationToken: String,
+    var createDate: String,
+    var enable: Boolean,
+    var providerId: String,
+    var lastUpdateDevice: String
+) : Parcelable {
+    val formattedCreateDate: String
+        get() {
+            createDate?.let {
+                return DateUtil.changeDateFormat(createDate)
+            }
+            return ""
+        }
+}
 
+ */
 

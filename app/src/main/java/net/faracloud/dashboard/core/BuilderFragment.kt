@@ -37,11 +37,7 @@ abstract class BuilderFragment<S: BuilderViewState, VM : BuilderViewModel<S>> : 
     }
 
     private fun initObserveViewModelState() {
-       /* baseViewModel.viewModelScope.launch {
-            baseViewModel.state.collect {
-                onStateChange(it)
-                baseViewModel.onStateUpdated()
-        }*/
+
         baseViewModel.state.observe(this, Observer {
             onStateChange(it)
             baseViewModel.onStateUpdated()

@@ -10,22 +10,6 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import javax.inject.Singleton
 
-/*@InstallIn(SingletonComponent::class)
-@Module
-object DataBaseModule {
-
-    @Provides
-    @Singleton
-    fun provideDatabase(@ApplicationContext context: Context): DashboardDatabase =
-        DashboardDatabase.create(context)
-
-    @Provides
-    fun provideDao(database: DashboardDatabase): ComponentDao {
-        return database.componentDao()
-    }
-}*/
-
-
 @Module
 @InstallIn(SingletonComponent::class)
 object DataBaseModule {

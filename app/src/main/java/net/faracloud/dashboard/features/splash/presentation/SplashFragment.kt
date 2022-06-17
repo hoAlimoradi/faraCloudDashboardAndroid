@@ -44,9 +44,6 @@ class SplashFragment : BuilderFragment<SplashState, SplashViewModel>() {
             delay(2000)
             checkForTheFirstTimeAppIsLaunched()
         }
-
-
-
     }
 
     private fun checkForTheFirstTimeAppIsLaunched() {
@@ -107,8 +104,7 @@ class SplashFragment : BuilderFragment<SplashState, SplashViewModel>() {
             }
             SplashState.START_ON_BOARDING -> {
                 loge("START_ON_BOARDING")
-                /*getFindViewController()?.navigateUp()
-                getFindViewController()?.navigate(R.id.navigateFromSplashToOnBoardingFragment)*/
+
             }
             SplashState.START_ADD_PROVIDER -> {
                 loge("START_LOGIN")

@@ -9,9 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class ProviderRepositoryImpl @Inject constructor(
     private val providerService: ProviderService,
-    private val providerDao: ProviderDao,
-    private val componentDao: ComponentDao,
-    private val sensorDao: SensorDao
+    private val providerDao: ProviderDao
 )
     : ProviderRepository {
 
@@ -33,7 +31,4 @@ class ProviderRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllProviders() = providerDao.deleteProviders()
 
-  /*  override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
-
-    override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()*/
 }

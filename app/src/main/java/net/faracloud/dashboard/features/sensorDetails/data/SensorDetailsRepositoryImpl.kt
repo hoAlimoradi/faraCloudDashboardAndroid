@@ -16,7 +16,6 @@ class SensorDetailsRepositoryImpl @Inject constructor(
     private val sensorObservationDao: SensorObservationDao,
     private val sensorDao: SensorDao
 ): SensorDetailsRepository {
-
     override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
 
     override suspend fun getObservationsFromApi(
@@ -27,8 +26,6 @@ class SensorDetailsRepositoryImpl @Inject constructor(
         startDate: String?,
         endDate: String?
     ): Response<ObservationRemoteModels> {
-        loge("SensorDetailsRepositoryImpl------------endDate----------")
-        loge(endDate)
         return observationService.getObservations(
             token= token,
             providerId = providerId,
@@ -38,12 +35,6 @@ class SensorDetailsRepositoryImpl @Inject constructor(
             endDate = endDate
         )
     }
-    /*
-    ,
-            startDate = startDate,
-            endDate = endDate
-     */
-
     override fun getAllObservations(): LiveData<List<SensorObservationEntity>> = sensorObservationDao.getSensorObservations()
 
     override suspend fun insertObservation(sensorObservationEntity: SensorObservationEntity): Long  = sensorObservationDao.insertSensorObservation(sensorObservationEntity)

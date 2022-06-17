@@ -66,7 +66,7 @@
     </fragment>
     <fragment
         android:id="@+id/settingFragment"
-        android:name="net.faracloud.dashboard.features.setting.SettingFragment"
+        android:name="net.faracloud.dashboard.features.setting.presentation.SettingFragment"
         android:label="SettingFragment"
         >
         <action
@@ -129,7 +129,7 @@
 
     <fragment
         android:id="@+id/statisticsFragment"
-        android:name="net.faracloud.dashboard.features.statistics.StatisticsFragment"
+        android:name="net.faracloud.dashboard.features.statistics.presentation.StatisticsFragment"
         android:label="StatisticsFragment">
 
         <action
@@ -141,7 +141,7 @@
 
     <fragment
         android:id="@+id/componentFragment"
-        android:name="net.faracloud.dashboard.features.componentList.ComponentFragment"
+        android:name="net.faracloud.dashboard.features.componentList.presentation.ComponentFragment"
         android:label="ComponentFragment">
 
         <action
@@ -163,7 +163,7 @@
 
     <fragment
         android:id="@+id/sensorsListFragment"
-        android:name="net.faracloud.dashboard.features.sensorsList.SensorsListFragment"
+        android:name="net.faracloud.dashboard.features.sensorsList.presentation.SensorsListFragment"
         android:label="SensorsListFragment"
         >
 
@@ -192,7 +192,7 @@
 
     <fragment
         android:id="@+id/sensorDetailsFragment"
-        android:name="net.faracloud.dashboard.features.sensorDetails.SensorDetailsFragment"
+        android:name="net.faracloud.dashboard.features.sensorDetails.presentation.SensorDetailsFragment"
         android:label="ProviderDetailsFragment">
 
         <action

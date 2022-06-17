@@ -59,20 +59,13 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
         }
 
         saveConstraintLayout.setOnClickListener {
-
             val nameValue: String = name.text.toString()
             val tokenValue: String = token.text.toString()
 
             if(nameValue.trim().isNotEmpty()) {
                 if(tokenValue.trim().isNotEmpty()) {
-
                     viewModel.getProviderById(providerTableId).observe(viewLifecycleOwner) {
                         loge("nameValue : " + nameValue)
-                        loge("tokenValue : " + tokenValue)
-                        loge("it.providerId : " + it.providerId)
-                        loge("it.authorizationToken : " + it.authorizationToken)
-                        loge("it.createDate : " + it.createDate)
-                        loge("it.lastUpdateDevice : " + it.lastUpdateDevice)
                         val provider = it
                         provider.providerId = nameValue
                         provider.authorizationToken = tokenValue

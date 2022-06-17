@@ -7,6 +7,5 @@ enum class ProviderState: BuilderViewState {
     LOADING,
     EMPTY,
     EDIT_COMPONENT,
-
     START_COMPONENT_LIST
 }

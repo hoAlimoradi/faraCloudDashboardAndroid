@@ -2,12 +2,10 @@ package net.faracloud.dashboard.core.database
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "component_table")
 data class ComponentEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    //val time: Long,
     val latitude: Double,
     val longitude: Double,
     var createAt: Long?,

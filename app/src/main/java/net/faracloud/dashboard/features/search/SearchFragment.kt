@@ -37,7 +37,7 @@ class SearchFragment :BuilderFragment<SearchState, SearchViewModel>() {
         "Sensors"
     )
 
-    private val viewModel: SearchViewModel by activityViewModels()// viewModels()
+    private val viewModel: SearchViewModel by activityViewModels()
 
     override val baseViewModel: BuilderViewModel<SearchState>
         get() = viewModel

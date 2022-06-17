@@ -14,8 +14,6 @@ data class RemoteModelSensor(
     @SerializedName("component") val component : String,
     @SerializedName("componentType") val componentType : String,
     @SerializedName("componentPublicAccess") val componentPublicAccess : Boolean,
- /*   @SerializedName("technicalDetails") val technicalDetails : TechnicalDetails,
-    @SerializedName("componentTechnicalDetails") val componentTechnicalDetails : ComponentTechnicalDetails,*/
     @SerializedName("createdAt") val createdAt : String,
     @SerializedName("updatedAt") val updatedAt : String,
     @SerializedName("componentCreatedAt") val componentCreatedAt : String,

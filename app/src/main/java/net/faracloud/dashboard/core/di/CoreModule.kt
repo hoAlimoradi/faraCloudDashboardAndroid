@@ -1,6 +1,5 @@
 package net.faracloud.dashboard.core.di
 
-
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityRetainedComponent
@@ -20,7 +19,6 @@ import net.faracloud.dashboard.features.statistics.di.StatisticsModule
     includes = [
         SharedPreferenceModule::class,
         SplashModule::class,
-        //DataBaseModule:: class,
         MapModule::class,
         StatisticsModule::class,
         ProviderModule::class,
@@ -29,7 +27,6 @@ import net.faracloud.dashboard.features.statistics.di.StatisticsModule
         ObservationModule::class,
         SettingModule::class,
         SearchModule::class,
-        //ApiServiceFactoryModule::class,
         SchedulersModule::class
     ]
 )

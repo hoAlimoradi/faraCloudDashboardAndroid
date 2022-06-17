@@ -6,17 +6,13 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
-import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.ProviderEntity
-import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.providers.data.ProviderRepository
-import net.faracloud.dashboard.features.statistics.StatisticsRecycleViewViewRowEntity
 import java.util.*
 import javax.inject.Inject
 
@@ -33,12 +29,6 @@ class ProviderViewModel @Inject constructor(
     private val savedProviderEventChannel = Channel<SavedProviderEvent>()
     val savedProviderEvent = savedProviderEventChannel.receiveAsFlow()
 
-
-   /* val providerRecycleViewViewRowEntityListMutableLiveData =
-        MutableStateFlow<List<ProviderRecycleViewViewRowEntity>?>(null)
-
-
-*/
     fun deleteProvider() {
         viewModelScope.launch {
             //delay(1000)
@@ -88,7 +78,6 @@ class ProviderViewModel @Inject constructor(
         }
     }
 
-    // provider: ProviderEntity
     fun deleteProvider(provider: ProviderEntity) {
         viewModelScope.launch {
             repository.deleteProvider(provider)
@@ -96,9 +85,6 @@ class ProviderViewModel @Inject constructor(
         }
     }
 
-    fun getAllSensors() = repository.getAllSensors()
-
-    fun getAllComponents() = repository.getAllComponents()
 
 
 }

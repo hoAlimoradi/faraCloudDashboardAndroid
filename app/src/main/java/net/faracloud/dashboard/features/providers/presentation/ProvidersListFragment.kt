@@ -116,22 +116,18 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 providerRecycleView.visibility = View.VISIBLE
                 providerRecycleEmptyView.visibility = View.GONE
                 providerLoading.visibility = View.GONE
-
             }
             ProviderState.LOADING -> {
-                loge("LOADING")
                 providerRecycleView.visibility = View.GONE
                 providerRecycleEmptyView.visibility = View.GONE
                 providerLoading.visibility = View.VISIBLE
             }
             ProviderState.EMPTY -> {
-                loge("LOADING")
                 providerRecycleView.visibility = View.GONE
                 providerRecycleEmptyView.visibility = View.VISIBLE
                 providerLoading.visibility = View.GONE
             }
             ProviderState.EDIT_COMPONENT -> {
-                loge("EDIT_COMPONENT")
                 val bundle = Bundle()
                 bundle.putInt(BundleKeys.id, providerTableId)
                 bundle.putString(BundleKeys.providerId, providerId)
@@ -139,14 +135,11 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 getFindViewController()?.navigate(R.id.navigateToEditProviderFragment, bundle)
             }
             ProviderState.START_COMPONENT_LIST -> {
-                loge(" START_COMPONENT_LIST")
-                //getFindViewController()?.navigateUp()
                 val bundle = Bundle()
                 bundle.putString(BundleKeys.providerId, providerId)
                 bundle.putString(BundleKeys.authorizationToken, authorizationToken)
                 getFindViewController()?.navigate(R.id.navigateToComponentFragment, bundle)
             }
-
         }
     }
 

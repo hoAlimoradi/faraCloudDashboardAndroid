@@ -72,12 +72,9 @@ buildscript {
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.38.1'
         classpath "com.google.dagger:hilt-android-gradle-plugin:$hilt_version"
         classpath "androidx.navigation:navigation-safe-args-gradle-plugin:$navigation_component_ver"
-
         classpath "org.jetbrains.kotlin:kotlin-android-extensions:1.5.10"
         classpath "com.google.gms:google-services:$google_services"
         classpath "com.google.firebase:firebase-crashlytics-gradle:$firebase_crashlytics_gradle"
-
-
     }
 }
 task clean(type: Delete) {

@@ -2,7 +2,6 @@ package net.faracloud.dashboard.core.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ComponentDao {
@@ -10,7 +9,6 @@ interface ComponentDao {
     @Transaction
     suspend fun updateComponent(componentEntity: ComponentEntity) {
         componentEntity.let {
-           // deleteLocations() // This deletes previous locations to keep the database small. If you want to store a full location history, remove this line.
             insertComponent(it)
         }
     }

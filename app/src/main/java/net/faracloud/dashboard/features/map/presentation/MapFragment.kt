@@ -1,40 +1,33 @@
 package net.faracloud.dashboard.features.map.presentation
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.viewModelScope
-import com.carto.styles.MarkerStyle
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
+import net.faracloud.dashboard.BuildConfig
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.BundleKeys
-import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 import org.json.JSONException
 import org.json.JSONObject
-import org.neshan.common.model.LatLng
-import org.neshan.mapsdk.model.Marker
-import org.osmdroid.api.IMapController
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.OverlayItem
+import org.osmdroid.views.overlay.TilesOverlay
 import java.io.IOException
-import java.nio.channels.AsynchronousFileChannel.open
 import java.nio.charset.StandardCharsets
 
 
@@ -62,15 +55,16 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        val x: TilesOverlay = map.overlayManager.tilesOverlay
+        map.overlayManager.tilesOverlay.loadingBackgroundColor = android.R.color.black
+        map.overlayManager.tilesOverlay.loadingLineColor = Color.argb(255,0,255,0)
         providersButton.setOnClickListener {
           viewModel.navigateToSetting()
         }
-
         settingsImageButton.setOnClickListener {
             viewModel.navigateToDetail()
         }
-
         searchImageButton.setOnClickListener {
             viewModel.navigateToSearch()
         }
@@ -164,7 +158,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
         }
     }
 
-    public override fun onResume() {
+    override fun onResume() {
         super.onResume()
        /* Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
         if (map != null) {
@@ -173,47 +167,36 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
         getComponentsFromDataBase()
     }
 
-    public override fun onPause() {
-        super.onPause()
-        /*Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
-        if (map != null) {
-            map.onPause()
-        }*/
-    }
     private fun getComponentsFromDataBase() {
         viewModel.getComponentsFromDataBase().observe(viewLifecycleOwner) {
             it?.let { data ->
                 data.let { list ->
 
-                    //val geoPoint = GeoPoint(-6.3035467, 106.8693513)
-                    val firstComponent = list.first()
-                    val geoPoint = GeoPoint(firstComponent.latitude, firstComponent.longitude)
-                    map.setMultiTouchControls(true)
-                    map.controller.animateTo(geoPoint)
-                    map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
-                    map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+                    if(list.isNullOrEmpty()) {
+                        val geoPoint = GeoPoint(35.695706, 51.400060)
+                        map.setMultiTouchControls(true)
+                        map.controller.animateTo(geoPoint)
+                        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+                        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-                    mapController = map.controller as MapController
-                    mapController.setCenter(geoPoint)
-                    mapController.zoomTo(15)
+                        mapController = map.controller as MapController
+                        mapController.setCenter(geoPoint)
+                        mapController.zoomTo(15)
+                        map.invalidate()
+                    } else {
+                        val firstComponent = list.first()
+                        val geoPoint = GeoPoint(firstComponent.latitude, firstComponent.longitude)
+                        map.setMultiTouchControls(true)
+                        map.controller.animateTo(geoPoint)
+                        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
+                        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-                    showComponentOnMap(list)
-                    val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                        mapController = map.controller as MapController
+                        mapController.setCenter(geoPoint)
+                        mapController.zoomTo(15)
 
-                    it.forEach{ componentEntity ->
-                        loge("getComponentsFromDataBase in map")
-                        loge(componentEntity.providerId)
-                        /*arrayList.add(
-                            ProviderRecycleViewViewRowEntity(
-                                title = componentEntity.name!!,
-                                authorizationToken = "",
-                                enable = componentEntity.enable
-                            )
-                        )*/
-
-
+                        showComponentOnMap(list)
                     }
-
                 }
             }
         }

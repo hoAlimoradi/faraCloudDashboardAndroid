@@ -1,5 +1,6 @@
 package net.faracloud.dashboard.core
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -57,5 +58,10 @@ abstract class BuilderFragment<S: BuilderViewState, VM : BuilderViewModel<S>> : 
         }
         return local
     }
-
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        for (fragment in requireFragmentManager().fragments) {
+            fragment.onActivityResult(requestCode, resultCode, data)
+        }
+    }*/
 }

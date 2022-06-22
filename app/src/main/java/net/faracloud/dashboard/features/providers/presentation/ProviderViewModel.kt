@@ -52,13 +52,19 @@ class ProviderViewModel @Inject constructor(
             state.value = ProviderState.START_COMPONENT_LIST
         }*/
     }
+
+    fun getTenants() = repository.getAllTenants()
+
+    fun getTenantWithProviders(tenantName: String) =  repository.getTenantWithProviders(tenantName)
+
     fun getProviders() = repository.getAllProviders()
 
-    fun insertProvider(name: String, token: String) {
+    fun insertProvider(tenant: String,name: String, token: String) {
         viewModelScope.launch {
             repository.insertProvider(
                 ProviderEntity(
                     providerId = name,
+                    tenantName = tenant,
                     authorizationToken = token,
                     enable = false,
                     createDate = Date().toString(),
@@ -70,7 +76,6 @@ class ProviderViewModel @Inject constructor(
 
     fun getProviderByProviderId(name: String): LiveData<ProviderEntity> = repository.getProviderByProviderId(name)
 
-    fun getProviderById(id: Int): LiveData<ProviderEntity> = repository.getProviderById(id)
 
     fun updateProvider(provider: ProviderEntity) {
         viewModelScope.launch {

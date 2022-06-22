@@ -11,11 +11,13 @@ import java.util.*
 @Parcelize
 @Entity(tableName = "provider_table")
 data class ProviderEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+   // @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = false)
+    var providerId: String,
+    val tenantName: String,
     var authorizationToken: String,
     var createDate: String,
     var enable: Boolean,
-    var providerId: String,
     var lastUpdateDevice: String
 ): Parcelable {
     val formattedCreateDate : String get() {

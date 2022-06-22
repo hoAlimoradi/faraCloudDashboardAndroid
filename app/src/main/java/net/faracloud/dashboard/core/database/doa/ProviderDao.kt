@@ -1,8 +1,8 @@
-package net.faracloud.dashboard.core.database
+package net.faracloud.dashboard.core.database.doa
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
+import net.faracloud.dashboard.core.database.ProviderEntity
 
 @Dao
 interface ProviderDao {
@@ -24,15 +24,15 @@ interface ProviderDao {
     @Query("DELETE FROM provider_table")
     suspend fun deleteProviders()
 
-    @Query("SELECT * FROM provider_table ORDER BY id")
+    @Query("SELECT * FROM provider_table ORDER BY providerId")
     fun getProviders(): LiveData<List<ProviderEntity>>
 
     @Query("SELECT * FROM provider_table WHERE providerId = :providerId")
     fun getProviderByProviderId(providerId: String): LiveData<ProviderEntity>
 
 
-    @Query("SELECT * FROM provider_table WHERE id = :id")
-    fun getProviderById(id: Int): LiveData<ProviderEntity>
+    @Query("SELECT * FROM provider_table WHERE providerId = :id")
+    fun getProviderById(id: String): LiveData<ProviderEntity>
 }
 
 

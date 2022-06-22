@@ -1,8 +1,8 @@
-package net.faracloud.dashboard.core.database
+package net.faracloud.dashboard.core.database.doa
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import kotlinx.coroutines.flow.Flow
+import net.faracloud.dashboard.core.database.SensorEntity
 
 @Dao
 interface SensorDao {

@@ -1,14 +1,11 @@
 package net.faracloud.dashboard.features.componentList.data
 
-import net.faracloud.dashboard.features.sensorsList.data.SensorRepository
-
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.api.ProviderService
-import net.faracloud.dashboard.core.database.ComponentDao
+import net.faracloud.dashboard.core.database.doa.ComponentDao
 import net.faracloud.dashboard.core.database.ComponentEntity
-import net.faracloud.dashboard.core.database.SensorDao
+import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.database.SensorEntity
-import net.faracloud.dashboard.core.model.RemoteModelProvider
 import net.faracloud.dashboard.core.model.RemoteModelProviders
 import retrofit2.Response
 import javax.inject.Inject

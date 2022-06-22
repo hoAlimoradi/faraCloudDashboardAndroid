@@ -12,7 +12,7 @@ import net.faracloud.dashboard.features.sensorsList.data.SensorRepositoryImpl
 abstract class SensorModule {
 
     /**
-     * Bind ProviderRepository
+     * Bind SensorRepository
      */
     @Binds
     abstract fun registerRepo(repository: SensorRepositoryImpl): SensorRepository

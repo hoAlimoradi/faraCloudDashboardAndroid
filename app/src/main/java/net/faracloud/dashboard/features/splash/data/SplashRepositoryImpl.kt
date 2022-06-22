@@ -4,7 +4,7 @@ import android.app.Application
 import androidx.lifecycle.LiveData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import net.faracloud.dashboard.core.database.ProviderDao
+import net.faracloud.dashboard.core.database.doa.ProviderDao
 import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import net.faracloud.dashboard.features.splash.domain.SplashRepository

@@ -1,14 +1,9 @@
 package net.faracloud.dashboard.features.map.data
 
 import androidx.lifecycle.LiveData
-import kotlinx.coroutines.InternalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
-import net.faracloud.dashboard.core.api.ProviderService
-import net.faracloud.dashboard.core.database.ComponentDao
+import net.faracloud.dashboard.core.database.doa.ComponentDao
 import net.faracloud.dashboard.core.database.ComponentEntity
-import net.faracloud.dashboard.core.database.ProviderDao
-import net.faracloud.dashboard.core.database.ProviderEntity
+import net.faracloud.dashboard.core.database.doa.ProviderDao
 import net.faracloud.dashboard.features.map.domain.MapRepository
 import javax.inject.Inject
 

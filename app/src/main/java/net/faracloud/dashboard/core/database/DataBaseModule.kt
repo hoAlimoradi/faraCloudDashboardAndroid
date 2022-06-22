@@ -1,13 +1,15 @@
 package net.faracloud.dashboard.core.database
 
 import android.app.Application
-import android.content.Context
 import androidx.room.Room
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import net.faracloud.dashboard.core.database.doa.ComponentDao
+import net.faracloud.dashboard.core.database.doa.ProviderDao
+import net.faracloud.dashboard.core.database.doa.SensorDao
+import net.faracloud.dashboard.core.database.doa.SensorObservationDao
 import javax.inject.Singleton
 
 @Module
@@ -24,23 +26,29 @@ object DataBaseModule {
     }
 
     @Provides
-    fun provideComponentDao(db: DashboardDatabase): ComponentDao{
+    fun provideComponentDao(db: DashboardDatabase): ComponentDao {
         return db.componentDao()
     }
 
     @Provides
-    fun provideProviderDao(db: DashboardDatabase): ProviderDao{
+    fun provideProviderDao(db: DashboardDatabase): ProviderDao {
         return db.providerDao()
     }
 
     @Provides
-    fun provideSensorDao(db: DashboardDatabase): SensorDao{
+    fun provideSensorDao(db: DashboardDatabase): SensorDao {
         return db.sensorDao()
     }
 
     @Provides
-    fun provideSensorObservationDao(db: DashboardDatabase): SensorObservationDao{
+    fun provideSensorObservationDao(db: DashboardDatabase): SensorObservationDao {
         return db.sensorObservationDao()
+    }
+
+
+    @Provides
+    fun provideTenantDao(db: DashboardDatabase): TenantDao{
+        return db.tenantDao()
     }
 
 

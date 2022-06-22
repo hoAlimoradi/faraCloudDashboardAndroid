@@ -14,6 +14,7 @@ import net.faracloud.dashboard.features.sensorDetails.di.ObservationModule
 import net.faracloud.dashboard.features.sensorsList.di.SensorModule
 import net.faracloud.dashboard.features.setting.di.SettingModule
 import net.faracloud.dashboard.features.statistics.di.StatisticsModule
+import net.faracloud.dashboard.features.tenant.di.TenantModule
 
 @Module(
     includes = [
@@ -27,7 +28,8 @@ import net.faracloud.dashboard.features.statistics.di.StatisticsModule
         ObservationModule::class,
         SettingModule::class,
         SearchModule::class,
-        SchedulersModule::class
+        SchedulersModule::class,
+        TenantModule::class
     ]
 )
 @InstallIn(ActivityRetainedComponent::class)

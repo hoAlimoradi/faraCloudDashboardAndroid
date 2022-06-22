@@ -2,6 +2,9 @@ package net.faracloud.dashboard.features.search.data
 
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.database.*
+import net.faracloud.dashboard.core.database.doa.ComponentDao
+import net.faracloud.dashboard.core.database.doa.ProviderDao
+import net.faracloud.dashboard.core.database.doa.SensorDao
 import javax.inject.Inject
 import javax.inject.Singleton
 

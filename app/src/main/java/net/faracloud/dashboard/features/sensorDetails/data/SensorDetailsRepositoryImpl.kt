@@ -2,12 +2,11 @@ package net.faracloud.dashboard.features.sensorDetails.data
 
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.api.ObservationService
-import net.faracloud.dashboard.core.database.SensorDao
+import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.database.SensorEntity
-import net.faracloud.dashboard.core.database.SensorObservationDao
+import net.faracloud.dashboard.core.database.doa.SensorObservationDao
 import net.faracloud.dashboard.core.database.SensorObservationEntity
 import net.faracloud.dashboard.core.model.ObservationRemoteModels
-import net.faracloud.dashboard.extentions.loge
 import retrofit2.Response
 import javax.inject.Inject
 

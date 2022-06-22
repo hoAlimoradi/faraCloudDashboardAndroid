@@ -62,6 +62,7 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
             val nameValue: String = name.text.toString()
             val tokenValue: String = token.text.toString()
 
+            /*
             if(nameValue.trim().isNotEmpty()) {
                 if(tokenValue.trim().isNotEmpty()) {
                     viewModel.getProviderById(providerTableId).observe(viewLifecycleOwner) {
@@ -81,6 +82,8 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
             }else{
                 Toast.makeText(it.context, "Please enter name ! ", Toast.LENGTH_SHORT).show()
             }
+
+             */
 
         }
 

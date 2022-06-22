@@ -111,11 +111,16 @@
         android:label="AddProviderFragment"
         >
         <action
-            android:id="@+id/addProviderFragmentActionPopBack"
-            app:destination="@id/providersListFragment"
+            android:id="@+id/navigateToAddTenantFragment"
+            app:destination="@id/addTenantFragment"
              />
     </fragment>
-
+    <fragment
+        android:id="@+id/addTenantFragment"
+        android:name="net.faracloud.dashboard.features.tenant.presentation.TenantFragment"
+        android:label="TenantFragment"
+        >
+    </fragment>
     <fragment
         android:id="@+id/editProviderFragment"
         android:name="net.faracloud.dashboard.features.providers.presentation.EditProviderFragment"

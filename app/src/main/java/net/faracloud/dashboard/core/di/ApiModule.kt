@@ -2,6 +2,7 @@ package net.faracloud.dashboard.core.di
 
 import android.content.Context
 import android.os.Build
+import android.preference.PreferenceManager
 import com.chuckerteam.chucker.api.ChuckerCollector
 import com.chuckerteam.chucker.api.ChuckerInterceptor
 import com.chuckerteam.chucker.api.RetentionManager
@@ -45,12 +46,14 @@ object ApiModule {
 
     @Provides
     @Singleton
-    fun provideOkHttpClient(logging: HttpLoggingInterceptor, chuckerInterceptor: ChuckerInterceptor): OkHttpClient {
+    fun provideOkHttpClient(logging: HttpLoggingInterceptor,
+                            chuckerInterceptor: ChuckerInterceptor,
+                            hostSelectionInterceptor: HostSelectionInterceptor ): OkHttpClient {
         //  OkHttpClient.Builder() getOkHttpBuilder()
         return getOkHttpBuilder()
+            .addInterceptor(hostSelectionInterceptor)
             .addInterceptor(logging)
             .addInterceptor(chuckerInterceptor)
-
             .build()
     }
 
@@ -75,6 +78,19 @@ object ApiModule {
     fun provideObservationService(retrofit: Retrofit): ObservationService {
         return retrofit.create(ObservationService::class.java)
     }
+
+    @Singleton
+    @Provides
+    fun provideHostSelectionInterceptor(@ApplicationContext context: Context): HostSelectionInterceptor {
+        val sharedPrefs = PreferenceManager.getDefaultSharedPreferences(context)
+        var apiBaseUrl = BaseUrl
+        sharedPrefs.getString("PRE_BASE_URL", "")?.let {
+            apiBaseUrl = it
+        }
+        val hostSelectionInterceptor = HostSelectionInterceptor(apiBaseUrl)
+        return hostSelectionInterceptor
+    }
+
 
     @Singleton
     @Provides

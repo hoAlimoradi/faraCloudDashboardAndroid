@@ -14,5 +14,13 @@ class SettingViewModel @Inject constructor(
     private val repository: SettingRepository,
     @ApplicationContext private val context: Context
 ) : BuilderViewModel<SettingState>(SettingState.IDLE) {
+      fun getBaseUrl(): String {
+        return repository.getBaseUrl()
+    }
+
+      fun setBaseUrl(baseUrl: String) {
+          repository.setBaseUrl(baseUrl)
+
+    }
 
 }

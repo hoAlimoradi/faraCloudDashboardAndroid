@@ -11,7 +11,7 @@ class AppPreferencesImpl @Inject constructor(
     @ApplicationContext private val context: Context
 ) :
     PreferenceHelper {
-    private val mPrefs: SharedPreferences = context.getSharedPreferences("Soodinow_Pref", Context.MODE_PRIVATE)
+    private val mPrefs: SharedPreferences = context.getSharedPreferences("fara_cloud_Pref", Context.MODE_PRIVATE)
 
     override fun getAccessToken(): String {
         val token = mPrefs.getString(PREF_KEY_ACCESS_TOKEN,null) ?: ""
@@ -53,7 +53,19 @@ class AppPreferencesImpl @Inject constructor(
         return mPrefs.edit().remove(PREF_KEY_ACCESS_TOKEN).remove(PREF_KEY_REFRESH_TOKEN).commit()
     }
 
+    override fun setBaseUrl(baseUrl: String) {
+
+        mPrefs.edit()
+            .putString(PRE_BASE_URL, baseUrl)
+            .apply()
+    }
+
+    override fun getBaseUrl(): String {
+        return mPrefs.getString(PRE_BASE_URL,null) ?: "https://iotapi.faracloud.ir/"
+    }
+
     companion object {
+        private const val PRE_BASE_URL: String = "PRE_BASE_URL"
         private const val PREF_KEY_ACCESS_TOKEN: String = "PREF_KEY_ACCESS_TOKEN"
         private const val PREF_KEY_REFRESH_TOKEN: String = "PREF_KEY_REFRESH_TOKEN"
         private const val PREF_KEY_MOBILE: String = "PREF_KEY_MOBILE"

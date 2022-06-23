@@ -16,7 +16,7 @@ import javax.inject.Provider
     TenantEntity::class,
     SensorEntity::class,
     SensorObservationEntity::class],
-    version = 9)
+    version = 10)
 abstract class DashboardDatabase : RoomDatabase() {
 
     abstract fun componentDao(): ComponentDao
@@ -30,14 +30,4 @@ abstract class DashboardDatabase : RoomDatabase() {
         @ApplicationScope private val applicationScope: CoroutineScope
     ) : RoomDatabase.Callback()
 
-   /* companion object {
-        fun create(context: Context): DashboardDatabase {
-
-            return Room.databaseBuilder(
-                context,
-                DashboardDatabase::class.java,
-                DB_NAME
-            ).build()
-        }
-    }*/
 }

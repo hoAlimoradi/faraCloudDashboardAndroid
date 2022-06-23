@@ -20,4 +20,8 @@ interface PreferenceHelper {
     fun setMobile(mobile: String)
 
     fun clearToken(): Boolean
+
+    fun setBaseUrl(baseUrl: String)
+
+    fun getBaseUrl(): String
 }

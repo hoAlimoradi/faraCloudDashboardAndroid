@@ -17,7 +17,6 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
-import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 
 class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
 
@@ -93,7 +92,7 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
                 it?.let { data ->
                     data.let { list ->
                         list.forEach {
-                            arrayList.add(SearchRecycleViewViewRowEntity(title = it.name!!,
+                            arrayList.add(SearchRecycleViewViewRowEntity(title = it.nameComponent!!,
                                 type = SearchListType.SENSOR,
                                 enable = it.enable))
                         }
@@ -188,8 +187,8 @@ class SearchListFragment : BuilderFragment<SearchState, SearchViewModel>() {
 
                         val arrayList  = ArrayList<SearchRecycleViewViewRowEntity>()
                         list.forEach {
-                            Log.e(" it. Components ", it.name!!)
-                            arrayList.add(SearchRecycleViewViewRowEntity(title = it.name!!,
+                            Log.e(" it. Components ", it.nameComponent!!)
+                            arrayList.add(SearchRecycleViewViewRowEntity(title = it.nameComponent!!,
                                 type = SearchListType.SENSOR,
                                 enable = it.enable))
                         }

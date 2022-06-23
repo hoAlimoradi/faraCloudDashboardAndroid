@@ -13,3 +13,4 @@ data class TenantWithProviders(
     )
     val providers: List<ProviderEntity>
 )
+

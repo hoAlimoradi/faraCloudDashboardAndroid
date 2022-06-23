@@ -10,5 +10,6 @@ class MyApplication : Application() {
     override fun onCreate() {
         super.onCreate()
         Stetho.initializeWithDefaults(this)
+        //Mapir.getInstance(this, "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjAzOWFhNzc4MDI4Yzk5NDQ2YmYzMDJmOTdkYzM1MWNmODMyMWRiZGIzYWViNzExNTQ3MDczN2M2MjkyMGI0MDM3ODNiMGIxNGI2NTkwMzg3In0.eyJhdWQiOiIxNzk4MyIsImp0aSI6IjAzOWFhNzc4MDI4Yzk5NDQ2YmYzMDJmOTdkYzM1MWNmODMyMWRiZGIzYWViNzExNTQ3MDczN2M2MjkyMGI0MDM3ODNiMGIxNGI2NTkwMzg3IiwiaWF0IjoxNjUyOTE0NzM0LCJuYmYiOjE2NTI5MTQ3MzQsImV4cCI6MTY1NTUwNjczNCwic3ViIjoiIiwic2NvcGVzIjpbImJhc2ljIl19.lUFvX7ciMENI9-FFWAAvnyRnSQedqYPed3cdrecSc2Y3DIJlJ0-axCBe16Tp8y9zcNhy-CF4ZyHjsv4wUPCKt4hvzGSYseffzGCKInu7s7dfE1WSLrLcB6cu1gYasW9_TB9tTtxh8QVOaeck141bAtTg4WaFuTzqd9p2UTtkKDZwNiAG8bY1kGtP_VlVNc1EpzGYhOlVNJT6oSbg02XYYqQg5dhEDN1Z-JDlAIqmTTVThj-N-QG51H9Jkybt8ri1upfFEAYWILTnRas96o8wft365a_hOLHz4la63mXfdV__x72JpgCfP5va6PYUxZdHkVcXoCSzVeA8CVc9ACinow");
     }
 }

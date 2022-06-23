@@ -1,5 +1,6 @@
 package net.faracloud.dashboard.features.map.presentation
 
+import android.graphics.BitmapFactory
 import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
@@ -9,6 +10,7 @@ import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.viewModels
+import com.carto.styles.*
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.fragment_map.*
 import net.faracloud.dashboard.BuildConfig
@@ -20,6 +22,10 @@ import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.BundleKeys
 import org.json.JSONException
 import org.json.JSONObject
+import org.neshan.common.model.LatLng
+import org.neshan.mapsdk.MapView
+import org.neshan.mapsdk.internal.utils.BitmapUtils
+import org.neshan.mapsdk.model.Marker
 import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
@@ -32,7 +38,7 @@ import java.nio.charset.StandardCharsets
 
 
 @AndroidEntryPoint
-class MapFragment : BuilderFragment<MapState, MapViewModel>() {
+class MapFragment : BuilderFragment<MapState, MapViewModel>() , MapView.OnMarkerClickListener{
 
     var modelMainList: MutableList<ModelMain> = ArrayList()
     lateinit var mapController: MapController
@@ -55,10 +61,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        val x: TilesOverlay = map.overlayManager.tilesOverlay
-        map.overlayManager.tilesOverlay.loadingBackgroundColor = android.R.color.black
-        map.overlayManager.tilesOverlay.loadingLineColor = Color.argb(255,0,255,0)
+
         providersButton.setOnClickListener {
           viewModel.navigateToSetting()
         }
@@ -69,63 +72,46 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             viewModel.navigateToSearch()
         }
 
-       // getLocationMarker()
-      /*
-         val geoPoint = GeoPoint(-6.3035467, 106.8693513)
-        map.setMultiTouchControls(true)
-        map.controller.animateTo(geoPoint)
-        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
-        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+        //set map focus position
+       // map.isTrafficEnabled = true //  .setFocalPointPosition(, 0f)
+        map.setZoom(14.5f, 0f)
+        val animSt = AnimationStyleBuilder()
+            .let {
+                it.fadeAnimationType = AnimationType.ANIMATION_TYPE_SMOOTHSTEP
+                it.sizeAnimationType = AnimationType.ANIMATION_TYPE_SPRING
+                it.phaseInDuration = 0.5f
+                it.phaseOutDuration = 0.5f
+                it.buildStyle()
+            }
 
-        mapController = map.controller as MapController
-        mapController.setCenter(geoPoint)
-        mapController.zoomTo(15)
+        val st = MarkerStyleBuilder()
+            .let {
+                it.size = 48f
+                it.bitmap = BitmapUtils.createBitmapFromAndroidBitmap(
+                    BitmapFactory.decodeResource(resources, R.drawable.ic_marker))
+                it.animationStyle = animSt
+                it.buildStyle()
+            }
+        val markerLocation = LatLng(35.69344445206249, 51.34592769893889)
+        val marker = Marker(markerLocation, st)
 
-        */
+        marker.title = "testtt"
+        marker.description = "aaaaaaaaaa"
+
+        map.addMarker(marker)
+
+        map.setOnMapClickListener{
+            loge("it " +it.toString())
+        }
+
+        map.moveCamera(markerLocation, 1F)
         getComponentsFromDataBase()
     }
 
-    //get lat long
-    private fun getLocationMarker() {
-        try {
 
-            //val stream = this.context!!.assets.open("sample_maps.json")
-            val stream = map.context.assets.open("sample_maps.json")
-            val size = stream.available()
-            val buffer = ByteArray(size)
-            stream.read(buffer)
-            stream.close()
-            val strContent = String(buffer, StandardCharsets.UTF_8)
-            try {
-                val jsonObject = JSONObject(strContent)
-                val jsonArrayResult = jsonObject.getJSONArray("results")
-                for (i in 0 until jsonArrayResult.length()) {
-                    val jsonObjectResult = jsonArrayResult.getJSONObject(i)
-                    val modelMain = ModelMain()
-                    modelMain.strName = jsonObjectResult.getString("name")
-                    modelMain.strVicinity = jsonObjectResult.getString("vicinity")
-
-                    //get lat long
-                    val jsonObjectGeo = jsonObjectResult.getJSONObject("geometry")
-                    val jsonObjectLoc = jsonObjectGeo.getJSONObject("location")
-                    modelMain.latLoc = jsonObjectLoc.getDouble("lat")
-                    modelMain.longLoc = jsonObjectLoc.getDouble("lng")
-                    modelMainList.add(modelMain)
-                }
-                initMarker(modelMainList)
-            } catch (e: JSONException) {
-                e.printStackTrace()
-            }
-        } catch (ignored: IOException) {
-            /*Toast.makeText(
-                this@MapFragment.context,
-                "Oops, ada yang tidak beres. Coba ulangi beberapa saat lagi.",
-                Toast.LENGTH_SHORT
-            ).show()*/
-        }
-    }
 
     private fun initMarker(modelList: List<ModelMain>) {
+        /*
         for (i in modelList.indices) {
             overlayItem = ArrayList()
             overlayItem.add(
@@ -156,14 +142,22 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             map.overlays.add(marker)
             map.invalidate()
         }
+         */
+
     }
 
     override fun onResume() {
         super.onResume()
-       /* Configuration.getInstance().load(this.context, PreferenceManager.getDefaultSharedPreferences(this.context))
-        if (map != null) {
-            map.onResume()
-        }*/
+
+       /*
+
+       Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
+        val x: TilesOverlay = map.overlayManager.tilesOverlay
+        map.overlayManager.tilesOverlay.loadingBackgroundColor = android.R.color.black
+        map.overlayManager.tilesOverlay.loadingLineColor = Color.argb(255,0,255,0)
+
+
+       * */
         getComponentsFromDataBase()
     }
 
@@ -172,6 +166,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             it?.let { data ->
                 data.let { list ->
 
+                    /*
                     if(list.isNullOrEmpty()) {
                         val geoPoint = GeoPoint(35.695706, 51.400060)
                         map.setMultiTouchControls(true)
@@ -197,6 +192,8 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
 
                         showComponentOnMap(list)
                     }
+                     */
+
                 }
             }
         }
@@ -204,11 +201,12 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
 
     private fun showComponentOnMap(modelList: List<ComponentEntity>) {
 
+        /*
         for (i in modelList.indices) {
             overlayItem = ArrayList()
             overlayItem.add(
                 OverlayItem(
-                    modelList[i].name,
+                    modelList[i].nameComponent,
                     modelList[i].providerId,
                     GeoPoint(
                         modelList[i].latitude,
@@ -217,7 +215,7 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
                 )
             )
             val info = ModelMain()
-            info.strName = modelList[i].name.toString()
+            info.strName = modelList[i].nameComponent.toString()
             info.strVicinity = modelList[i].type.toString()
 
             val marker = org.osmdroid.views.overlay.Marker(map)
@@ -240,6 +238,8 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             map.overlays.add(marker)
             map.invalidate()
         }
+         */
+
 
     }
 
@@ -268,6 +268,10 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() {
             }
 
         }
+    }
+
+    override fun OnMarkerClicked(p0: Marker?) {
+        loge("p0 " + p0?.title)
     }
 }
 

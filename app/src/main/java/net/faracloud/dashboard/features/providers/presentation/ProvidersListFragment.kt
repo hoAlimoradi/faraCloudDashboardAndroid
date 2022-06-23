@@ -119,7 +119,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         viewModel.state.value = ProviderState.LOADING
         viewModel.getTenantWithProviders(tenantName).observe(viewLifecycleOwner) {
             it?.let { data ->
-
                 loge("data.size " + data.size)
                 data.let { list ->
                     if (list.isNullOrEmpty()) {

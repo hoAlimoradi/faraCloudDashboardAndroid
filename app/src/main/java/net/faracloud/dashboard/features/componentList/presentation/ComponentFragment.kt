@@ -27,6 +27,7 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     private var adapter: ComponentAdapter? = null
     private val viewModel: ComponentViewModel by viewModels()
 
+    var tenantName: String = ""
     var providerId: String = ""
     var authorizationToken: String = ""
 
@@ -46,6 +47,9 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        arguments?.getString(BundleKeys.tenantName)?.let {
+            tenantName = it
+        }
         arguments?.getString(BundleKeys.providerId)?.let {
             providerId = it
         }
@@ -53,27 +57,17 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
             authorizationToken = it
         }
 
-//        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-//            override fun handleOnBackPressed() {
-//                backPressed()
-//            }
-//        })
-
-        backButton.setOnClickListener {
+        /*backButton.setOnClickListener {
             findNavController().navigate(R.id.componentFragmentActionPopBack)
-        }
+        }*/
 
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
                 viewModel.getComponentsFromApi(
+                    tenantName = tenantName,
                     providerId = providerId,
                     authorizationToken = authorizationToken
                 )
-                /*providerId?.let { providerId ->
-                    authorizationToken?.let { authorizationToken ->
-
-                    }
-                }*/
             }
         }
         observeComponents()
@@ -82,8 +76,6 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     override fun onResume() {
         super.onResume()
         getComponentsFromDataBase()
-
-        //viewModel.getcomponents()
     }
 
     private fun observeComponents() {
@@ -121,7 +113,7 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                         it.forEach{ componentEntity ->
                             arrayList.add(
                                 ProviderRecycleViewViewRowEntity(
-                                    title = componentEntity.name!!,
+                                    title = componentEntity.nameComponent!!,
                                     authorizationToken = "",
                                     enable = componentEntity.enable
                                 )

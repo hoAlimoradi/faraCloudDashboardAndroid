@@ -35,17 +35,16 @@ class SettingFragment : BuilderFragment<SettingState, SettingViewModel>() {
     @RequiresApi(Build.VERSION_CODES.M)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        backButton.setOnClickListener {
-            findNavController().navigate(R.id.settingFragmentActionPopBack)
-        }
+        currentValueTextView.text = viewModel.getBaseUrl()
 
         applyConstraintLayout.setOnClickListener {
 
             val baseUrl: String = baseUrlEditText.text.toString()
 
             if(baseUrl.trim().isNotEmpty()) {
-                //viewModel.insertProvider(nameValue, tokenValue)
+                viewModel.setBaseUrl(baseUrl.trim())
                 Toast.makeText(it.context, "successfully changed ", Toast.LENGTH_SHORT).show()
+                activity?.onBackPressed()
             }else{
                 Toast.makeText(it.context, "Please enter baseUrl  ! ", Toast.LENGTH_SHORT).show()
             }

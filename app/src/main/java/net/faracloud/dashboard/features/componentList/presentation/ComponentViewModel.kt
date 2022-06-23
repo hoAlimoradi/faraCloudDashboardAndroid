@@ -34,7 +34,8 @@ class ComponentViewModel @Inject constructor(
         }
     }
 
-    suspend fun getComponentsFromApi(providerId: String,
+    suspend fun getComponentsFromApi(tenantName: String,
+                                     providerId: String,
                                      authorizationToken: String) {
 
         state.value = ComponentState.LOADING
@@ -93,7 +94,7 @@ class ComponentViewModel @Inject constructor(
                 componentEntityList.add(
                     ComponentEntity(
                         providerId = providerId,
-                        name = remoteModelSensor.component,
+                        nameComponent = remoteModelSensor.component,
                         type = remoteModelSensor.componentType,
                         latitude = latitude,
                         longitude = longitude,
@@ -138,7 +139,7 @@ class ComponentViewModel @Inject constructor(
 
             components.add(
                 ProviderRecycleViewViewRowEntity(
-                    title = componentEntity.name!!,
+                    title = componentEntity.nameComponent!!,
                     authorizationToken = "",
                     enable = componentEntity.enable
                 )

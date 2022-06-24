@@ -10,8 +10,10 @@ import net.faracloud.dashboard.core.api.RemoteModelStats
 import net.faracloud.dashboard.core.api.Resource
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.componentList.presentation.ComponentState
 import net.faracloud.dashboard.features.statistics.data.StatisticsRepository
 import retrofit2.Response
+import java.io.IOException
 import javax.inject.Inject
 
 @HiltViewModel
@@ -20,6 +22,8 @@ class StatisticsViewModel @Inject constructor(
     private val repository: StatisticsRepository,
     @ApplicationContext private val context: Context
 ) : BuilderViewModel<StatisticsState>(StatisticsState.IDLE) {
+
+    val errorMutableLiveData =  MutableLiveData<String?>(null)
 
     val statisticsRecycleViewViewRowEntityListMutableLiveData =
         MutableLiveData<List<StatisticsRecycleViewViewRowEntity>?>(null)
@@ -49,26 +53,22 @@ class StatisticsViewModel @Inject constructor(
                             statisticsRecycleViewViewRowEntityListMutableLiveData.value = list
                             state.value = StatisticsState.IDLE
                         }
-
                     }
                 } else {
                     state.value = StatisticsState.RETRY
+                    errorMutableLiveData.value = response.message()
                 }
-                /* handleBreakingNewsResponse(response)
-                 */
 
-
-                //statistics.postValue(handleBreakingNewsResponse(response))
             } else {
                 state.value = StatisticsState.RETRY
-                //statistics.postValue(Resource.Error("No Internet Connection"))
+                errorMutableLiveData.value = "No Internet Connection"
             }
         } catch (ex: Exception) {
             state.value = StatisticsState.RETRY
-            /*when(ex){
-                is IOException -> statistics.postValue(Resource.Error("Network Failure"))
-                else -> statistics.postValue(Resource.Error("Conversion Error"))
-            }*/
+            when(ex){
+                is IOException -> errorMutableLiveData.value = "Network Failure"
+                else -> errorMutableLiveData.value = "Conversion Error"
+            }
         }
     }
 

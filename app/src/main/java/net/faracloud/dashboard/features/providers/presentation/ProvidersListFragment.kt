@@ -35,8 +35,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         get() = viewModel
 
     var token: String? = null
-    var tenant: String? = null
-   // var providerTableId = ""
     var providerId: String? = null
     var authorizationToken: String? = null
 
@@ -54,10 +52,11 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         backButton.setOnClickListener {
             findNavController().navigate(R.id.providerListFragmentActionPopBack)
         }
-
+        //
         statisticImageButton.setOnClickListener {
             val bundle = Bundle()
-            bundle.putString(BundleKeys.tenant, tenant)
+            bundle.putString(BundleKeys.tenantName, tenantValue)
+            bundle.putString(BundleKeys.token, token)
             getFindViewController()?.navigate(R.id.navigateToStatisticsFragment, bundle)
         }
 
@@ -65,27 +64,33 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             getFindViewController()?.navigate(R.id.navigateToAddProviderFragment)
         }
 
-        tenantSpinner.onItemSelectedListener = object :
-            AdapterView.OnItemSelectedListener {
-            override fun onItemSelected(parent: AdapterView<*>,
-                                        view: View, position: Int, id: Long) {
-                tenantValue =  listTenant.get(position)
-                tenantValue?.let {
-                    getTenantWithProviders(tenantName = it)
+        try {
+            if (!listTenant.isNullOrEmpty() ) {
+                tenantSpinner.onItemSelectedListener = object :
+                    AdapterView.OnItemSelectedListener {
+                    override fun onItemSelected(parent: AdapterView<*>,
+                                                view: View, position: Int, id: Long) {
+                        if (!listTenant.isNullOrEmpty()) {
+                            tenantValue =  listTenant.get(position)
+                            tenantValue?.let {
+                                getTenantWithProviders(tenantName = it)
+                            }
+                        }
+                    }
+                    override fun onNothingSelected(parent: AdapterView<*>) {
+
+                    }
                 }
             }
+        } catch (e: Exception) {
 
-            override fun onNothingSelected(parent: AdapterView<*>) {
-
-            }
         }
-
+        observeTenants()
     }
 
     override fun onResume() {
         super.onResume()
         observeTenants()
-
     }
 
     private fun observeTenants() {
@@ -98,7 +103,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 if(!listTenant.isNullOrEmpty()) {
                     tenantValue = listTenant.first()
 
-
                     tenantValue?.let {
                         getTenantWithProviders(tenantName = it)
                     }
@@ -110,7 +114,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 } else {
                     viewModel.state.value = ProviderState.EMPTY
                 }
-
             }
         }
     }
@@ -129,7 +132,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                         if(!providers.isNullOrEmpty()) {
                             viewModel.state.value = ProviderState.IDLE
                             token = providers.first().authorizationToken
-
+                            loge(" authorizationToken token " + token)
                             //
                             val providerRecycleViewViewRowEntityArrayList =
                                 ArrayList<ProviderRecycleViewViewRowEntity>()
@@ -156,13 +159,10 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                                 it.addAllData(providerRecycleViewViewRowEntityArrayList)
                             }
 
-                            //
                         } else {
                             viewModel.state.value = ProviderState.EMPTY
                         }
-
                     }
-
                 }
             }
         }
@@ -194,6 +194,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             }
             ProviderState.START_COMPONENT_LIST -> {
                 val bundle = Bundle()
+                bundle.putString(BundleKeys.tenantName, tenantValue)
                 bundle.putString(BundleKeys.providerId, providerId)
                 bundle.putString(BundleKeys.authorizationToken, authorizationToken)
                 getFindViewController()?.navigate(R.id.navigateToComponentFragment, bundle)
@@ -254,8 +255,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
     override fun onDelete(name: String) {
         viewModel.getProviderByProviderId(name).observe(viewLifecycleOwner) {
             it?.let {
-
-
                 loge("onDelete getProviderByProviderId " + it.providerId)
                 viewModel.deleteProvider(it)
             }
@@ -264,6 +263,4 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             getTenantWithProviders(tenantName = it)
         }
     }
-
-
 }

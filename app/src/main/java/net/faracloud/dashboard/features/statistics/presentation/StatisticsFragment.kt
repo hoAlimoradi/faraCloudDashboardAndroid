@@ -14,6 +14,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.error_view.view.*
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import kotlinx.android.synthetic.main.fragment_statistics.*
@@ -46,10 +47,10 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(BundleKeys.providerId)?.let {
+        arguments?.getString(BundleKeys.tenantName)?.let {
             tenant = it
         }
-        arguments?.getString(BundleKeys.providerId)?.let {
+        arguments?.getString(BundleKeys.token)?.let {
             token = it
         }
 
@@ -60,6 +61,7 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
                 viewModel.getStatisticsFromApi(tenant,token)
+
             }
         }
         observeStatisticsStateFlow()
@@ -78,6 +80,7 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
         super.onResume()
         viewModel.viewModelScope.launch {
             viewModel.getStatisticsFromApi(tenant,token)
+            //viewModel.getStatisticsFromApi("alaki","token")
         }
         //viewModel.getStatistics()
     }
@@ -98,6 +101,14 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
                             it.addAllData(arrayList)
                         }
                     }
+                }
+            }
+        }
+
+        viewModel.viewModelScope.launch {
+            viewModel.errorMutableLiveData.observe(viewLifecycleOwner) {
+                it?.let { data ->
+                    statisticsRecycleErrorView.errorTitleTextView.text = data
                 }
             }
         }

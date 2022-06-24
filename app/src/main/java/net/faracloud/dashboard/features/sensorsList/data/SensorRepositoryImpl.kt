@@ -2,12 +2,18 @@ package net.faracloud.dashboard.features.sensorsList.data
 
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.api.ProviderService
-import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.database.SensorEntity
+import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.model.RemoteModelProviders
+import okhttp3.MediaType
+import okhttp3.MediaType.Companion.toMediaTypeOrNull
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okhttp3.RequestBody
 import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
+
 
 @Singleton
 class SensorRepositoryImpl @Inject constructor(
@@ -17,7 +23,7 @@ class SensorRepositoryImpl @Inject constructor(
 
     override suspend fun getSensorsFromApi(providerId: String,
                                            token: String): Response<RemoteModelProviders> {
-        return providerService.getCatalog(providerId,token)
+        return providerService.getCatalog(token)
     }
 
     override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
@@ -28,3 +34,7 @@ class SensorRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllSensors() = sensorDao.deleteSensors()
 }
+
+
+
+//return providerService.getCatalog(providerId,token)

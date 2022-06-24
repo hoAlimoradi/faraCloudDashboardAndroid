@@ -26,13 +26,13 @@ import org.neshan.common.model.LatLng
 import org.neshan.mapsdk.MapView
 import org.neshan.mapsdk.internal.utils.BitmapUtils
 import org.neshan.mapsdk.model.Marker
-import org.osmdroid.config.Configuration
+/*import org.osmdroid.config.Configuration
 import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
 import org.osmdroid.views.overlay.OverlayItem
-import org.osmdroid.views.overlay.TilesOverlay
+import org.osmdroid.views.overlay.TilesOverlay*/
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 
@@ -41,8 +41,8 @@ import java.nio.charset.StandardCharsets
 class MapFragment : BuilderFragment<MapState, MapViewModel>() , MapView.OnMarkerClickListener{
 
     var modelMainList: MutableList<ModelMain> = ArrayList()
-    lateinit var mapController: MapController
-    lateinit var overlayItem: ArrayList<OverlayItem>
+/*    lateinit var mapController: MapController
+    lateinit var overlayItem: ArrayList<OverlayItem>*/
 
     private val viewModel: MapViewModel by viewModels()
 

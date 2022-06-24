@@ -47,10 +47,7 @@ class ProviderViewModel @Inject constructor(
     fun navigateToSensorsOfProvider() {
         loge("navigateToSensorsOfProvider in view model")
         state.value = ProviderState.START_COMPONENT_LIST
-        /*viewModelScope.launch {
-            //delay(1000)
-            state.value = ProviderState.START_COMPONENT_LIST
-        }*/
+
     }
 
     fun getTenants() = repository.getAllTenants()
@@ -76,7 +73,6 @@ class ProviderViewModel @Inject constructor(
 
     fun getProviderByProviderId(name: String): LiveData<ProviderEntity> = repository.getProviderByProviderId(name)
 
-
     fun updateProvider(provider: ProviderEntity) {
         viewModelScope.launch {
             repository.updateProvider(provider)
@@ -86,12 +82,8 @@ class ProviderViewModel @Inject constructor(
     fun deleteProvider(provider: ProviderEntity) {
         viewModelScope.launch {
             repository.deleteProvider(provider)
-
         }
     }
-
-
-
 }
 
 /*

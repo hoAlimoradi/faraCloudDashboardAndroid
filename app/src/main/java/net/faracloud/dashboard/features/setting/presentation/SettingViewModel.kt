@@ -20,7 +20,5 @@ class SettingViewModel @Inject constructor(
 
       fun setBaseUrl(baseUrl: String) {
           repository.setBaseUrl(baseUrl)
-
     }
-
 }

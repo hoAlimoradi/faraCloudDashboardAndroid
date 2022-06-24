@@ -33,13 +33,6 @@ class SensorsListViewModel @Inject constructor(
     }
 
     fun getSensorsFromDataBase() = repository.getAllSensors()
-   /* fun getSensors() {
-        viewModelScope.launch {
-            sensorRecycleViewViewRowEntityListMutableLiveData.value = createMockProviders()
-        }
-
-    }*/
-
 
     suspend fun getSensors(providerId: String){
         val providerId1 = "mobile-app@p101"

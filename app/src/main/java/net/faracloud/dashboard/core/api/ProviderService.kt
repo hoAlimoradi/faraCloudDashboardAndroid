@@ -14,9 +14,17 @@ interface ProviderService {
     ): Response<RemoteModelStats>
 
 
-    @GET("catalog/{providerId}")
+    @GET("catalog")
     suspend fun getCatalog(
-        @Path("providerId") providerId: String,
         @Header("IDENTITY_KEY") token: String
     ): Response<RemoteModelProviders>
+
 }
+
+
+
+/* @GET("catalog/{providerId}/")
+ suspend fun getCatalog(
+     @Path("providerId") providerId: String,
+     @Header("IDENTITY_KEY") token: String
+ ): Response<RemoteModelProviders>*/

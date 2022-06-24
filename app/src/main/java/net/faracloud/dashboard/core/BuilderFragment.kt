@@ -43,12 +43,9 @@ abstract class BuilderFragment<S: BuilderViewState, VM : BuilderViewModel<S>> : 
             onStateChange(it)
             baseViewModel.onStateUpdated()
         })
-
-
     }
     abstract fun onStateChange(state: S)
 
-    // observe(baseViewModel.unAuthorizeLiveData, ::unAuthorized)
     fun getLocal(): LocalType {
         var local = LocalType.EN
         activity?.let {
@@ -58,10 +55,4 @@ abstract class BuilderFragment<S: BuilderViewState, VM : BuilderViewModel<S>> : 
         }
         return local
     }
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        for (fragment in requireFragmentManager().fragments) {
-            fragment.onActivityResult(requestCode, resultCode, data)
-        }
-    }*/
 }

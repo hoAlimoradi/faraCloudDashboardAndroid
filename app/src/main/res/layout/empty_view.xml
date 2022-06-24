@@ -10,8 +10,8 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="97dp"
-        android:layout_height="104dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -23,7 +23,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="not find any thing"
-        android:textSize="24dp"
+        android:textSize="20dp"
         android:textColor="@color/green6a807b"
         android:layout_marginTop="8dp"
         app:layout_constraintEnd_toEndOf="parent"

@@ -18,7 +18,6 @@ interface TenantDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertTenant(entity: TenantEntity): Long
 
-
     @Delete
     suspend fun deleteTenant(tenant: TenantEntity)
 

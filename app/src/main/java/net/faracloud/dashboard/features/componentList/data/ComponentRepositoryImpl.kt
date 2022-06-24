@@ -18,9 +18,12 @@ class ComponentRepositoryImpl @Inject constructor(
     private val sensorDao: SensorDao
 ): ComponentRepository {
 
-    override suspend fun getSensorsFromApi(providerId: String,
+    override suspend fun getSensorsFromApi(tenantName: String,
+                                           providerId: String,
                                            token: String): Response<RemoteModelProviders> {
-        return providerService.getCatalog(providerId,token)
+        val providerID = tenantName + "@" + providerId
+       // return providerService.getCatalog(providerID,token)
+        return providerService.getCatalog(token)
     }
 
     override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()

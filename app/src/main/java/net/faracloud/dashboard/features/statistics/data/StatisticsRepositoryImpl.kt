@@ -11,7 +11,6 @@ import javax.inject.Singleton
 class StatisticsRepositoryImpl @Inject constructor(
     private val providerService: ProviderService
 ) : StatisticsRepository {
-
     override suspend fun getStats(
         name: String,
         token: String
@@ -21,5 +20,4 @@ class StatisticsRepositoryImpl @Inject constructor(
             token
         )
     }
-
 }

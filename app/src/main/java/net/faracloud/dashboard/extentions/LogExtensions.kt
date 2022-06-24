@@ -7,7 +7,6 @@ fun Any.logd(message: String?) {
     if (BuildConfig.DEBUG){
         Log.d(" ", "   --> $message")
     }
-
 }
 
 fun Any.loge(message: String?) {

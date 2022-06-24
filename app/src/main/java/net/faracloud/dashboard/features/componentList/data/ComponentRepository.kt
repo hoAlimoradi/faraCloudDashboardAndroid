@@ -9,7 +9,9 @@ import retrofit2.Response
 
 interface ComponentRepository {
 
-    suspend fun getSensorsFromApi(providerId: String,token: String): Response<RemoteModelProviders>
+    suspend fun getSensorsFromApi(tenantName: String,
+                                  providerId: String,
+                                  token: String): Response<RemoteModelProviders>
 
     fun getAllComponents(): LiveData<List<ComponentEntity>>
 

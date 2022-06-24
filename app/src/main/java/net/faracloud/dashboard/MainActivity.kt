@@ -1,19 +1,9 @@
 package net.faracloud.dashboard
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.NavHostFragment
-import com.google.zxing.integration.android.IntentIntegrator
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.android.synthetic.main.fragment_add_provider.*
-import net.faracloud.dashboard.extentions.loge
-import org.json.JSONException
-import org.json.JSONObject
-
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
@@ -26,8 +16,12 @@ class MainActivity : AppCompatActivity() {
         val graph = inflater.inflate(R.navigation.nav_graph)
         navHostFragment.navController.graph = graph
     }
+}
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
+
+
+/*
+ override fun onActivityResult(requestCode: Int, resultCode: Int, intent: Intent?) {
         super.onActivityResult(requestCode, resultCode, intent)
         println("never here")
         loge("never here")
@@ -68,4 +62,4 @@ class MainActivity : AppCompatActivity() {
             intent
         )*/
     }
-}
+ */

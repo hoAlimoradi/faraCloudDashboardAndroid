@@ -2,6 +2,7 @@ package net.faracloud.dashboard.core.di
 
 import net.faracloud.dashboard.core.api.AuthService
 import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
+import net.faracloud.dashboard.extentions.loge
 import okhttp3.Interceptor
 import okhttp3.Response
 import javax.inject.Inject
@@ -16,6 +17,7 @@ class HostSelectionInterceptor @Inject constructor(
 
        // val host: String = "" //SharedPreferencesManager.getServeIpAddress()
 
+        loge("host:  " + host)
         val newUrl = request.url.newBuilder()
             .host(host)
             .build()

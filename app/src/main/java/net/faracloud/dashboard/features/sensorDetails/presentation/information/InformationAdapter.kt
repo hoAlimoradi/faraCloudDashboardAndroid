@@ -15,11 +15,11 @@ import kotlinx.android.synthetic.main.row_observation.view.*
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BaseAdapter
 import net.faracloud.dashboard.features.sensorDetails.presentation.chart.ChartsAdapter
-import org.osmdroid.tileprovider.tilesource.TileSourceFactory
+/*import org.osmdroid.tileprovider.tilesource.TileSourceFactory
 import org.osmdroid.util.GeoPoint
 import org.osmdroid.views.CustomZoomButtonsController
 import org.osmdroid.views.MapController
-import org.osmdroid.views.MapView
+import org.osmdroid.views.MapView*/
 
 class InformationAdapter(private val informations: List<String>) :  RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
@@ -40,7 +40,7 @@ class InformationAdapter(private val informations: List<String>) :  RecyclerView
     }
 
     class  MapViewHolder(itemView: View) : ViewHolder(itemView) {
-        val map: MapView = itemView.findViewById(R.id.mapView)
+        //val map: MapView = itemView.findViewById(R.id.mapView)
     }
 
     override fun getItemViewType(position: Int): Int =
@@ -137,7 +137,7 @@ class InformationAdapter(private val informations: List<String>) :  RecyclerView
         val sensorLocationArray = informations[4].split(" ").toTypedArray()
         val latitude: Double = sensorLocationArray[0].toDouble()
         val longitude: Double = sensorLocationArray[1].toDouble()
-        val geoPoint = GeoPoint(latitude, longitude)
+/*        val geoPoint = GeoPoint(latitude, longitude)
         val marker = org.osmdroid.views.overlay.Marker(viewHolder.map)
         marker.icon = ContextCompat.getDrawable(viewHolder.map.context, R.drawable.ic_place)
         marker.position = geoPoint
@@ -151,7 +151,7 @@ class InformationAdapter(private val informations: List<String>) :  RecyclerView
         val mapController = viewHolder.map.controller as MapController
         mapController.setCenter(geoPoint)
         mapController.zoomTo(15)
-        viewHolder.map.invalidate()
+        viewHolder.map.invalidate()*/
 
 
     }

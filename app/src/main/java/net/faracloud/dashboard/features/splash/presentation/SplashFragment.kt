@@ -60,26 +60,6 @@ class SplashFragment : BuilderFragment<SplashState, SplashViewModel>() {
         }
     }
 
-    private fun setVersionCode() {
-        viewModel.viewModelScope.launch {
-            /*
-            viewModel.getVersionCode()
-                .catch { e ->
-                    setVersionText(String().space)
-                }
-                .flowOn(Dispatchers.Default)
-                .collect {
-                    setVersionText(it)
-                }
-             */
-
-        }
-    }
-
-    private fun setVersionText(text: String) {
-        //versionCodeTextView.text = text
-    }
-
     override fun onResume() {
         super.onResume()
     }

@@ -11,7 +11,9 @@ import androidx.lifecycle.viewModelScope
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.error_view.view.*
 import kotlinx.android.synthetic.main.fragment_component.*
+import kotlinx.android.synthetic.main.fragment_component.refreshButton
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
@@ -95,6 +97,14 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                             it.addAllData(arrayList)
                         }
                     }
+                }
+            }
+        }
+
+        viewModel.viewModelScope.launch {
+            viewModel.errorMutableLiveData.observe(viewLifecycleOwner) {
+                it?.let { data ->
+                    componentRecycleErrorView.errorTitleTextView.text = data
                 }
             }
         }

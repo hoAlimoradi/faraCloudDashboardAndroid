@@ -33,8 +33,5 @@ class StatisticsAdapter() : BaseAdapter<StatisticsAdapter.MarketViewHolder, Stat
     }
 
     class MarketViewHolder(itemView: View) : ViewHolder(itemView) {
-
     }
-
-
 }

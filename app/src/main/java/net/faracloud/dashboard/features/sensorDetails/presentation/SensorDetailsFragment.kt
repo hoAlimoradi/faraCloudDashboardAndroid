@@ -44,20 +44,9 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                //backPressed()
-                findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
-            }
-        })
-        backButton.setOnClickListener {
-            findNavController().navigate(R.id.sensorDetailsFragmentActionPopBack)
-        }
-
         filterImageButton.setOnClickListener {
             showBottomSheetDialog()
         }
-        //.supportFragmentManager
         val adapter = SensorDetailsViewPagerAdapter(requireFragmentManager(), lifecycle)
         viewPagerSensorDetails.adapter = adapter
 
@@ -66,13 +55,11 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
         }.attach()
     }
 
-    // creating a variable for our button
     private fun showBottomSheetDialog() {
         this.activity?.let {
             val fragment = ObservationFilterBottomSheet.newInstance()
             fragment.show(it.supportFragmentManager, "ObservationFilterBottomSheet")
         }
-
     }
     override fun onResume() {
         super.onResume()

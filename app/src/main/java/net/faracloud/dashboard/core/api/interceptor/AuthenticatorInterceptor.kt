@@ -42,5 +42,4 @@ class AuthenticatorInterceptor @Inject constructor(
         }
     }
 
-
 }

@@ -26,7 +26,9 @@ fun <T> LifecycleOwner.observe(liveData: LiveData<T>?, action: (t: T) -> Unit) {
 
 
 fun <T,S: BuilderViewState> callResource(viewModel: BuilderViewModel<S>, resource: Resource<T>, isShowError: Boolean = true) : Resource<T> {
-    /*when {
+    return resource
+}
+/*when {
         resource.code == 401 -> {
             viewModel.unAuthorized(resource.message!!) {  }
         }
@@ -43,5 +45,3 @@ fun <T,S: BuilderViewState> callResource(viewModel: BuilderViewModel<S>, resourc
             viewModel.showError(resource.message ?: "عملیات شما با خطا مواجه شد",null,isShowError)
         }
     }*/
-    return resource
-}

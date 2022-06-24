@@ -31,9 +31,8 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-const val BaseUrl: String = "https://iotapi.faracloud.ir/"
+const val BaseUrl: String = "https://iot.faracloud.ir/"
 
-//class ApiModule @Inject constructor(@ApplicationContext val context: Context )
 @Module
 @InstallIn(SingletonComponent::class)
 object ApiModule {
@@ -51,7 +50,7 @@ object ApiModule {
                             hostSelectionInterceptor: HostSelectionInterceptor ): OkHttpClient {
         //  OkHttpClient.Builder() getOkHttpBuilder()
         return getOkHttpBuilder()
-            .addInterceptor(hostSelectionInterceptor)
+            //.addInterceptor(hostSelectionInterceptor)
             .addInterceptor(logging)
             .addInterceptor(chuckerInterceptor)
             .build()
@@ -116,9 +115,6 @@ object ApiModule {
         } else {
             getUnsafeOkHttpClient()
         }
-       // builder.addInterceptor(chuckerInterceptor)
-
-
         return builder
     }
 

@@ -1,3 +1,4 @@
+/*
 package net.faracloud.dashboard.features.map.presentation
 
 
@@ -7,6 +8,7 @@ import org.osmdroid.views.MapView
 import org.osmdroid.views.overlay.Marker
 import org.osmdroid.views.overlay.infowindow.InfoWindow
 
+*/
 /**
  * Created by Azhar Rivaldi on 24-02-2022
  * Youtube Channel : https://bit.ly/2PJMowZ
@@ -14,7 +16,8 @@ import org.osmdroid.views.overlay.infowindow.InfoWindow
  * Twitter : https://twitter.com/azharrvldi_
  * Instagram : https://www.instagram.com/azhardvls_
  * Linkedin : https://www.linkedin.com/in/azhar-rivaldi
- */
+ *//*
+
 
 class CustomInfoWindow(mapView: MapView?) : InfoWindow(R.layout.layout_tooltip, mapView) {
 
@@ -37,4 +40,4 @@ class CustomInfoWindow(mapView: MapView?) : InfoWindow(R.layout.layout_tooltip, 
         }
 
     }
-}
+}*/

@@ -10,16 +10,12 @@ const val REMAINING_TIME = 120
 abstract class BuilderViewModel<S: BuilderViewState>(
     private val defaultState: S
 ) : ViewModel() {
-
     val state = MutableLiveData<S>(defaultState).apply { value = defaultState }
-
     open fun onStateUpdated() = Unit
     override fun onCleared() {
         super.onCleared()
     }
-
 }
-
 fun <T> LifecycleOwner.observe(liveData: LiveData<T>?, action: (t: T) -> Unit) {
     liveData?.observe(this, Observer { t -> action(t) })
 }

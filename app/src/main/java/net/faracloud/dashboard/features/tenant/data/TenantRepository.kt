@@ -5,6 +5,7 @@ import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.database.TenantEntity
 
 interface TenantRepository {
+
     fun getAllTenants(): LiveData<List<TenantEntity>>
 
     suspend fun insertTenant(tenant: TenantEntity): Long

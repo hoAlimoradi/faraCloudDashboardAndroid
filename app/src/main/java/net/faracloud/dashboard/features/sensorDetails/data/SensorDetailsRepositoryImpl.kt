@@ -7,15 +7,29 @@ import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.database.doa.SensorObservationDao
 import net.faracloud.dashboard.core.database.SensorObservationEntity
 import net.faracloud.dashboard.core.model.ObservationRemoteModels
+import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import retrofit2.Response
 import javax.inject.Inject
 
 class SensorDetailsRepositoryImpl @Inject constructor(
     private val observationService: ObservationService,
     private val sensorObservationDao: SensorObservationDao,
-    private val sensorDao: SensorDao
+    private val sensorDao: SensorDao,
+    private val pref: PreferenceHelper
 ): SensorDetailsRepository {
     override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
+
+    override fun getLastSensorId(): String {
+        return pref.getLastSensorId()
+    }
+
+    override fun getLastProviderId(): String {
+        return pref.getLastProviderId()
+    }
+
+    override fun getLastAuthorizationToken(): String {
+        return pref.getLastAuthorizationToken()
+    }
 
     override suspend fun getObservationsFromApi(
         token: String,

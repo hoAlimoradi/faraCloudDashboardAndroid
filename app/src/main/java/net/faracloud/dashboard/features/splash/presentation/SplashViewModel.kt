@@ -25,6 +25,12 @@ class SplashViewModel @Inject constructor(
     var checkVersionUseCase: CheckVersionUseCase
 ) : BuilderViewModel<SplashState>(SplashState.IDLE) {
 
+    fun getProviders() = repository.getAllProviders()
+
+}
+
+/*
+
     @OptIn(ExperimentalCoroutinesApi::class)
     fun checkForTheFirstTimeAppIsLaunched() {
         viewModelScope.launch {
@@ -33,7 +39,4 @@ class SplashViewModel @Inject constructor(
             state.value = SplashState.START_HOME
         }
     }
-
-    fun getProviders() = repository.getAllProviders()
-
-}
+ */

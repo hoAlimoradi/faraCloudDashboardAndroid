@@ -13,6 +13,12 @@ interface SensorDetailsRepository {
 
     fun getAllSensors(): LiveData<List<SensorEntity>>
 
+    fun getLastSensorId(): String
+
+    fun getLastProviderId(): String
+
+    fun getLastAuthorizationToken(): String
+
     suspend fun getObservationsFromApi(token: String,
                                        providerId: String,
                                        sensor: String,

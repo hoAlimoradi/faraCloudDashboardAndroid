@@ -55,10 +55,15 @@ class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsVi
         viewModel.viewModelScope.launch {
             viewModel.observationRecycleViewRowEntityListMutableLiveData
                 .catch { e ->
-
+                    viewModel.state.value =  SensorDetailsState.EMPTY
                 }
                 .flowOn(Dispatchers.Default)
                 .collect {
+                    if (it.isNullOrEmpty()) {
+                        viewModel.state.value =  SensorDetailsState.EMPTY
+                    } else {
+                        viewModel.state.value =  SensorDetailsState.IDLE
+                    }
                     it?.let { data ->
                         data?.let { list ->
                             // val observationsRecycleViewViewRowEntityArrayList  = ArrayList<ObservationRecycleViewRowEntity>()
@@ -98,20 +103,33 @@ class InformationsFragment : BuilderFragment<SensorDetailsState, SensorDetailsVi
                         informationRecycleView.layoutManager = manager
                     }
 
-                    /*adapter?.let {
-                        it.clear()
-                        Log.e("", list.toString())
-                        it.addAllData(observationsRecycleViewViewRowEntityArrayList)
-                    }*/
                 }
             }
         }
     }
 
+    /*adapter?.let {
+        it.clear()
+        Log.e("", list.toString())
+        it.addAllData(observationsRecycleViewViewRowEntityArrayList)
+    }*/
     override fun onStateChange(state: SensorDetailsState) {
         when (state) {
             SensorDetailsState.IDLE -> {
-                loge("IDLE")
+                informationLoading.visibility = View.VISIBLE
+                informationRecycleView.visibility = View.GONE
+                informationRecycleEmptyView.visibility = View.GONE
+            }
+            SensorDetailsState.EMPTY ,SensorDetailsState.RETRY -> {
+                informationLoading.visibility = View.GONE
+                informationRecycleView.visibility = View.GONE
+                informationRecycleEmptyView.visibility = View.VISIBLE
+            }
+
+            SensorDetailsState.LOADING-> {
+                informationLoading.visibility = View.GONE
+                informationRecycleView.visibility = View.GONE
+                informationRecycleEmptyView.visibility = View.VISIBLE
             }
         }
     }

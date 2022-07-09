@@ -128,8 +128,6 @@ class ObservationFilterBottomSheet:
 
                 loge("  filterConstraintLayout viewModel.viewModelScope.launch")
                 viewModel.getObservationsFromApi(
-                    providerId = "",
-                    sensor = "",
                     categoryNumber = categoryNumberProgressBarValue,
                     startDate = startDate,
                     endDate = endDate

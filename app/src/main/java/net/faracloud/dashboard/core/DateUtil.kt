@@ -4,7 +4,6 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class DateUtil{
-
     companion object{
         fun changeDateFormat(strDate: String?): String {
             if(strDate.isNullOrEmpty()){

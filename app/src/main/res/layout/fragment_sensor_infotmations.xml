@@ -21,4 +21,32 @@
         tools:itemCount="10"
         tools:listitem="@layout/row_information" />
 
+    <androidx.core.widget.ContentLoadingProgressBar
+        android:id="@+id/informationLoading"
+        style="?android:attr/progressBarStyleLarge"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:visibility="visible"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    </androidx.core.widget.ContentLoadingProgressBar>
+
+    <include
+        layout="@layout/empty_view"
+        android:id="@+id/informationRecycleEmptyView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="@+id/informationRecycleView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        >
+
+    </include>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

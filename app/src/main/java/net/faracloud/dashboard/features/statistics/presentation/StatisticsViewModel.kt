@@ -28,17 +28,14 @@ class StatisticsViewModel @Inject constructor(
     val statisticsRecycleViewViewRowEntityListMutableLiveData =
         MutableLiveData<List<StatisticsRecycleViewViewRowEntity>?>(null)
 
-    suspend fun getStatisticsFromApi(
-        name: String,
-        token: String
-    ) {
+    suspend fun getStatisticsFromApi() {
         state.value = StatisticsState.LOADING
         try {
 
             if (hasInternetConnection(context)) {
                 val response = repository.getStats(
-                    name = name,
-                    token = token
+                    name = repository.getTenantName(),
+                    token = repository.getLastAuthorizationToken()
                 )
                 if (response.isSuccessful) {
                     response.body()?.let { resultResponse ->

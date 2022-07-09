@@ -16,6 +16,7 @@ import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
+import net.faracloud.dashboard.features.BundleKeys
 import net.faracloud.dashboard.features.sensorDetails.presentation.observation.ObservationFilterBottomSheet
 
 
@@ -44,6 +45,7 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+
         filterImageButton.setOnClickListener {
             showBottomSheetDialog()
         }
@@ -70,6 +72,8 @@ class SensorDetailsFragment: BuilderFragment<SensorDetailsState, SensorDetailsVi
             SensorDetailsState.IDLE -> {
                 loge("IDLE")
             }
+
+
         }
     }
 }

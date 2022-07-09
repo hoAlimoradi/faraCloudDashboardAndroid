@@ -62,6 +62,7 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
             override fun onItemSelected(parent: AdapterView<*>,
                                         view: View, position: Int, id: Long) {
                 tenantValue =  listTenant.get(position)
+
             }
 
             override fun onNothingSelected(parent: AdapterView<*>) {
@@ -81,6 +82,9 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
                 tenantValue?.let { tenantValue->
                     if (nameValue.trim().isNotEmpty()) {
                         if (tokenValue.trim().isNotEmpty()) {
+                            viewModel.setLastTenantName(tenantValue)
+                            viewModel.setLastProviderId(nameValue)
+                            viewModel.setLastAuthorizationToken(tokenValue)
                             viewModel.insertProvider(tenantValue, nameValue, tokenValue)
                             Toast.makeText(it.context, "successfully added ", Toast.LENGTH_SHORT).show()
                             activity?.onBackPressed()
@@ -116,6 +120,7 @@ class AddProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() 
                 }
                 if(!listTenant.isNullOrEmpty()) {
                     tenantValue = listTenant.first()
+                    viewModel.setLastTenantName(listTenant.first())
                     activity?.let {
                         val adapter = ArrayAdapter(it,
                             android.R.layout.simple_spinner_item, listTenant)

@@ -7,4 +7,6 @@ object BundleKeys {
     const val tenantName = "tenantName"
     const val providerId = "providerId"
     const val authorizationToken = "authorizationToken"
+    const val sensorId = "sensorId"
+
 }

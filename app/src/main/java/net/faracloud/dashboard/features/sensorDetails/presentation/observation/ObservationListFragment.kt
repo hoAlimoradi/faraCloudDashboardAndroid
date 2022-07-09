@@ -12,6 +12,7 @@ import androidx.annotation.RequiresApi
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.viewModelScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.android.synthetic.main.fragment_sensor_charts.*
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import kotlinx.android.synthetic.main.fragment_sensor_observations.*
@@ -22,6 +23,7 @@ import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.features.sensorDetails.presentation.SensorDetailsState
 import net.faracloud.dashboard.features.sensorDetails.presentation.SensorDetailsViewModel
+import net.faracloud.dashboard.features.sensorDetails.presentation.chart.ChartsAdapter
 
 //@AndroidEntryPoint
 class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewModel>() {
@@ -57,8 +59,6 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
         }
         viewModel.viewModelScope.launch {
             viewModel.getObservationsFromApi(
-                providerId = "",
-                sensor = "s101",
                 categoryNumber = 10,
                 startDate = null,
                 endDate = null
@@ -69,17 +69,24 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
 
     override fun onResume() {
         super.onResume()
+        observeObservations()
 
     }
+
 
     private fun observeObservations() {
         viewModel.viewModelScope.launch {
             viewModel.observationRecycleViewRowEntityListMutableLiveData
                 .catch { e ->
-
+                    viewModel.state.value =  SensorDetailsState.EMPTY
                 }
                 .flowOn(Dispatchers.Default)
                 .collect {
+                    if (it.isNullOrEmpty()) {
+                        viewModel.state.value =  SensorDetailsState.EMPTY
+                    } else {
+                        viewModel.state.value =  SensorDetailsState.IDLE
+                    }
                     it?.let { data ->
                         data?.let { list ->
                             val observationsRecycleViewViewRowEntityArrayList =
@@ -113,6 +120,12 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
 
             }
             SensorDetailsState.RETRY -> {
+                observationsRecycleView.visibility = View.GONE
+                observationsLoading.visibility = View.GONE
+                observationsRecycleEmptyView.visibility = View.VISIBLE
+            }
+
+            SensorDetailsState.EMPTY-> {
                 observationsRecycleView.visibility = View.GONE
                 observationsLoading.visibility = View.GONE
                 observationsRecycleEmptyView.visibility = View.VISIBLE

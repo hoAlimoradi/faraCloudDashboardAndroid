@@ -5,6 +5,7 @@ import net.faracloud.dashboard.core.api.ProviderService
 import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.model.RemoteModelProviders
+import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import okhttp3.MediaType
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.OkHttpClient
@@ -14,16 +15,28 @@ import retrofit2.Response
 import javax.inject.Inject
 import javax.inject.Singleton
 
-
 @Singleton
 class SensorRepositoryImpl @Inject constructor(
     private val providerService: ProviderService,
-    private val sensorDao: SensorDao
+    private val sensorDao: SensorDao,
+    private val pref: PreferenceHelper
 ): SensorRepository {
 
     override suspend fun getSensorsFromApi(providerId: String,
                                            token: String): Response<RemoteModelProviders> {
         return providerService.getCatalog(token)
+    }
+
+    override fun setLastSensorId(sensorId: String) {
+        pref.setLastSensorId(sensorId)
+    }
+
+    override fun getLastProviderId(): String {
+        return pref.getLastSensorId()
+    }
+
+    override fun getLastAuthorizationToken(): String {
+        return pref.getLastAuthorizationToken()
     }
 
     override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
@@ -34,7 +47,3 @@ class SensorRepositoryImpl @Inject constructor(
 
     override suspend fun deleteAllSensors() = sensorDao.deleteSensors()
 }
-
-
-
-//return providerService.getCatalog(providerId,token)

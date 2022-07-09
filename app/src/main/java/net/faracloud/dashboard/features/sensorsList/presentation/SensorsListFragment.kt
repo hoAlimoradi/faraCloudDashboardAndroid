@@ -25,11 +25,8 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     SensorAdapter.SensorItemClickCallback {
 
     private var adapter: SensorAdapter? = null
+
     private val viewModel: SensorsListViewModel by viewModels()
-
-    var providerId: String? = null
-    var authorizationToken: String? = null
-
 
     override val baseViewModel: BuilderViewModel<SensorsListState>
         get() = viewModel
@@ -46,7 +43,9 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val originIsMap: Boolean = arguments?.getBoolean(BundleKeys.startFromMap) == true
+
         loge("originIsMap" + originIsMap)
+
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 //backPressed()
@@ -140,6 +139,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
             SensorsListState.START_SENSOR_DETAILS -> {
                 loge(" START_SENSOR_LIST")
+
                 sensorsRecycleView.visibility = View.VISIBLE
                 sensorLoading.visibility = View.GONE
                 sensorRecycleEmptyView.visibility = View.GONE
@@ -151,6 +151,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
     override fun onClicked(item: ProviderRecycleViewViewRowEntity) {
         loge("item " + item.title)
+        viewModel.setLastSensorId(item.title)
         viewModel.navigateToSensorsOfProvider()
     }
 }

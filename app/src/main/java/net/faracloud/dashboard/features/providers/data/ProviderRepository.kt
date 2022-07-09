@@ -21,5 +21,15 @@ interface ProviderRepository {
     suspend fun deleteProvider(provider: ProviderEntity)
 
     suspend fun deleteAllProviders()
+
+    //
+    fun getLastTenantName(): String
+    fun setLastTenantName(tenantName: String)
+
+    fun getLastProviderId(): String
+    fun setLastProviderId(lastProviderId: String)
+
+    fun getLastAuthorizationToken(): String
+    fun setLastAuthorizationToken(lastAuthorizationToken: String)
 }
 

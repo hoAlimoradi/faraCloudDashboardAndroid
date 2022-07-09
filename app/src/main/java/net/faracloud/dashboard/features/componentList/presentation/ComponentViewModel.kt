@@ -42,17 +42,15 @@ class ComponentViewModel @Inject constructor(
     }
 
 
-    suspend fun getComponentsFromApi(tenantName: String,
-                                     providerId: String,
-                                     authorizationToken: String) {
+    suspend fun getComponentsFromApi() {
 
         state.value = ComponentState.LOADING
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
                 val response = repository.getSensorsFromApi(
-                    tenantName = tenantName,
-                    providerId = providerId,
-                    token = authorizationToken
+                    tenantName = repository.getLastTenantName(),
+                    providerId = repository.getLastProviderId(),
+                    token = repository.getLastAuthorizationToken()
                 )
 
                 loge(response.body().toString())
@@ -60,7 +58,7 @@ class ComponentViewModel @Inject constructor(
                     response.body()?.let { resultResponse ->
                         // TODO saveto database
                         loge(resultResponse.toString())
-                        val list = mapperRemoteModelProviderToComponentList(providerId, resultResponse)
+                        val list = mapperRemoteModelProviderToComponentList(repository.getLastProviderId(), resultResponse)
                         if (list.isEmpty()) {
                             state.value = ComponentState.EMPTY
                         } else {
@@ -120,7 +118,6 @@ class ComponentViewModel @Inject constructor(
                     )
                 )
 
-                remoteModelSensor
 
                 sensorEntityList.add(
                     SensorEntity(
@@ -146,8 +143,8 @@ class ComponentViewModel @Inject constructor(
             }
         }
 
-        saveSensor(sensorEntityList)
-        saveComponent(componentEntityList)
+        //saveSensor(sensorEntityList)
+        //saveComponent(componentEntityList)
 
         componentEntityList.forEach { componentEntity ->
 

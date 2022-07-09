@@ -46,22 +46,32 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
 
 
     private fun observeObservations() {
-        viewModel.getObservationsFromDataBase().observe(viewLifecycleOwner) {
-            it?.let { data ->
-                data?.let { list ->
-                    val observationsRecycleViewViewRowEntityArrayList  = ArrayList<Float>()
-                    list.forEach {
-                        observationsRecycleViewViewRowEntityArrayList.add(it.value.toFloat())
-                    }
-                    val manager = LinearLayoutManager(context)
+        viewModel.state.value =  SensorDetailsState.LOADING
+        viewModel.getObservationsFromDataBase()
+            .observe(viewLifecycleOwner) {
+                if (it.isNullOrEmpty()) {
+                    viewModel.state.value =  SensorDetailsState.EMPTY
+                } else {
+                    viewModel.state.value =  SensorDetailsState.IDLE
+                    it?.let { data ->
+                        data?.let { list ->
 
-                    adapter = ChartsAdapter(observationsRecycleViewViewRowEntityArrayList)
-                    adapter?.let {
-                        chartsRecycleView.adapter = it
-                        chartsRecycleView.layoutManager = manager
+                            val observationsRecycleViewViewRowEntityArrayList  = ArrayList<Float>()
+                            list.forEach {
+                                observationsRecycleViewViewRowEntityArrayList.add(it.value.toFloat())
+                            }
+                            val manager = LinearLayoutManager(context)
+
+                            adapter = ChartsAdapter(observationsRecycleViewViewRowEntityArrayList)
+                            adapter?.let {
+                                chartsRecycleView.adapter = it
+                                chartsRecycleView.layoutManager = manager
+                            }
+                        }
                     }
                 }
-            }
+
+
         }
     }
     override fun onStateChange(state: SensorDetailsState) {
@@ -78,6 +88,12 @@ class ChartsFragment : BuilderFragment<SensorDetailsState, SensorDetailsViewMode
 
             }
             SensorDetailsState.RETRY -> {
+                chartsRecycleView.visibility = View.GONE
+                chartsLoading.visibility = View.GONE
+                chartsRecycleEmptyView.visibility = View.VISIBLE
+            }
+
+            SensorDetailsState.EMPTY -> {
                 chartsRecycleView.visibility = View.GONE
                 chartsLoading.visibility = View.GONE
                 chartsRecycleEmptyView.visibility = View.VISIBLE

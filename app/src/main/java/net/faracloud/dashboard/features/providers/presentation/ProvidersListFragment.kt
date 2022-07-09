@@ -29,14 +29,12 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
     private var deleteProviderDialog: DeleteProviderDialog? = null
     private var adapter: ProviderAdapter? = null
     private val viewModel: ProviderViewModel by viewModels()
-    var tenantValue: String? = null
+
     val listTenant = ArrayList<String>()
     override val baseViewModel: BuilderViewModel<ProviderState>
         get() = viewModel
 
-    var token: String? = null
-    var providerId: String? = null
-    var authorizationToken: String? = null
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -54,10 +52,11 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
         //
         statisticImageButton.setOnClickListener {
-            val bundle = Bundle()
+/*            val bundle = Bundle()
             bundle.putString(BundleKeys.tenantName, tenantValue)
-            bundle.putString(BundleKeys.token, token)
-            getFindViewController()?.navigate(R.id.navigateToStatisticsFragment, bundle)
+            bundle.putString(BundleKeys.token, token)*/
+
+            getFindViewController()?.navigate(R.id.navigateToStatisticsFragment)
         }
 
         addProvider.setOnClickListener {
@@ -71,10 +70,8 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                     override fun onItemSelected(parent: AdapterView<*>,
                                                 view: View, position: Int, id: Long) {
                         if (!listTenant.isNullOrEmpty()) {
-                            tenantValue =  listTenant.get(position)
-                            tenantValue?.let {
-                                getTenantWithProviders(tenantName = it)
-                            }
+                            viewModel.setLastTenantName(listTenant.get(position))
+                            getTenantWithProviders()
                         }
                     }
                     override fun onNothingSelected(parent: AdapterView<*>) {
@@ -101,11 +98,9 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                     listTenant.add(it.tenantName.toString())
                 }
                 if(!listTenant.isNullOrEmpty()) {
-                    tenantValue = listTenant.first()
+                    viewModel.setLastTenantName(listTenant.first())
+                    getTenantWithProviders()
 
-                    tenantValue?.let {
-                        getTenantWithProviders(tenantName = it)
-                    }
                     activity?.let {
                         val adapter = ArrayAdapter(it,
                             android.R.layout.simple_spinner_item, listTenant)
@@ -118,9 +113,9 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
     }
 
-    private fun getTenantWithProviders(tenantName: String) {
+    private fun getTenantWithProviders() {
         viewModel.state.value = ProviderState.LOADING
-        viewModel.getTenantWithProviders(tenantName).observe(viewLifecycleOwner) {
+        viewModel.getTenantWithProviders().observe(viewLifecycleOwner) {
             it?.let { data ->
                 loge("data.size " + data.size)
                 data.let { list ->
@@ -131,9 +126,8 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                         val providers = list.first().providers
                         if(!providers.isNullOrEmpty()) {
                             viewModel.state.value = ProviderState.IDLE
-                            token = providers.first().authorizationToken
-                            loge(" authorizationToken token " + token)
-                            //
+                            viewModel.setLastAuthorizationToken(providers.first().authorizationToken)
+
                             val providerRecycleViewViewRowEntityArrayList =
                                 ArrayList<ProviderRecycleViewViewRowEntity>()
                             providers.forEach {
@@ -186,18 +180,20 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 providerLoading.visibility = View.GONE
             }
             ProviderState.EDIT_COMPONENT -> {
-                val bundle = Bundle()
-                //bundle.putInt(BundleKeys.id, providerTableId)
+               /* val bundle = Bundle()
                 bundle.putString(BundleKeys.providerId, providerId)
                 bundle.putString(BundleKeys.authorizationToken, authorizationToken)
-                getFindViewController()?.navigate(R.id.navigateToEditProviderFragment, bundle)
+                */
+
+                getFindViewController()?.navigate(R.id.navigateToEditProviderFragment)
             }
             ProviderState.START_COMPONENT_LIST -> {
-                val bundle = Bundle()
+                /*val bundle = Bundle()
                 bundle.putString(BundleKeys.tenantName, tenantValue)
                 bundle.putString(BundleKeys.providerId, providerId)
-                bundle.putString(BundleKeys.authorizationToken, authorizationToken)
-                getFindViewController()?.navigate(R.id.navigateToComponentFragment, bundle)
+                bundle.putString(BundleKeys.authorizationToken, authorizationToken)*/
+
+                getFindViewController()?.navigate(R.id.navigateToComponentFragment)
             }
         }
     }
@@ -207,8 +203,8 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         type: ProviderAdapter.ProviderItemClickCallbackType
     ) {
         loge("item " + item.title)
-        providerId = item.title
-        authorizationToken = item.authorizationToken
+        viewModel.setLastProviderId(item.title)
+        viewModel.setLastAuthorizationToken(item.authorizationToken)
 
         viewModel.getProviderByProviderId(item.title).observe(viewLifecycleOwner) {
 
@@ -241,7 +237,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
             deleteProviderDialog = DeleteProviderDialog()
         deleteProviderDialog?.apply {
             if (!isShowing()) {
-                setName(providerId!!)
+                setName(viewModel.getLastProviderId())
                 setDeleteProviderListener(this@ProvidersListFragment)
                 show(this@ProvidersListFragment.requireFragmentManager(), "errorTag")
             }
@@ -259,8 +255,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 viewModel.deleteProvider(it)
             }
         }
-        tenantValue?.let {
-            getTenantWithProviders(tenantName = it)
-        }
+        getTenantWithProviders()
     }
 }

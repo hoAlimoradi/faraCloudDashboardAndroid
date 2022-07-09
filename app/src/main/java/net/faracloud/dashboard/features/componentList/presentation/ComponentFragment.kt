@@ -14,6 +14,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.android.synthetic.main.error_view.view.*
 import kotlinx.android.synthetic.main.fragment_component.*
 import kotlinx.android.synthetic.main.fragment_component.refreshButton
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
@@ -28,10 +29,6 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
 
     private var adapter: ComponentAdapter? = null
     private val viewModel: ComponentViewModel by viewModels()
-
-    var tenantName: String = ""
-    var providerId: String = ""
-    var authorizationToken: String = ""
 
     override val baseViewModel: BuilderViewModel<ComponentState>
         get() = viewModel
@@ -49,27 +46,13 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(BundleKeys.tenantName)?.let {
-            tenantName = it
-        }
-        arguments?.getString(BundleKeys.providerId)?.let {
-            providerId = it
-        }
-        arguments?.getString(BundleKeys.authorizationToken)?.let {
-            authorizationToken = it
-        }
-
         /*backButton.setOnClickListener {
             findNavController().navigate(R.id.componentFragmentActionPopBack)
         }*/
 
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
-                viewModel.getComponentsFromApi(
-                    tenantName = tenantName,
-                    providerId = providerId,
-                    authorizationToken = authorizationToken
-                )
+                viewModel.getComponentsFromApi()
             }
         }
         observeComponents()
@@ -83,21 +66,35 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     private fun observeComponents() {
 
         viewModel.viewModelScope.launch {
-            viewModel.componentRecycleViewViewRowEntityListMutableLiveData.observe(viewLifecycleOwner) {
-                it?.let { data ->
-                    data.let { list ->
-                        val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                        list.forEach {
-                            Log.e(" it.title ", it.title)
-                            arrayList.add(it)
-                        }
-                        adapter?.let {
-                            it.clear()
-                            Log.e("", list.toString())
-                            it.addAllData(arrayList)
+            viewModel.state.value = ComponentState.LOADING
+            viewModel.componentRecycleViewViewRowEntityListMutableLiveData
+                .observe(viewLifecycleOwner) {
+
+                    if (it.isNullOrEmpty()) {
+                        viewModel.state.value = ComponentState.EMPTY
+                    } else {
+                        it?.let { data ->
+                            data.let { list ->
+                                if (list.isNullOrEmpty()) {
+                                    viewModel.state.value = ComponentState.EMPTY
+                                } else {
+                                    val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                                    list.forEach {
+                                        Log.e(" it.title ", it.title)
+                                        arrayList.add(it)
+                                    }
+                                    adapter?.let {
+                                        it.clear()
+                                        Log.e("", list.toString())
+                                        it.addAllData(arrayList)
+                                    }
+                                    viewModel.state.value = ComponentState.IDLE
+                                }
+
+                            }
                         }
                     }
-                }
+
             }
         }
 
@@ -113,35 +110,49 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     private fun getComponentsFromDataBase() {
         viewModel.state.value = ComponentState.LOADING
         viewModel.getComponentsFromDataBase().observe(viewLifecycleOwner) {
-            it?.let { data ->
-                data.let { list ->
 
-                    if (list.isNullOrEmpty()) {
-                        viewModel.state.value = ComponentState.EMPTY
-                    } else {
-                        val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
-                        it.forEach{ componentEntity ->
-                            arrayList.add(
-                                ProviderRecycleViewViewRowEntity(
-                                    title = componentEntity.nameComponent!!,
-                                    authorizationToken = "",
-                                    enable = componentEntity.enable
+
+            if (it.isNullOrEmpty()) {
+                viewModel.state.value = ComponentState.EMPTY
+            } else {
+                it?.let { data ->
+                    data.let { list ->
+
+                        if (list.isNullOrEmpty()) {
+                            viewModel.state.value = ComponentState.EMPTY
+                        } else {
+                            val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                            it.forEach{ componentEntity ->
+                                arrayList.add(
+                                    ProviderRecycleViewViewRowEntity(
+                                        title = componentEntity.nameComponent!!,
+                                        authorizationToken = "",
+                                        enable = componentEntity.enable
+                                    )
                                 )
-                            )
+                            }
+                            val manager = LinearLayoutManager(context)
+                            adapter = ComponentAdapter(this)
+                            adapter?.let {
+                                componentRecycleView.adapter = it
+                                componentRecycleView.layoutManager = manager
+                            }
+
+                            adapter?.let {
+                                it.clear()
+                                Log.e("", list.toString())
+                                it.addAllData(arrayList)
+                            }
+                            viewModel.state.value = ComponentState.IDLE
                         }
-                        val manager = LinearLayoutManager(context)
-                        adapter = ComponentAdapter(this)
-                        adapter?.let {
-                            componentRecycleView.adapter = it
-                            componentRecycleView.layoutManager = manager
-                        }
-                        viewModel.state.value = ComponentState.IDLE
+
+
+
                     }
-
-
-
                 }
             }
+
+
         }
     }
     

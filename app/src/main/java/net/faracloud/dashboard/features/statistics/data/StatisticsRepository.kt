@@ -7,4 +7,9 @@ interface StatisticsRepository {
 
     suspend fun getStats(name: String,
                          token: String): Response<RemoteModelStats>
+
+    fun getTenantName(): String
+
+
+    fun getLastAuthorizationToken(): String
 }

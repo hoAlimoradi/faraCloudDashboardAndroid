@@ -5,23 +5,18 @@ import kotlinx.coroutines.flow.Flow
 
 interface PreferenceHelper {
 
-    fun getAccessToken(): String
+    fun getTenantName(): String
+    fun setTenantName(tenantName: String)
 
-    fun isLogin(): Boolean
+    fun getLastProviderId(): String
+    fun setLastProviderId(lastProviderId: String)
 
-    fun getRefreshToken(): String
+    fun getLastAuthorizationToken(): String
+    fun setLastAuthorizationToken(lastAuthorizationToken: String)
 
-    fun setAccessToken(accessToken: String)
-
-    fun setRefreshToken(token: String)
-
-    fun getMobile(): Flow<String>
-
-    fun setMobile(mobile: String)
-
-    fun clearToken(): Boolean
+    fun getLastSensorId(): String
+    fun setLastSensorId(lastSensorId: String)
 
     fun setBaseUrl(baseUrl: String)
-
     fun getBaseUrl(): String
 }

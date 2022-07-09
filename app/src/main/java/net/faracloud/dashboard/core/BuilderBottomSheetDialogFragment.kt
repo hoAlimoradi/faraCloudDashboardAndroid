@@ -33,16 +33,12 @@ abstract class BuilderBottomSheetDialogFragment<S: BuilderViewState, VM : Builde
         initObserveViewModelState()
     }
 
-
-
     private fun initObserveViewModelState() {
         baseViewModel.state.observe(this, Observer {
             onStateChange(it)
             baseViewModel.onStateUpdated()
         })
-
-
     }
-    abstract fun onStateChange(state: S)
 
+    abstract fun onStateChange(state: S)
 }

@@ -16,7 +16,7 @@ class AuthenticatorInterceptor @Inject constructor(
     override fun authenticate(route: Route?, response: Response): Request? {
         synchronized(this) {
             try {
-                val refreshToken =
+                /*val refreshToken =
                     authService.refreshToken(
                         preferenceHandler.getRefreshToken()
                     ).execute()
@@ -33,13 +33,12 @@ class AuthenticatorInterceptor @Inject constructor(
                 } else {
                     preferenceHandler.setAccessToken("")
                     preferenceHandler.setRefreshToken("")
-                }
+                }*/
             } catch (e: Exception) {
-                preferenceHandler.setAccessToken("")
-                preferenceHandler.setRefreshToken("")
+               /* preferenceHandler.setAccessToken("")
+                preferenceHandler.setRefreshToken("")*/
             }
             return null
         }
     }
-
 }

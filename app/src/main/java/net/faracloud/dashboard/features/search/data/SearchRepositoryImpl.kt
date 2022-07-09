@@ -26,5 +26,4 @@ class SearchRepositoryImpl @Inject constructor(
     override fun getProviders(): LiveData<List<ProviderEntity>> {
         return providerDao.getProviders()
     }
-
 }

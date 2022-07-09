@@ -25,9 +25,6 @@ import net.faracloud.dashboard.features.BundleKeys
 @AndroidEntryPoint
 class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>()  {
 
-    var tenant: String =""
-    var token: String =""
-
     private var adapter: StatisticsAdapter? = null
     private val viewModel: StatisticsViewModel by viewModels()
 
@@ -47,12 +44,6 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getString(BundleKeys.tenantName)?.let {
-            tenant = it
-        }
-        arguments?.getString(BundleKeys.token)?.let {
-            token = it
-        }
 
         backButton.setOnClickListener {
             findNavController().navigate(R.id.statisticsFragmentActionPopBack)
@@ -60,7 +51,7 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
 
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
-                viewModel.getStatisticsFromApi(tenant,token)
+                viewModel.getStatisticsFromApi()
 
             }
         }
@@ -79,7 +70,7 @@ class StatisticsFragment : BuilderFragment<StatisticsState, StatisticsViewModel>
     override fun onResume() {
         super.onResume()
         viewModel.viewModelScope.launch {
-            viewModel.getStatisticsFromApi(tenant,token)
+            viewModel.getStatisticsFromApi()
             //viewModel.getStatisticsFromApi("alaki","token")
         }
         //viewModel.getStatistics()

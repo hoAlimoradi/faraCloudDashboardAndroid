@@ -5,5 +5,6 @@ import net.faracloud.dashboard.core.BuilderViewState
 enum class SensorDetailsState: BuilderViewState {
     IDLE,
     LOADING,
-    RETRY
+    RETRY,
+    EMPTY
 }

@@ -11,10 +11,7 @@ import androidx.lifecycle.ViewModelProviders
 abstract class BuilderActivity<S: BuilderViewState, VM : BuilderViewModel<S>> : AppCompatActivity() {
     abstract val baseViewModel: BuilderViewModel<S>
     private var errorMassage: String? = null
-
     private var localType = LocalType.EN
-
-
 
     inline fun <reified VM : BuilderViewModel<S>> viewModelProvider(
         mode: LazyThreadSafetyMode = LazyThreadSafetyMode.NONE,
@@ -31,20 +28,17 @@ abstract class BuilderActivity<S: BuilderViewState, VM : BuilderViewModel<S>> : 
 
     }
 
-
     override fun onResume() {
         super.onResume()
     }
 
     override fun onStart() {
         super.onStart()
-
     }
 
     override fun onStop() {
         super.onStop()
     }
-
     override fun onDestroy() {
         super.onDestroy()
     }
@@ -63,10 +57,6 @@ abstract class BuilderActivity<S: BuilderViewState, VM : BuilderViewModel<S>> : 
             WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION
         )
     }
-
-
-
-
     abstract fun onStateChange(state: S)
 
     companion object {

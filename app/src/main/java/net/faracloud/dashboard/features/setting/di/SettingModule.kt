@@ -10,7 +10,6 @@ import net.faracloud.dashboard.features.setting.data.SettingRepositoryImpl
 @Module
 @InstallIn(ActivityComponent::class)
 abstract class SettingModule {
-
     /**
      * Bind SettingRepository
      */

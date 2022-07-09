@@ -31,7 +31,7 @@ import javax.net.ssl.SSLSocketFactory
 import javax.net.ssl.TrustManager
 import javax.net.ssl.X509TrustManager
 
-const val BaseUrl: String = "https://iot.faracloud.ir/"
+const val BaseUrl: String = "https://iotapi.faracloud.ir/"
 
 @Module
 @InstallIn(SingletonComponent::class)

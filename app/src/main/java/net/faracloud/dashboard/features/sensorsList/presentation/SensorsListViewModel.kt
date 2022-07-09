@@ -32,21 +32,28 @@ class SensorsListViewModel @Inject constructor(
         }
     }
 
+    fun setLastSensorId(sensorId: String) {
+        repository.setLastSensorId(sensorId)
+    }
+
     fun getSensorsFromDataBase() = repository.getAllSensors()
 
-    suspend fun getSensors(providerId: String){
+    suspend fun getSensors(){
+        /*
         val providerId1 = "mobile-app@p101"
         val authorizationToken1= "1036124625b0f33d8057b7092a27e2ba3f9925e57e7a412f6e62253f9e63b8df"
         val providerId = "mobile-app@p102"
         val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
+
+         */
 
         state.value = SensorsListState.LOADING
         //statistics.postValue(Resource.Loading())
         try{
 
             if(NetworkUtil.hasInternetConnection(context)){
-                val response = repository.getSensorsFromApi(providerId = providerId,
-                token = authorizationToken)
+                val response = repository.getSensorsFromApi(providerId = repository.getLastProviderId(),
+                token = repository.getLastAuthorizationToken())
                 if (response.isSuccessful) {
                     response.body()?.let { resultResponse ->
                         // TODO saveto database

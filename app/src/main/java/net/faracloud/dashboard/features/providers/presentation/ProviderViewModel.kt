@@ -52,7 +52,7 @@ class ProviderViewModel @Inject constructor(
 
     fun getTenants() = repository.getAllTenants()
 
-    fun getTenantWithProviders(tenantName: String) =  repository.getTenantWithProviders(tenantName)
+    fun getTenantWithProviders() = repository.getTenantWithProviders(repository.getLastTenantName())
 
     fun getProviders() = repository.getAllProviders()
 
@@ -83,6 +83,28 @@ class ProviderViewModel @Inject constructor(
         viewModelScope.launch {
             repository.deleteProvider(provider)
         }
+    }
+
+
+    fun getLastTenantName(): String {
+        return repository.getLastTenantName()
+    }
+    fun setLastTenantName(tenantName: String) {
+        repository.setLastTenantName(tenantName)
+    }
+
+    fun getLastProviderId(): String {
+        return repository.getLastProviderId()
+    }
+    fun setLastProviderId(lastProviderId: String) {
+        repository.setLastProviderId(lastProviderId)
+    }
+
+    fun getLastAuthorizationToken(): String {
+        return repository.getLastAuthorizationToken()
+    }
+    fun setLastAuthorizationToken(lastAuthorizationToken: String) {
+        repository.setLastAuthorizationToken(lastAuthorizationToken)
     }
 }
 

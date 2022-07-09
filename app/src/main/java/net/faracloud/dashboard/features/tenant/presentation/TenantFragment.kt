@@ -25,10 +25,6 @@ class TenantFragment : BuilderFragment<TenantState, TenantViewModel>(),
     private var adapter: TenantAdapter? = null
     private val viewModel: TenantViewModel by viewModels()
 
-    var providerId: String? = null
-    var authorizationToken: String? = null
-
-
     override val baseViewModel: BuilderViewModel<TenantState>
         get() = viewModel
 
@@ -56,6 +52,7 @@ class TenantFragment : BuilderFragment<TenantState, TenantViewModel>(),
             }
         }
         adapter = TenantAdapter(this)
+
         adapter?.let {
             tenantsRecycleView.adapter = it
             tenantsRecycleView.layoutManager = manager
@@ -91,10 +88,6 @@ class TenantFragment : BuilderFragment<TenantState, TenantViewModel>(),
     }
 
 
-
-
-
-
     override fun onStateChange(state: TenantState) {
         when (state) {
             TenantState.IDLE -> {
@@ -118,7 +111,8 @@ class TenantFragment : BuilderFragment<TenantState, TenantViewModel>(),
         }
     }
 
-    override fun onClicked(item: TenantEntity, type: TenantAdapter.TenantItemClickCallbackType) {
+    override fun onClicked(item: TenantEntity,
+                           type: TenantAdapter.TenantItemClickCallbackType) {
 
     }
 

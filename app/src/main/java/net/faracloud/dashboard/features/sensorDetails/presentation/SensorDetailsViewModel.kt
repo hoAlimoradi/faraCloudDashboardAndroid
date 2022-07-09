@@ -28,25 +28,27 @@ class SensorDetailsViewModel @Inject constructor(
     fun getSensorsFromDataBase() = repository.getAllSensors()
 
     suspend fun getObservationsFromApi(
-        providerId: String,
-        sensor: String,
         categoryNumber: Int?,
         startDate: String?,
         endDate: String?
     ) {
 
         loge("  getObservationsFromApi")
-        /* val providerId = "mobile-app@p102"
-
- */
+        /*
         val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
+providerId = "mobile-app@p102",
+                    sensor = "s101",
+ */
+
         state.value = SensorDetailsState.LOADING
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
+
+
                 val response = repository.getObservationsFromApi(
-                    token = authorizationToken,
-                    providerId = "mobile-app@p102",
-                    sensor = "s101",
+                    token =  repository.getLastAuthorizationToken(),
+                    providerId =  repository.getLastProviderId(),
+                    sensor = repository.getLastSensorId(),
                     categoryNumber = 10,
                     startDate = startDate,
                     endDate = endDate
@@ -67,7 +69,7 @@ class SensorDetailsViewModel @Inject constructor(
                                 SensorObservationEntity(
                                     latitude = latitude,
                                     longitude = longitude,
-                                    sensorId = sensor,
+                                    sensorId = repository.getLastSensorId(),
                                     time = it.time,
                                     timestamp = null,
                                     value = it.value.toLong(),
@@ -111,6 +113,7 @@ class SensorDetailsViewModel @Inject constructor(
     }
 
     fun getObservationsFromDataBase() = repository.getAllObservations()
+
     /*private fun observationRemoteModelToObservationRecycleViewRowEntityMapper(observationRemoteModels : List<ObservationRemoteModel>): List<ObservationRecycleViewRowEntity> {
 fun getObservations1() {
         viewModelScope.launch {

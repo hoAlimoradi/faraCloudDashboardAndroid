@@ -43,7 +43,8 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        arguments?.getInt(BundleKeys.id)?.let {
+
+/*        arguments?.getInt(BundleKeys.id)?.let {
             providerTableId = it
         }
         arguments?.getString(BundleKeys.providerId)?.let {
@@ -52,7 +53,9 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
 
         arguments?.getString(BundleKeys.authorizationToken)?.let {
             token.setText(it)
-        }
+        }*/
+        name.setText(viewModel.getLastProviderId())
+        token.setText(viewModel.getLastAuthorizationToken())
 
         backButton.setOnClickListener {
             findNavController().navigate(R.id.editProviderFragmentActionPopBack )

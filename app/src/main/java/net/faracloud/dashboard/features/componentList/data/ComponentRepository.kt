@@ -27,4 +27,14 @@ interface ComponentRepository {
     suspend fun insertSensors(sensor: SensorEntity): Long
 
     suspend fun deleteAllSensors()
+
+    //
+    fun getLastTenantName(): String
+    fun setLastTenantName(tenantName: String)
+
+    fun getLastProviderId(): String
+    fun setLastProviderId(lastProviderId: String)
+
+    fun getLastAuthorizationToken(): String
+    fun setLastAuthorizationToken(lastAuthorizationToken: String)
 }

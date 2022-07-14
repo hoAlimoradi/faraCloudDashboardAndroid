@@ -48,7 +48,7 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        observeObservations()
+
 
         val manager = LinearLayoutManager(context)
 
@@ -133,4 +133,34 @@ class ObservationListFragment : BuilderFragment<SensorDetailsState, SensorDetail
         }
     }
 
+    private fun observeObservations1() {
+        viewModel.viewModelScope.launch {
+            viewModel.observationRecycleViewRowEntityListMutableLiveData
+                .catch { e ->
+                    viewModel.state.value =  SensorDetailsState.EMPTY
+                }
+                .flowOn(Dispatchers.Default)
+                .collect {
+                    if (it.isNullOrEmpty()) {
+                        viewModel.state.value =  SensorDetailsState.EMPTY
+                    } else {
+                        viewModel.state.value =  SensorDetailsState.IDLE
+                    }
+                    it?.let { data ->
+                        data?.let { list ->
+                            val observationsRecycleViewViewRowEntityArrayList =
+                                ArrayList<ObservationRecycleViewRowEntity>()
+                            list.forEach {
+                                observationsRecycleViewViewRowEntityArrayList.add(it)
+                            }
+                            adapter?.let {
+                                it.clear()
+                                Log.e("", list.toString())
+                                it.addAllData(observationsRecycleViewViewRowEntityArrayList)
+                            }
+                        }
+                    }
+                }
+        }
+    }
 }

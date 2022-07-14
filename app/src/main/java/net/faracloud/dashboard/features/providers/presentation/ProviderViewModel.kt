@@ -85,6 +85,17 @@ class ProviderViewModel @Inject constructor(
         }
     }
 
+    fun deleteComponentByProviderId(providerId: String) {
+        viewModelScope.launch {
+            repository.deleteComponentByProviderId(providerId)
+        }
+    }
+
+    fun deleteSensorByProviderId(componentId: String) {
+        viewModelScope.launch {
+            repository.deleteSensorByComponentId(componentId)
+        }
+    }
 
     fun getLastTenantName(): String {
         return repository.getLastTenantName()
@@ -101,7 +112,9 @@ class ProviderViewModel @Inject constructor(
     }
 
     fun getLastAuthorizationToken(): String {
-        return repository.getLastAuthorizationToken()
+        val auth = repository.getLastAuthorizationToken()
+        loge("in viewModel dddd : " + auth)
+        return auth
     }
     fun setLastAuthorizationToken(lastAuthorizationToken: String) {
         repository.setLastAuthorizationToken(lastAuthorizationToken)

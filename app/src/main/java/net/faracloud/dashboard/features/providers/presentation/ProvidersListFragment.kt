@@ -52,10 +52,6 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         }
         //
         statisticImageButton.setOnClickListener {
-/*            val bundle = Bundle()
-            bundle.putString(BundleKeys.tenantName, tenantValue)
-            bundle.putString(BundleKeys.token, token)*/
-
             getFindViewController()?.navigate(R.id.navigateToStatisticsFragment)
         }
 
@@ -82,7 +78,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         } catch (e: Exception) {
 
         }
-        observeTenants()
+        //observeTenants()
     }
 
     override fun onResume() {
@@ -180,19 +176,9 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                 providerLoading.visibility = View.GONE
             }
             ProviderState.EDIT_COMPONENT -> {
-               /* val bundle = Bundle()
-                bundle.putString(BundleKeys.providerId, providerId)
-                bundle.putString(BundleKeys.authorizationToken, authorizationToken)
-                */
-
                 getFindViewController()?.navigate(R.id.navigateToEditProviderFragment)
             }
             ProviderState.START_COMPONENT_LIST -> {
-                /*val bundle = Bundle()
-                bundle.putString(BundleKeys.tenantName, tenantValue)
-                bundle.putString(BundleKeys.providerId, providerId)
-                bundle.putString(BundleKeys.authorizationToken, authorizationToken)*/
-
                 getFindViewController()?.navigate(R.id.navigateToComponentFragment)
             }
         }
@@ -202,31 +188,24 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
         item: ProviderRecycleViewViewRowEntity,
         type: ProviderAdapter.ProviderItemClickCallbackType
     ) {
-        loge("item " + item.title)
+        loge("ddd item " + item.title)
         viewModel.setLastProviderId(item.title)
         viewModel.setLastAuthorizationToken(item.authorizationToken)
+        when (type) {
 
-        viewModel.getProviderByProviderId(item.title).observe(viewLifecycleOwner) {
-
-            it?.let {
-                //providerTableId = it.providerId
+            ProviderAdapter.ProviderItemClickCallbackType.MORE -> {
+                viewModel.navigateToSensorsOfProvider()
             }
 
-            when (type) {
+            ProviderAdapter.ProviderItemClickCallbackType.EDIT -> {
 
-                ProviderAdapter.ProviderItemClickCallbackType.MORE -> {
-                    viewModel.navigateToSensorsOfProvider()
+                loge("ddd ProviderAdapter " + viewModel.getLastProviderId())
+                viewModel.navigateToEditProvider()
+            }
 
-                }
+            ProviderAdapter.ProviderItemClickCallbackType.DELETE -> {
+                showDeleteProviderConfirmDialog()
 
-                ProviderAdapter.ProviderItemClickCallbackType.EDIT -> {
-                    viewModel.navigateToEditProvider()
-                }
-
-                ProviderAdapter.ProviderItemClickCallbackType.DELETE -> {
-                    showDeleteProviderConfirmDialog()
-
-                }
             }
         }
 
@@ -235,6 +214,7 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
     fun showDeleteProviderConfirmDialog() {
         if (deleteProviderDialog == null)
             deleteProviderDialog = DeleteProviderDialog()
+
         deleteProviderDialog?.apply {
             if (!isShowing()) {
                 setName(viewModel.getLastProviderId())
@@ -246,13 +226,17 @@ class ProvidersListFragment : BuilderFragment<ProviderState, ProviderViewModel>(
                     deleteProviderDialog = null
             }
         }
+
     }
 
     override fun onDelete(name: String) {
-        viewModel.getProviderByProviderId(name).observe(viewLifecycleOwner) {
+        viewModel.getProviderByProviderId(name)
+            .observe(viewLifecycleOwner) {
             it?.let {
                 loge("onDelete getProviderByProviderId " + it.providerId)
                 viewModel.deleteProvider(it)
+                //viewModel.deleteComponentByProviderId(name)
+                //viewModel.deleteSensorByProviderId(name)
             }
         }
         getTenantWithProviders()

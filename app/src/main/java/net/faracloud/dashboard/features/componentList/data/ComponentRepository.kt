@@ -3,12 +3,15 @@ package net.faracloud.dashboard.features.componentList.data
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.SensorEntity
+import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
 import net.faracloud.dashboard.core.model.RemoteModelProvider
 import net.faracloud.dashboard.core.model.RemoteModelProviders
 import retrofit2.Response
 
 interface ComponentRepository {
 
+    fun getProviderWithComponents(providerId: String): LiveData<List<ProvidersWithComponent>>
+    //
     suspend fun getSensorsFromApi(tenantName: String,
                                   providerId: String,
                                   token: String): Response<RemoteModelProviders>
@@ -34,6 +37,9 @@ interface ComponentRepository {
 
     fun getLastProviderId(): String
     fun setLastProviderId(lastProviderId: String)
+
+    fun getLastComponentId(): String
+    fun setLastComponentId(lastComponentId: String)
 
     fun getLastAuthorizationToken(): String
     fun setLastAuthorizationToken(lastAuthorizationToken: String)

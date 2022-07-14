@@ -74,90 +74,12 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() , MapView.OnMarker
 
         //set map focus position
        // map.isTrafficEnabled = true //  .setFocalPointPosition(, 0f)
-        map.setZoom(14.5f, 0f)
-        val animSt = AnimationStyleBuilder()
-            .let {
-                it.fadeAnimationType = AnimationType.ANIMATION_TYPE_SMOOTHSTEP
-                it.sizeAnimationType = AnimationType.ANIMATION_TYPE_SPRING
-                it.phaseInDuration = 0.5f
-                it.phaseOutDuration = 0.5f
-                it.buildStyle()
-            }
-
-        val st = MarkerStyleBuilder()
-            .let {
-                it.size = 48f
-                it.bitmap = BitmapUtils.createBitmapFromAndroidBitmap(
-                    BitmapFactory.decodeResource(resources, R.drawable.ic_marker))
-                it.animationStyle = animSt
-                it.buildStyle()
-            }
-        val markerLocation = LatLng(35.69344445206249, 51.34592769893889)
-        val marker = Marker(markerLocation, st)
-
-        marker.title = "testtt"
-        marker.description = "aaaaaaaaaa"
-
-        map.addMarker(marker)
-
-        map.setOnMapClickListener{
-            loge("it " +it.toString())
-        }
-
-        map.moveCamera(markerLocation, 1F)
-        getComponentsFromDataBase()
-    }
-
-
-
-    private fun initMarker(modelList: List<ModelMain>) {
-        /*
-        for (i in modelList.indices) {
-            overlayItem = ArrayList()
-            overlayItem.add(
-                OverlayItem(
-                    modelList[i].strName, modelList[i].strVicinity, GeoPoint(
-                        modelList[i].latLoc, modelList[i].longLoc
-                    )
-                )
-            )
-            val info = ModelMain()
-            info.strName = modelList[i].strName
-            info.strVicinity = modelList[i].strVicinity
-
-            val marker = org.osmdroid.views.overlay.Marker(map)
-            //marker.icon = map.context.resources.getDrawable(R.drawable.ic_place)
-            this.activity?.let {
-
-                marker.icon = ContextCompat.getDrawable(it, R.drawable.ic_place)
-            }
-            marker.position = GeoPoint(modelList[i].latLoc, modelList[i].longLoc)
-            marker.relatedObject = info
-            marker.infoWindow = CustomInfoWindow(map)
-            marker.setOnMarkerClickListener { item, arg1 ->
-                item.showInfoWindow()
-                true
-            }
-
-            map.overlays.add(marker)
-            map.invalidate()
-        }
-         */
 
     }
 
     override fun onResume() {
         super.onResume()
 
-       /*
-
-       Configuration.getInstance().userAgentValue = BuildConfig.APPLICATION_ID
-        val x: TilesOverlay = map.overlayManager.tilesOverlay
-        map.overlayManager.tilesOverlay.loadingBackgroundColor = android.R.color.black
-        map.overlayManager.tilesOverlay.loadingLineColor = Color.argb(255,0,255,0)
-
-
-       * */
         getComponentsFromDataBase()
     }
 
@@ -166,33 +88,70 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() , MapView.OnMarker
             it?.let { data ->
                 data.let { list ->
 
-                    /*
                     if(list.isNullOrEmpty()) {
-                        val geoPoint = GeoPoint(35.695706, 51.400060)
-                        map.setMultiTouchControls(true)
-                        map.controller.animateTo(geoPoint)
-                        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
-                        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
+                        map.setZoom(14.5f, 0f)
+                        val animSt = AnimationStyleBuilder()
+                            .let {
+                                it.fadeAnimationType = AnimationType.ANIMATION_TYPE_SMOOTHSTEP
+                                it.sizeAnimationType = AnimationType.ANIMATION_TYPE_SPRING
+                                it.phaseInDuration = 0.5f
+                                it.phaseOutDuration = 0.5f
+                                it.buildStyle()
+                            }
 
-                        mapController = map.controller as MapController
-                        mapController.setCenter(geoPoint)
-                        mapController.zoomTo(15)
-                        map.invalidate()
+                        val st = MarkerStyleBuilder()
+                            .let {
+                                it.size = 48f
+                                it.bitmap = BitmapUtils.createBitmapFromAndroidBitmap(
+                                    BitmapFactory.decodeResource(resources, R.drawable.ic_marker))
+                                it.animationStyle = animSt
+                                it.buildStyle()
+                            }
+                        val markerLocation = LatLng(35.69344445206249, 51.34592769893889)
+                        val marker = Marker(markerLocation, st)
+
+                        marker.title = "testtt"
+                        marker.description = "aaaaaaaaaa"
+
+                        map.addMarker(marker)
+
+                        map.moveCamera(markerLocation, 1F)
                     } else {
                         val firstComponent = list.first()
-                        val geoPoint = GeoPoint(firstComponent.latitude, firstComponent.longitude)
-                        map.setMultiTouchControls(true)
-                        map.controller.animateTo(geoPoint)
-                        map.setTileSource(TileSourceFactory.DEFAULT_TILE_SOURCE)
-                        map.zoomController.setVisibility(CustomZoomButtonsController.Visibility.NEVER)
 
-                        mapController = map.controller as MapController
-                        mapController.setCenter(geoPoint)
-                        mapController.zoomTo(15)
+                        map.setZoom(24.5f, 0f)
+                        val animSt = AnimationStyleBuilder()
+                            .let {
+                                it.fadeAnimationType = AnimationType.ANIMATION_TYPE_SMOOTHSTEP
+                                it.sizeAnimationType = AnimationType.ANIMATION_TYPE_SPRING
+                                it.phaseInDuration = 0.5f
+                                it.phaseOutDuration = 0.5f
+                                it.buildStyle()
+                            }
 
-                        showComponentOnMap(list)
+                        val st = MarkerStyleBuilder()
+                            .let {
+                                it.size = 48f
+                                it.bitmap = BitmapUtils.createBitmapFromAndroidBitmap(
+                                    BitmapFactory.decodeResource(resources, R.drawable.ic_marker))
+                                it.animationStyle = animSt
+                                it.buildStyle()
+                            }
+                        loge("firstComponent.latitude " +  firstComponent.latitude)
+                        loge("firstComponent.longitude " + firstComponent.longitude)
+
+                        val markerLocation = LatLng(firstComponent.latitude, firstComponent.longitude)
+                        val marker = Marker(markerLocation, st)
+
+                        marker.title = firstComponent.nameComponent
+                        marker.description = firstComponent.type
+
+                        map.addMarker(marker)
+
+                        map.moveCamera(markerLocation, 1F)
+                        //showComponentOnMap(list)
                     }
-                     */
+
 
                 }
             }
@@ -201,6 +160,36 @@ class MapFragment : BuilderFragment<MapState, MapViewModel>() , MapView.OnMarker
 
     private fun showComponentOnMap(modelList: List<ComponentEntity>) {
 
+        for (component in modelList) {
+
+
+
+            val animSt = AnimationStyleBuilder()
+                .let {
+                    it.fadeAnimationType = AnimationType.ANIMATION_TYPE_SMOOTHSTEP
+                    it.sizeAnimationType = AnimationType.ANIMATION_TYPE_SPRING
+                    it.phaseInDuration = 0.5f
+                    it.phaseOutDuration = 0.5f
+                    it.buildStyle()
+                }
+
+            val st = MarkerStyleBuilder()
+                .let {
+                    it.size = 48f
+                    it.bitmap = BitmapUtils.createBitmapFromAndroidBitmap(
+                        BitmapFactory.decodeResource(resources, R.drawable.ic_marker))
+                    it.animationStyle = animSt
+                    it.buildStyle()
+                }
+            val markerLocation = LatLng(component.latitude, component.longitude)
+            val marker = Marker(markerLocation, st)
+
+            marker.title = component.nameComponent
+            marker.description = component.type
+
+            map.addMarker(marker)
+            map.invalidate()
+        }
         /*
         for (i in modelList.indices) {
             overlayItem = ArrayList()

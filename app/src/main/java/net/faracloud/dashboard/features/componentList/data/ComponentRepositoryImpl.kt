@@ -6,6 +6,8 @@ import net.faracloud.dashboard.core.database.doa.ComponentDao
 import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.database.SensorEntity
+import net.faracloud.dashboard.core.database.doa.ProviderDao
+import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
 import net.faracloud.dashboard.core.model.RemoteModelProviders
 import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import retrofit2.Response
@@ -14,11 +16,15 @@ import javax.inject.Singleton
 
 @Singleton
 class ComponentRepositoryImpl @Inject constructor(
+    private val providerDao: ProviderDao,
     private val providerService: ProviderService,
     private val componentDao: ComponentDao,
     private val sensorDao: SensorDao,
     private val pref: PreferenceHelper
 ): ComponentRepository {
+    override fun getProviderWithComponents(providerId: String): LiveData<List<ProvidersWithComponent>> {
+        return providerDao.getProviderWithComponents(providerId)
+    }
 
     override suspend fun getSensorsFromApi(tenantName: String,
                                            providerId: String,
@@ -41,6 +47,7 @@ class ComponentRepositoryImpl @Inject constructor(
     override suspend fun insertSensors(sensor: SensorEntity)= sensorDao.insertSensor(sensor)
 
     override suspend fun deleteAllSensors() = sensorDao.deleteSensors()
+
     override fun getLastTenantName(): String {
         return pref.getTenantName()
     }
@@ -50,11 +57,19 @@ class ComponentRepositoryImpl @Inject constructor(
     }
 
     override fun getLastProviderId(): String {
-        return pref.getLastSensorId()
+        return pref.getLastProviderId()
     }
 
     override fun setLastProviderId(lastProviderId: String) {
         return pref.setLastProviderId(lastProviderId)
+    }
+
+    override fun getLastComponentId(): String {
+        return pref.getLastComponentId()
+    }
+
+    override fun setLastComponentId(lastComponentId: String) {
+        pref.setLastComponentId(lastComponentId)
     }
 
     override fun getLastAuthorizationToken(): String {

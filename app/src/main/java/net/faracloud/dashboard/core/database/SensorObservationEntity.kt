@@ -9,7 +9,7 @@ data class SensorObservationEntity(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val latitude: Double,
     val longitude: Double,
-    var sensorId: String?,
+    var sensor: String?,
     val time: Long,
     var timestamp: Long?,
     val value: Long,

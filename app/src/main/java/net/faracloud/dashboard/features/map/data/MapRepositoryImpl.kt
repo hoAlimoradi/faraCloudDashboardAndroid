@@ -11,10 +11,11 @@ class MapRepositoryImpl @Inject constructor(
     private val providerDao: ProviderDao,
     private val componentDao: ComponentDao
 ) : MapRepository {
-    var providerId = "mobile-app@p101"
+    /*var providerId = "mobile-app@p101"
     var authorizationToken = "1036124625b0f33d8057b7092a27e2ba3f9925e57e7a412f6e62253f9e63b8df"
 
-
+*/
+    //override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()
     override fun getAllComponents(): LiveData<List<ComponentEntity>> = componentDao.getComponents()
 
 }

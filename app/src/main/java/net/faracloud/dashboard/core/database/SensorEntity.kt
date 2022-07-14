@@ -6,14 +6,15 @@ import java.util.*
 
 @Entity(tableName = "sensor_table")
 data class SensorEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    var componentId: String?,
+    //@PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = false)
+    var sensor: String,
+    var nameComponent: String,
     var createdAt: Long?,
     var dataType: String?,
     val publicAccess: Boolean,
     val latitude: Double,
     val longitude: Double,
-    var sensor: String?,
     var state: String?,
     var timeZone: String?,
     var type: String?,

@@ -22,6 +22,9 @@ interface ProviderRepository {
 
     suspend fun deleteAllProviders()
 
+    fun deleteComponentByProviderId(providerId: String)
+
+    fun deleteSensorByComponentId(providerId: String)
     //
     fun getLastTenantName(): String
     fun setLastTenantName(tenantName: String)

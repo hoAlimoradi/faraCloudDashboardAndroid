@@ -65,8 +65,9 @@
         app:tabIndicatorColor="@color/purple_500"
         app:tabBackground="@color/lightGreyColor"
         app:tabSelectedTextColor="@color/purple_500"
-        app:tabTextAppearance="@style/MyTabLayoutTextAppearance"
-        app:tabTextColor="@color/green6a807b" >
+        app:tabTextColor="@color/green6a807b"
+        style="@style/CustomTabText"
+        >
 
 
 

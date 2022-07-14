@@ -3,6 +3,8 @@ package net.faracloud.dashboard.core.database.doa
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import net.faracloud.dashboard.core.database.ProviderEntity
+import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
+import net.faracloud.dashboard.core.database.relations.TenantWithProviders
 
 @Dao
 interface ProviderDao {
@@ -33,6 +35,10 @@ interface ProviderDao {
 
     @Query("SELECT * FROM provider_table WHERE providerId = :id")
     fun getProviderById(id: String): LiveData<ProviderEntity>
+
+    @Transaction
+    @Query("SELECT * FROM provider_table WHERE providerId = :providerId")
+    fun getProviderWithComponents(providerId: String): LiveData<List<ProvidersWithComponent>>
 }
 
 

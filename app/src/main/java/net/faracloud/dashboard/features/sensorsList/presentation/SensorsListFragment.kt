@@ -12,12 +12,16 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.android.synthetic.main.fragment_component.*
 import kotlinx.android.synthetic.main.fragment_sensors_list.*
+import kotlinx.android.synthetic.main.fragment_sensors_list.backButton
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.BundleKeys
+import net.faracloud.dashboard.features.componentList.presentation.ComponentAdapter
+import net.faracloud.dashboard.features.componentList.presentation.ComponentState
 import net.faracloud.dashboard.features.providers.presentation.ProviderRecycleViewViewRowEntity
 
 @AndroidEntryPoint
@@ -48,9 +52,7 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
         activity?.onBackPressedDispatcher?.addCallback(viewLifecycleOwner, object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                //backPressed()
                 if(originIsMap) {
-                    //findNavController().popBackStack()
                     getFindViewController()?.navigateUp()
                     findNavController().navigate(R.id.sensorsListFragmentActionPopBackToMapFragment)
                 } else {
@@ -62,7 +64,6 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
         backButton.setOnClickListener {
             if(originIsMap) {
-                //findNavController().popBackStack()
                 getFindViewController()?.navigateUp()
                 findNavController().navigate(R.id.sensorsListFragmentActionPopBackToMapFragment)
             } else {
@@ -89,34 +90,79 @@ class SensorsListFragment : BuilderFragment<SensorsListState, SensorsListViewMod
 
 
     private fun getSensorsFromDataBase() {
-        viewModel.getSensorsFromDataBase().observe(viewLifecycleOwner) {
-            it?.let { data ->
-                data.let { list ->
-                    val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+        viewModel.state.value = SensorsListState.LOADING
+        viewModel.getComponentWithSensors().observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                viewModel.state.value = SensorsListState.RETRY
+            } else {
+                viewModel.state.value = SensorsListState.IDLE
+                it?.let { data ->
+                    data.let { list ->
 
-                    it.forEach{ sensorEntity ->
-                        arrayList.add(
-                            ProviderRecycleViewViewRowEntity(
-                                title = sensorEntity.sensor!!,
-                                authorizationToken = "",
-                                enable = sensorEntity.enable
-                            )
-                        )
-                    }
-                    adapter?.let {
-                        it.clear()
-                        Log.e("", list.toString())
-                        it.addAllData(arrayList)
+                        val sensorList = list.first().sensors
+                        if (sensorList.isNullOrEmpty()) {
+                            viewModel.state.value = SensorsListState.RETRY
+                        } else {
+                            val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+
+                            sensorList.forEach{ sensorEntity ->
+                                arrayList.add(
+                                    ProviderRecycleViewViewRowEntity(
+                                        title = sensorEntity.sensor!!,
+                                        authorizationToken = "",
+                                        enable = sensorEntity.enable
+                                    )
+                                )
+                            }
+
+                            adapter?.let {
+                                it.clear()
+                                Log.e("", list.toString())
+                                it.addAllData(arrayList)
+                            }
+
+                        }
+
                     }
                 }
             }
+
         }
     }
 
 
+    private fun getSensorsFromDataBase1() {
+        viewModel.state.value = SensorsListState.LOADING
+        viewModel.getSensorsFromDataBase().observe(viewLifecycleOwner) {
+            if (it.isNullOrEmpty()) {
+                viewModel.state.value = SensorsListState.RETRY
+            } else {
+                viewModel.state.value = SensorsListState.IDLE
+                it?.let { data ->
+                    data.let { list ->
 
+                        val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
 
+                        it.forEach{ sensorEntity ->
+                            arrayList.add(
+                                ProviderRecycleViewViewRowEntity(
+                                    title = sensorEntity.sensor!!,
+                                    authorizationToken = "",
+                                    enable = sensorEntity.enable
+                                )
+                            )
+                        }
+                        adapter?.let {
+                            it.clear()
+                            Log.e("", list.toString())
+                            it.addAllData(arrayList)
+                        }
+                    }
+                }
+            }
 
+        }
+    }
 
     override fun onStateChange(state: SensorsListState) {
         when (state) {

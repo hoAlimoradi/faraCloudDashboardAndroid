@@ -3,6 +3,7 @@ package net.faracloud.dashboard.core.database.doa
 import androidx.lifecycle.LiveData
 import androidx.room.*
 import net.faracloud.dashboard.core.database.ComponentEntity
+import net.faracloud.dashboard.core.database.relations.ComponentsWithSensor
 import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
 import net.faracloud.dashboard.core.database.relations.TenantWithProviders
 
@@ -28,7 +29,11 @@ interface ComponentDao {
     @Query("SELECT * FROM component_table ORDER BY nameComponent")
     fun getComponents(): LiveData<List<ComponentEntity>>
 
-/*    @Transaction
-    @Query("SELECT * FROM component_table WHERE providerId = :providerId")
-    fun getProviderWithComponents(providerId: String): LiveData<List<ProvidersWithComponent>>*/
+    @Query("SELECT * FROM component_table WHERE enable = 1 ORDER BY nameComponent ")
+    fun getCheckedComponents(): LiveData<List<ComponentEntity>>
+
+    @Transaction
+    @Query("SELECT * FROM component_table WHERE nameComponent = :nameComponent")
+    fun getComponentWithSensors(nameComponent: String): LiveData<List<ComponentsWithSensor>>
+
 }

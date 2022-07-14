@@ -43,6 +43,16 @@ class AppPreferencesImpl @Inject constructor(
             .apply()
     }
 
+    override fun getLastComponentId(): String {
+        return mPrefs.getString(PREF_KEY_LAST_COMPONENT_ID,null) ?: ""
+    }
+
+    override fun setLastComponentId(lastComponentId: String) {
+        mPrefs.edit()
+            .putString(PREF_KEY_LAST_COMPONENT_ID, lastComponentId)
+            .apply()
+    }
+
     override fun getLastAuthorizationToken(): String {
         return mPrefs.getString(PREF_KEY_LAST_AUTHORIZATION,null) ?: ""
     }
@@ -70,6 +80,7 @@ class AppPreferencesImpl @Inject constructor(
         private const val PRE_BASE_URL: String = "PRE_BASE_URL"
         private const val PREF_KEY_LAST_SENSOR_ID: String = "PREF_KEY_LAST_SENSOR_ID"
         private const val PREF_KEY_LAST_PROVIDER_ID: String = "PREF_KEY_LAST_PROVIDER_ID"
+        private const val PREF_KEY_LAST_COMPONENT_ID: String = "PREF_KEY_LAST_COMPONENT_ID"
         private const val PREF_KEY_LAST_AUTHORIZATION: String = "PREF_KEY_LAST_AUTHORIZATION"
         private const val PREF_KEY_LAST_TENANT_ID: String = "PREF_KEY_LAST_TENANT_ID"
 

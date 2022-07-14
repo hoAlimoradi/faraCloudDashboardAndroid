@@ -14,9 +14,11 @@ import net.faracloud.dashboard.extentions.setWidthPercent
 class DeleteProviderDialog : DialogFragment() {
 
     private lateinit var rootView: View
+
     private lateinit var listener: DeleteProviderListener
 
     var name: String? = null
+
     var onDismiss: () -> Unit = {}
 
     override fun onCreate(savedInstanceState: Bundle?) {

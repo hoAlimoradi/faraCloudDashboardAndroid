@@ -5,7 +5,6 @@ import androidx.room.PrimaryKey
 
 @Entity(tableName = "component_table")
 data class ComponentEntity(
-    //@PrimaryKey(autoGenerate = true) val id: Int = 0,
         @PrimaryKey(autoGenerate = false)
         var nameComponent: String,
         var providerId: String,

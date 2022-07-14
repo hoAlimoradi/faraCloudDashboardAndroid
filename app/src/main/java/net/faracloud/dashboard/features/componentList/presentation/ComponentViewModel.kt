@@ -2,6 +2,7 @@ package net.faracloud.dashboard.features.componentList.presentation
 
 import net.faracloud.dashboard.features.componentList.data.ComponentRepository
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -11,6 +12,7 @@ import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.api.NetworkUtil
 import net.faracloud.dashboard.core.database.ComponentEntity
 import net.faracloud.dashboard.core.database.SensorEntity
+import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
 import net.faracloud.dashboard.core.model.RemoteModelProviders
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
@@ -33,6 +35,13 @@ class ComponentViewModel @Inject constructor(
 
     val componentRecycleViewViewRowEntityListMutableLiveData =
         MutableLiveData<List<ProviderRecycleViewViewRowEntity>?>(null)
+
+    val componentEntityListMutableLiveData =
+        MutableLiveData<List<ComponentEntity>?>(null)
+
+    val sensorEntityListMutableLiveData =
+        MutableLiveData<List<SensorEntity>?>(null)
+
 
     fun navigateToSensorListFragment() {
         viewModelScope.launch {
@@ -118,16 +127,15 @@ class ComponentViewModel @Inject constructor(
                     )
                 )
 
-
                 sensorEntityList.add(
                     SensorEntity(
-                        componentId = remoteModelSensor.component,
+                        sensor = remoteModelSensor.sensor,
+                        nameComponent = remoteModelSensor.component,
                         createdAt = null,
                         dataType = remoteModelSensor.dataType,
                         publicAccess = remoteModelSensor.publicAccess,
                         latitude = latitude,
                         longitude = longitude,
-                        sensor = remoteModelSensor.sensor,
                         state = remoteModelSensor.state,
                         timeZone = remoteModelSensor.timeZone,
                         type = remoteModelSensor.type,
@@ -142,9 +150,11 @@ class ComponentViewModel @Inject constructor(
 
             }
         }
-
-        //saveSensor(sensorEntityList)
-        //saveComponent(componentEntityList)
+        /*componentEntityListMutableLiveData.value = componentEntityList
+        sensorEntityListMutableLiveData.value = sensorEntityList
+*/
+        saveComponent(componentEntityList)
+        saveSensor(sensorEntityList)
 
         componentEntityList.forEach { componentEntity ->
 
@@ -156,33 +166,45 @@ class ComponentViewModel @Inject constructor(
                 )
             )
         }
-
-
-
         return components
     }
 
-    private fun saveComponent(componentEntityList: List<ComponentEntity>) {
+    fun saveComponent(componentEntityList: List<ComponentEntity>) {
         viewModelScope.launch {
             repository.deleteAllComponents()
             componentEntityList.forEach {
+                loge("-----------------insertComponent-------------- ")
                 val result = repository.insertComponent(it)
-                loge(result.toString())
+                loge("saveComponent nameComponent " + it.nameComponent)
+                loge("saveComponent providerId " + it.providerId)
+                loge("saveComponent result " + result.toString())
+                loge("------------------------------------------------ ")
             }
         }
     }
 
-    private fun saveSensor(sensorEntityList: List<SensorEntity>) {
+    fun saveSensor(sensorEntityList: List<SensorEntity>) {
         viewModelScope.launch {
-            repository.deleteAllSensors()
+            //repository.deleteAllSensors()
             sensorEntityList.forEach {
                 val result = repository.insertSensors(it)
-                loge(result.toString())
+                loge("saveSensor result " + result.toString())
             }
         }
     }
 
     fun getComponentsFromDataBase() = repository.getAllComponents()
 
+    fun getProviderWithComponents(): LiveData<List<ProvidersWithComponent>> {
+        return repository.getProviderWithComponents(repository.getLastProviderId())
+    }
+
+    fun getLastComponentId(): String {
+        return repository.getLastComponentId()
+    }
+
+    fun setLastComponentId(lastComponentId: String) {
+        repository.setLastComponentId(lastComponentId)
+    }
 
 }

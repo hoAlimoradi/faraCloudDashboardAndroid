@@ -65,7 +65,9 @@
         app:tabIndicatorColor="@color/purple_500"
         app:tabBackground="@color/lightGreyColor"
         app:tabSelectedTextColor="@color/purple_500"
-        app:tabTextColor="@color/white"/>
+        app:tabTextColor="@color/white"
+        style="@style/CustomTabText"
+        />
 
     <androidx.viewpager2.widget.ViewPager2
         android:id="@+id/viewPagerSensorDetails"

@@ -46,25 +46,20 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        /*backButton.setOnClickListener {
-            findNavController().navigate(R.id.componentFragmentActionPopBack)
-        }*/
-
         refreshButton.setOnClickListener {
             viewModel.viewModelScope.launch {
                 viewModel.getComponentsFromApi()
             }
         }
         observeComponents()
-
     }
+
     override fun onResume() {
         super.onResume()
         getComponentsFromDataBase()
     }
 
     private fun observeComponents() {
-
         viewModel.viewModelScope.launch {
             viewModel.state.value = ComponentState.LOADING
             viewModel.componentRecycleViewViewRowEntityListMutableLiveData
@@ -83,6 +78,12 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                                         Log.e(" it.title ", it.title)
                                         arrayList.add(it)
                                     }
+                                    val manager = LinearLayoutManager(context)
+                                    adapter = ComponentAdapter(this@ComponentFragment)
+                                    adapter?.let {
+                                        componentRecycleView.adapter = it
+                                        componentRecycleView.layoutManager = manager
+                                    }
                                     adapter?.let {
                                         it.clear()
                                         Log.e("", list.toString())
@@ -90,13 +91,13 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                                     }
                                     viewModel.state.value = ComponentState.IDLE
                                 }
-
                             }
                         }
                     }
 
             }
         }
+
 
         viewModel.viewModelScope.launch {
             viewModel.errorMutableLiveData.observe(viewLifecycleOwner) {
@@ -109,13 +110,56 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
 
     private fun getComponentsFromDataBase() {
         viewModel.state.value = ComponentState.LOADING
-        viewModel.getComponentsFromDataBase().observe(viewLifecycleOwner) {
-
+        viewModel.getProviderWithComponents().observe(viewLifecycleOwner) {
 
             if (it.isNullOrEmpty()) {
                 viewModel.state.value = ComponentState.EMPTY
             } else {
                 it?.let { data ->
+                    data.let { list ->
+                        val componentList = list.first().components
+                        if (componentList.isNullOrEmpty()) {
+                            viewModel.state.value = ComponentState.EMPTY
+                        } else {
+                            val arrayList  = ArrayList<ProviderRecycleViewViewRowEntity>()
+                            componentList.forEach{ componentEntity ->
+                                arrayList.add(
+                                    ProviderRecycleViewViewRowEntity(
+                                        title = componentEntity.nameComponent!!,
+                                        authorizationToken = "",
+                                        enable = componentEntity.enable
+                                    )
+                                )
+                            }
+                            val manager = LinearLayoutManager(context)
+                            adapter = ComponentAdapter(this)
+                            adapter?.let {
+                                componentRecycleView.adapter = it
+                                componentRecycleView.layoutManager = manager
+                            }
+
+                            adapter?.let {
+                                it.clear()
+                                Log.e("", list.toString())
+                                it.addAllData(arrayList)
+                            }
+                            viewModel.state.value = ComponentState.IDLE
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    private fun getComponentsFromDataBase1() {
+        viewModel.state.value = ComponentState.LOADING
+        viewModel.getComponentsFromDataBase().observe(viewLifecycleOwner) {
+
+            if (it.isNullOrEmpty()) {
+                viewModel.state.value = ComponentState.EMPTY
+            } else {
+                it?.let { data ->
+
                     data.let { list ->
 
                         if (list.isNullOrEmpty()) {
@@ -145,17 +189,12 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
                             }
                             viewModel.state.value = ComponentState.IDLE
                         }
-
-
-
                     }
                 }
             }
-
-
         }
     }
-    
+
     override fun onStateChange(state: ComponentState) {
         when (state) {
             ComponentState.IDLE -> {
@@ -202,6 +241,7 @@ class ComponentFragment : BuilderFragment<ComponentState, ComponentViewModel>(),
 
     override fun onClicked(item: ProviderRecycleViewViewRowEntity) {
         loge("item " + item.title)
+        viewModel.setLastComponentId(item.title)
         viewModel.navigateToSensorListFragment()
     }
 }

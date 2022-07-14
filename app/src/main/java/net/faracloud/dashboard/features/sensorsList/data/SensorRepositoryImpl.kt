@@ -3,7 +3,10 @@ package net.faracloud.dashboard.features.sensorsList.data
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.api.ProviderService
 import net.faracloud.dashboard.core.database.SensorEntity
+import net.faracloud.dashboard.core.database.doa.ComponentDao
 import net.faracloud.dashboard.core.database.doa.SensorDao
+import net.faracloud.dashboard.core.database.relations.ComponentsWithSensor
+import net.faracloud.dashboard.core.database.relations.ProvidersWithComponent
 import net.faracloud.dashboard.core.model.RemoteModelProviders
 import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import okhttp3.MediaType
@@ -18,6 +21,7 @@ import javax.inject.Singleton
 @Singleton
 class SensorRepositoryImpl @Inject constructor(
     private val providerService: ProviderService,
+    private val componentDao: ComponentDao,
     private val sensorDao: SensorDao,
     private val pref: PreferenceHelper
 ): SensorRepository {
@@ -31,8 +35,12 @@ class SensorRepositoryImpl @Inject constructor(
         pref.setLastSensorId(sensorId)
     }
 
+    override fun getLastComponentId(): String {
+        return pref.getLastComponentId()
+    }
+
     override fun getLastProviderId(): String {
-        return pref.getLastSensorId()
+        return pref.getLastProviderId()
     }
 
     override fun getLastAuthorizationToken(): String {
@@ -40,6 +48,10 @@ class SensorRepositoryImpl @Inject constructor(
     }
 
     override fun getAllSensors(): LiveData<List<SensorEntity>> = sensorDao.getSensors()
+
+    override fun getComponentWithSensors(componentId: String): LiveData<List<ComponentsWithSensor>> {
+        return componentDao.getComponentWithSensors(componentId)
+    }
 
     override suspend fun insertSensors(sensor: SensorEntity)= sensorDao.insertSensor(sensor)
 

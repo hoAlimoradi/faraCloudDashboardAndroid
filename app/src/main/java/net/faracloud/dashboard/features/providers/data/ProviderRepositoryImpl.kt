@@ -3,7 +3,9 @@ package net.faracloud.dashboard.features.providers.data
 import androidx.lifecycle.LiveData
 import net.faracloud.dashboard.core.api.ProviderService
 import net.faracloud.dashboard.core.database.*
+import net.faracloud.dashboard.core.database.doa.ComponentDao
 import net.faracloud.dashboard.core.database.doa.ProviderDao
+import net.faracloud.dashboard.core.database.doa.SensorDao
 import net.faracloud.dashboard.core.database.relations.TenantWithProviders
 import net.faracloud.dashboard.core.sharedpreferences.PreferenceHelper
 import javax.inject.Inject
@@ -12,8 +14,10 @@ import javax.inject.Singleton
 @Singleton
 class ProviderRepositoryImpl @Inject constructor(
     private val providerService: ProviderService,
-    private val providerDao: ProviderDao,
     private val tenantDao: TenantDao,
+    private val providerDao: ProviderDao,
+    private val componentDao: ComponentDao,
+    private val sensorDao: SensorDao,
     private val pref: PreferenceHelper
 )
     : ProviderRepository {
@@ -38,7 +42,14 @@ class ProviderRepositoryImpl @Inject constructor(
     override suspend fun deleteProvider(provider: ProviderEntity) = providerDao.delete(provider)
 
     override suspend fun deleteAllProviders() = providerDao.deleteProviders()
-    
+    override fun deleteComponentByProviderId(providerId: String) {
+
+    }
+
+    override fun deleteSensorByComponentId(providerId: String) {
+        TODO("Not yet implemented")
+    }
+
     override fun getLastTenantName(): String {
         return pref.getTenantName()
     }
@@ -48,7 +59,7 @@ class ProviderRepositoryImpl @Inject constructor(
     }
 
     override fun getLastProviderId(): String {
-        return pref.getLastSensorId()
+        return pref.getLastProviderId()
     }
 
     override fun setLastProviderId(lastProviderId: String) {

@@ -18,6 +18,7 @@ import kotlinx.android.synthetic.main.fragment_providers_list.backButton
 import net.faracloud.dashboard.R
 import net.faracloud.dashboard.core.BuilderFragment
 import net.faracloud.dashboard.core.BuilderViewModel
+import net.faracloud.dashboard.core.database.ProviderEntity
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.BundleKeys
 import java.util.*
@@ -25,7 +26,6 @@ import java.util.*
 @AndroidEntryPoint
 class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>() {
 
-    var providerTableId: Int = 0
     private val viewModel: ProviderViewModel by viewModels()
 
     override val baseViewModel: BuilderViewModel<ProviderState>
@@ -43,32 +43,26 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        loge("ddd " + viewModel.getLastProviderId())
 
-/*        arguments?.getInt(BundleKeys.id)?.let {
-            providerTableId = it
-        }
-        arguments?.getString(BundleKeys.providerId)?.let {
-            name.setText(it)
-        }
-
-        arguments?.getString(BundleKeys.authorizationToken)?.let {
-            token.setText(it)
-        }*/
         name.setText(viewModel.getLastProviderId())
-        token.setText(viewModel.getLastAuthorizationToken())
 
+        token.setText(viewModel.getLastAuthorizationToken())
+        loge("token in edit fragment dddd: " + viewModel.getLastAuthorizationToken())
+        /*
         backButton.setOnClickListener {
             findNavController().navigate(R.id.editProviderFragmentActionPopBack )
         }
+         */
+
 
         saveConstraintLayout.setOnClickListener {
             val nameValue: String = name.text.toString()
             val tokenValue: String = token.text.toString()
 
-            /*
             if(nameValue.trim().isNotEmpty()) {
                 if(tokenValue.trim().isNotEmpty()) {
-                    viewModel.getProviderById(providerTableId).observe(viewLifecycleOwner) {
+                    viewModel.getProviderByProviderId(nameValue).observe(viewLifecycleOwner) {
                         loge("nameValue : " + nameValue)
                         val provider = it
                         provider.providerId = nameValue
@@ -77,7 +71,7 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
                         viewModel.updateProvider(provider)
 
                     }
-                    Toast.makeText(it.context, "successfully added ", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(it.context, "successfully edit ", Toast.LENGTH_SHORT).show()
 
                 }else{
                     Toast.makeText(it.context, "Please enter token  ! ", Toast.LENGTH_SHORT).show()
@@ -85,9 +79,6 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
             }else{
                 Toast.makeText(it.context, "Please enter name ! ", Toast.LENGTH_SHORT).show()
             }
-
-             */
-
         }
 
     }
@@ -102,9 +93,9 @@ class EditProviderFragment : BuilderFragment<ProviderState, ProviderViewModel>()
             ProviderState.IDLE -> {
                 loge("IDLE")
             }
+
             ProviderState.LOADING -> {
                 loge("LOADING")
-
             }
 
 

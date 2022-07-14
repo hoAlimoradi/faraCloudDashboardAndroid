@@ -1,6 +1,7 @@
 package net.faracloud.dashboard.features.sensorDetails.presentation
 
 import android.content.Context
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -8,7 +9,9 @@ import kotlinx.coroutines.flow.*
 import kotlinx.coroutines.launch
 import net.faracloud.dashboard.core.BuilderViewModel
 import net.faracloud.dashboard.core.api.NetworkUtil
+import net.faracloud.dashboard.core.database.SensorEntity
 import net.faracloud.dashboard.core.database.SensorObservationEntity
+import net.faracloud.dashboard.core.database.relations.SensorsWithObservation
 import net.faracloud.dashboard.core.scheduler.SchedulersImpl
 import net.faracloud.dashboard.extentions.loge
 import net.faracloud.dashboard.features.sensorDetails.data.SensorDetailsRepository
@@ -27,23 +30,22 @@ class SensorDetailsViewModel @Inject constructor(
 
     fun getSensorsFromDataBase() = repository.getAllSensors()
 
+    fun getSensorFromDataBase():LiveData<SensorEntity> {
+        return repository.getSensor(repository.getLastSensorId())
+    }
+    fun getSensorsWithObservation(): LiveData<List<SensorsWithObservation>> {
+        return repository.getSensorsWithObservation(repository.getLastSensorId())
+    }
+
     suspend fun getObservationsFromApi(
         categoryNumber: Int?,
         startDate: String?,
         endDate: String?
     ) {
 
-        loge("  getObservationsFromApi")
-        /*
-        val authorizationToken = "f1f92ad3d7488f3e7cd6a6552e26717fc5232e1ae9726d5cd16d1cbd8597cfdb"
-providerId = "mobile-app@p102",
-                    sensor = "s101",
- */
-
         state.value = SensorDetailsState.LOADING
         try {
             if (NetworkUtil.hasInternetConnection(context)) {
-
 
                 val response = repository.getObservationsFromApi(
                     token =  repository.getLastAuthorizationToken(),
@@ -69,7 +71,7 @@ providerId = "mobile-app@p102",
                                 SensorObservationEntity(
                                     latitude = latitude,
                                     longitude = longitude,
-                                    sensorId = repository.getLastSensorId(),
+                                    sensor = repository.getLastSensorId(),
                                     time = it.time,
                                     timestamp = null,
                                     value = it.value.toLong(),
@@ -114,58 +116,67 @@ providerId = "mobile-app@p102",
 
     fun getObservationsFromDataBase() = repository.getAllObservations()
 
-    /*private fun observationRemoteModelToObservationRecycleViewRowEntityMapper(observationRemoteModels : List<ObservationRemoteModel>): List<ObservationRecycleViewRowEntity> {
+}
+
+
+
+
+
+
+
+
+
+
+/*private fun observationRemoteModelToObservationRecycleViewRowEntityMapper(observationRemoteModels : List<ObservationRemoteModel>): List<ObservationRecycleViewRowEntity> {
 fun getObservations1() {
-        viewModelScope.launch {
-            observationRecycleViewRowEntityListMutableLiveData.value = createMockObservations()
-        }
-
+    viewModelScope.launch {
+        observationRecycleViewRowEntityListMutableLiveData.value = createMockObservations()
     }
-
-    private fun createMockObservations(): List<ObservationRecycleViewRowEntity> {
-
-        var mockObservations: MutableList<ObservationRecycleViewRowEntity> = mutableListOf()
-
-        val observationModel1 = ObservationRecycleViewRowEntity(
-            value = "Devices",
-            timestamp = "8",
-            latitude = 34.6666,
-            longitude = 56.666,
-            time = "0 "
-        )
-
-        val observationModel2 = ObservationRecycleViewRowEntity(
-            value = "Devices",
-            timestamp = "8",
-            latitude = 34.6666,
-            longitude = 56.666,
-            time = "0 "
-        )
-
-        val observationModel3 = ObservationRecycleViewRowEntity(
-            value = "Devices",
-            timestamp = "8",
-            latitude = 34.6666,
-            longitude = 56.666,
-            time = "0 "
-        )
-
-        val observationModel4 = ObservationRecycleViewRowEntity(
-            value = "Devices",
-            timestamp = "8",
-            latitude = 34.6666,
-            longitude = 56.666,
-            time = "0 "
-        )
-
-        mockObservations.add(observationModel1)
-        mockObservations.add(observationModel2)
-        mockObservations.add(observationModel3)
-        mockObservations.add(observationModel4)
-
-        return mockObservations
-    }
-    }*/
-
 
 }
+
+private fun createMockObservations(): List<ObservationRecycleViewRowEntity> {
+
+    var mockObservations: MutableList<ObservationRecycleViewRowEntity> = mutableListOf()
+
+    val observationModel1 = ObservationRecycleViewRowEntity(
+        value = "Devices",
+        timestamp = "8",
+        latitude = 34.6666,
+        longitude = 56.666,
+        time = "0 "
+    )
+
+    val observationModel2 = ObservationRecycleViewRowEntity(
+        value = "Devices",
+        timestamp = "8",
+        latitude = 34.6666,
+        longitude = 56.666,
+        time = "0 "
+    )
+
+    val observationModel3 = ObservationRecycleViewRowEntity(
+        value = "Devices",
+        timestamp = "8",
+        latitude = 34.6666,
+        longitude = 56.666,
+        time = "0 "
+    )
+
+    val observationModel4 = ObservationRecycleViewRowEntity(
+        value = "Devices",
+        timestamp = "8",
+        latitude = 34.6666,
+        longitude = 56.666,
+        time = "0 "
+    )
+
+    mockObservations.add(observationModel1)
+    mockObservations.add(observationModel2)
+    mockObservations.add(observationModel3)
+    mockObservations.add(observationModel4)
+
+    return mockObservations
+}
+}*/
+
